@@ -20,12 +20,12 @@ public class ActivePlayer extends Player {
 	}
 	
 	public double calculateScreenXMovement(long duration){
-//		System.out.println(">>>" + ((double) duration * (double) this.getXPerSec()) / 1000d);
+//		SingletonWorker.logger().info(">>>" + ((double) duration * (double) this.getXPerSec()) / 1000d);
 		return ((double) duration * (double) this.getXPerSec()) / 1000d;
 	}
 
 	public double calculateScreenYMovement(long duration){
-//		System.out.println(">>>" + ((double) duration * (double) this.getYPerSec()) / 1000d);
+//		SingletonWorker.logger().info(">>>" + ((double) duration * (double) this.getYPerSec()) / 1000d);
 		return ((double) duration * (double) this.getYPerSec()) / 1000d;
 	}
 

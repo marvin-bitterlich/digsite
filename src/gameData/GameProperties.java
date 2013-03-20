@@ -2,6 +2,7 @@ package gameData;
 
 import java.awt.Font;
 import java.io.File;
+import java.util.logging.Level;
 
 import recources.SingletonWorker;
 
@@ -112,7 +113,7 @@ public class GameProperties {
 			try{
 				gameFont = Font.createFont(Font.TRUETYPE_FONT,	new File(gamePath() + File.separator + "rec" + File.separator + "digsite.ttf"));
 			} catch (Exception e){
-				System.out.println(e.getLocalizedMessage());
+				SingletonWorker.logger().log(Level.WARNING,e.getLocalizedMessage(),e);
 				gameFont = new Font(Font.MONOSPACED, Font.BOLD, 40);
 			}
 			gameFont = gameFont.deriveFont(60f);
@@ -135,7 +136,7 @@ public class GameProperties {
 	}
 
 	public String logoPath() {
-		return "ohnebg.png";
+		return "logo.png";
 	}
 	public String cursorPath() {
 		return File.separator + "rec" + File.separator + "cursor.png";

@@ -60,7 +60,6 @@ public class NetworkHandlerThread implements Runnable {
 
 					if(cmd == NetworkConstants.SERVER_MOVEMENT_PLAYER_ENTER){
 						cut = line.split(NetworkConstants.SEPERATOR);
-						System.out.println(line);
 						if(cut.length >= 4){
 							int entity = NumberWorker.getNumber(cut[1]);
 							int x = NumberWorker.getNumber(cut[2]);
@@ -76,7 +75,6 @@ public class NetworkHandlerThread implements Runnable {
 					
 					if(cmd == NetworkConstants.SERVER_MOVEMENT_PLAYER_LEAVE){
 						cut = line.split(NetworkConstants.SEPERATOR);
-						System.out.println(line);
 						if(cut.length >= 2){
 							int entity = NumberWorker.getNumber(cut[1]);
 							if(entity != userID){
@@ -145,7 +143,6 @@ public class NetworkHandlerThread implements Runnable {
 	}
 
 	public void craftItem(int i) {
-		System.out.println("sendcrafting:" + NetworkConstants.SERVER_CRAFTING + NetworkConstants.SEPERATOR + i);
 		connection.sendLine(NetworkConstants.SERVER_CRAFTING + NetworkConstants.SEPERATOR + i);
 	}
 

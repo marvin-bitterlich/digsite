@@ -69,7 +69,7 @@ public class Mine {
 					int y = ((int)py)+j;
 					if(!map.containsKey(x+"-"+y)){
 						map.put(x+"-"+y, new Chunk(x,y));
-						System.out.println("load chunk:	" + x + " x-|-y " + y);
+						SingletonWorker.logger().info("load chunk:	" + x + " x-|-y " + y);
 						SingletonWorker.gameData().getNetworkHandlerThread().requestChunk(x,y);
 					}
 					map.get(x+"-"+y).draw(g);
@@ -127,7 +127,7 @@ public class Mine {
 		String coordinates = ConstantsWorker.getCoordinateString(x, y);
 		if(!map.containsKey(coordinates)){
 			map.put(coordinates, new Chunk(x,y));
-			System.out.println("load chunk:	" + x + " x-|-y " + y);
+			SingletonWorker.logger().info("load chunk:	" + x + " x-|-y " + y);
 		}
 		return map.get(coordinates);
 	}

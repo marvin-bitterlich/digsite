@@ -126,16 +126,16 @@ public class DrawableInventory extends UIItem {
 				int startY = (int) (equipmentBoxes[currentItemCategory]
 						.getStartY());
 
-				// System.out.println("\r\n\r\nitemCategory: "
+				// SingletonWorker.logger().info("\r\n\r\nitemCategory: "
 				// + currentItemCategory);
 				// System.out
 				// .println("relativeXValue: "
 				// + (equipmentBoxes[currentItemCategory]
 				// .getRelativeEndX() - equipmentBoxes[currentItemCategory]
 				// .getRelativeStartX()));
-				// System.out.println("startX: " + startX);
-				// System.out.println("startY: " + startY);
-				// System.out.println("item: " + item);
+				// SingletonWorker.logger().info("startX: " + startX);
+				// SingletonWorker.logger().info("startY: " + startY);
+				// SingletonWorker.logger().info("item: " + item);
 
 				itemImage = ImageUtil.resizeImage((BufferedImage) itemImage,
 						width, height);
@@ -201,8 +201,8 @@ public class DrawableInventory extends UIItem {
 					if (SingletonWorker.gameData().activePlayer().getInventory().getSize()
 							- ((pageList.size() * ((rows + 1) * (cells + 1)))) > 0) {
 
-						// System.out.println("Seite: " + currentPage);
-						// System.out.println("Gesamt: "
+						// SingletonWorker.logger().info("Seite: " + currentPage);
+						// SingletonWorker.logger().info("Gesamt: "
 						// + SingletonWorker.gameData().getGameSessionData()
 						// .getActivePlayer().getInventory()
 						// .size());
@@ -261,7 +261,7 @@ public class DrawableInventory extends UIItem {
 			return;
 		}
 
-		// System.out.println("Mausklick bei: " + e.getX() + ":x y:" +
+		// SingletonWorker.logger().info("Mausklick bei: " + e.getX() + ":x y:" +
 		// e.getY());
 
 		for (int category = 0; category < equipmentBoxes.length; category++) {

@@ -4,6 +4,8 @@ package gameData;
 
 import java.util.ArrayList;
 
+import recources.SingletonWorker;
+
 
 
 /***********************************************************************************
@@ -23,7 +25,7 @@ public class Inventory {
 		for (int i = 0; i < size; i++) {
 			itemstacks.add(new DrawableItemStack(0, 0));
 		}
-		System.out.println(itemstacks.size());
+		SingletonWorker.logger().info("Created an Inventory size: " + itemstacks.size());
 	}
 
 	public int getSize() {

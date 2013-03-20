@@ -23,12 +23,12 @@ public abstract class Entity extends Texture {
 				+ ((double) duration * (double) this.getYPerSec()) / 1000d);
 
 		// if (duration * this.getXPerSec() != 0)
-		// System.out.println("duration: " + duration + " xMovement: "
+		// SingletonWorker.logger().info("duration: " + duration + " xMovement: "
 		// + ((double) ((double) duration * (double) this.getXPerSec()))
 		// / 1000d + " xPos: "
 		// + this.getXPos());
 		// if (duration * this.getYPerSec() != 0)
-		// System.out.println("duration: " + duration + " yMovement: "
+		// SingletonWorker.logger().info("duration: " + duration + " yMovement: "
 		// + ((double) ((double) duration * (double) this.getYPerSec()))
 		// / 1000d + " yPos: "
 		// + this.getYPos());

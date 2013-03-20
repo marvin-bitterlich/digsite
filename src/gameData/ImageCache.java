@@ -34,7 +34,7 @@ public class ImageCache {
 		try {
 			String path = GameProperties.getGamePath()
 					+ "/texture/hi_" + id + ".png";
-			System.out.println("loaded image: " + path);
+			SingletonWorker.logger().info("loaded image: " + path);
 			image = ImageIO.read(new File(path));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -69,7 +69,7 @@ public class ImageCache {
 		try {
 			String path = GameProperties.getGamePath()
 					+ "/texture/hi_" + id + ".png";
-			System.out.println("loaded image: " + path);
+			SingletonWorker.logger().info("loaded image: " + path);
 			image = ImageIO.read(new File(path));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

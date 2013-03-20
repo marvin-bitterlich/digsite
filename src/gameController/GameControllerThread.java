@@ -237,7 +237,6 @@ KeyEventDispatcher {
 				.get(gamedata.getActiveMenu()).draw(g);
 			}
 			g.drawString("Frames: " + frames + " Miliseconds:" + time + "/" + timeout, 50, 50);
-			//			System.out.println("Frames: " + frames + " Miliseconds:" + time + "/" + timeout);
 			g.dispose();
 			gamedata.bufferstrategy().show();
 			time = System.currentTimeMillis()-cycleStartTime; 
