@@ -30,6 +30,9 @@ public class ActivePlayer extends Player {
 	}
 
 	public Inventory getInventory() {
+		if(inventory == null){
+			inventory = new Inventory(0);
+		}
 		return inventory;
 	}
 

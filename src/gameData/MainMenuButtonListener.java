@@ -19,6 +19,11 @@ public class MainMenuButtonListener implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		JButton l = (JButton) ae.getSource();
 		GameWindow gw = SingletonWorker.gameWindow();
+		
+		if (l.equals(gw.exit)) {
+			System.exit(0);
+		}
+		
 		if (l.equals(gw.start)) {
 			GameWindowWorker.doStartPressed();
 		}
@@ -121,6 +126,8 @@ public class MainMenuButtonListener implements ActionListener {
 				gw.emailcheck.setText("Belegt!");
 			}
 		}
+		
+		
 
 
 	}

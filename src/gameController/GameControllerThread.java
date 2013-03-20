@@ -8,7 +8,6 @@ import gameData.GameData;
 import gameData.GameProperties;
 import gameData.DrawableInventory;
 import gameData.ImageCache;
-import gameData.Inventory;
 import gameData.Item;
 import gameData.ItemManager;
 import gameData.MainMenu;
@@ -64,7 +63,6 @@ KeyEventDispatcher {
 			itemList.put(i, new Item(i));
 		}
 		ItemManager.setItemList(itemList);
-		SingletonWorker.gameData().activePlayer().setInventory(new Inventory(100));
 
 		int[] equipedItems = new int[9];
 		for (int i = 0; i < 9; i++) {

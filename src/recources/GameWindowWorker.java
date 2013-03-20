@@ -276,13 +276,14 @@ public class GameWindowWorker {
 		gw.registerset.setForeground(Color.WHITE);
 
 		gw.video = new TransparentButton(GameProperties.VIDEO);
-		gw.video.setBounds(50, width / 25 * 3, 300, 50);
+		gw.video.setBounds(50, width / 25 * 4, 300, 50);
 		gw.video.setFont(f);
 		gw.video.addActionListener(gw.buttonListener);
 		gw.video.setForeground(Color.WHITE);
+		gw.video.setVisible(false);
 
 		gw.exit = new TransparentButton(GameProperties.EXIT);
-		gw.exit.setBounds(50, width / 25 * 4, 300, 50);
+		gw.exit.setBounds(50, width / 25 * 3, 300, 50);
 		gw.exit.setFont(f);
 		gw.exit.addActionListener(gw.buttonListener);
 		gw.exit.setForeground(Color.WHITE);
