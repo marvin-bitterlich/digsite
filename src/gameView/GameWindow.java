@@ -3,18 +3,14 @@ package gameView;
 import gameController.GameControllerThread;
 import gameData.GameData;
 import gameData.MainMenuButtonListener;
+import gameData.MyOwnFocusTraversalPolicy;
 import gameData.TransparentButton;
 
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Cursor;
-import java.awt.FocusTraversalPolicy;
 import java.awt.Font;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.event.ActionListener;
-import java.util.Vector;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -84,21 +80,20 @@ public class GameWindow extends JFrame {
 		gw.createBufferStrategy(2);
 		SingletonWorker.gameData().setBufferstrategy(gw.getBufferStrategy());
 
-		gameData.setGameControllerThread(new GameControllerThread(gameData
-				.getGameSessionData()));
-		Thread t = new Thread(gameData.getGameControllerThread());
+		SingletonWorker.setGameControllerThread(new GameControllerThread(SingletonWorker.gameData().getGameSessionData()));
+		SingletonWorker.gameData().setGameControllerThread(SingletonWorker.gameControllerThread()); //TODO becoming obsolete!
+		Thread t = new Thread(SingletonWorker.gameControllerThread());
 		t.start();
 		String pw = new String(gw.passwordfield.getPassword());
 		gw.passwordfield.setText("");
-		getGameData().setNetworkHandlerThread(new NetworkHandlerThread(gameData
-				.getGameSessionData(),gw.loginfield.getText(),pw,sc));
+		SingletonWorker.setNetworkHandlerThread(new NetworkHandlerThread(gameData.getGameSessionData(),gw.loginfield.getText(),pw,sc));
+		getGameData().setNetworkHandlerThread(SingletonWorker.networkHandlerThread()); //TODO becoming obsolete!
 		Thread tn = new Thread(gameData.getNetworkHandlerThread());
 		tn.start();
 
-		KeyboardFocusManager.getCurrentKeyboardFocusManager()
-		.addKeyEventDispatcher(gameData.getGameControllerThread());
-		gw.addMouseListener(gameData.getGameControllerThread());
-		gw.addMouseMotionListener(gameData.getGameControllerThread());
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(SingletonWorker.gameControllerThread());
+		gw.addMouseListener(SingletonWorker.gameControllerThread());
+		gw.addMouseMotionListener(SingletonWorker.gameControllerThread());
 
 	}
 
@@ -108,45 +103,6 @@ public class GameWindow extends JFrame {
 
 	public static int getWindowHeight() {
 		return height; //TODO becoming obsolete!
-	}
-
-	
-
-	public static class MyOwnFocusTraversalPolicy extends FocusTraversalPolicy{
-		Vector<Component> order;
-
-		public MyOwnFocusTraversalPolicy(Vector<Component> order) {
-			this.order = new Vector<Component>(order.size());
-			this.order.addAll(order);
-		}
-		public Component getComponentAfter(Container focusCycleRoot,
-				Component aComponent)
-		{
-			int idx = (order.indexOf(aComponent) + 1) % order.size();
-			return order.get(idx);
-		}
-
-		public Component getComponentBefore(Container focusCycleRoot,
-				Component aComponent)
-		{
-			int idx = order.indexOf(aComponent) - 1;
-			if (idx < 0) {
-				idx = order.size() - 1;
-			}
-			return order.get(idx);
-		}
-
-		public Component getDefaultComponent(Container focusCycleRoot) {
-			return order.get(0);
-		}
-
-		public Component getLastComponent(Container focusCycleRoot) {
-			return order.lastElement();
-		}
-
-		public Component getFirstComponent(Container focusCycleRoot) {
-			return order.get(0);
-		}
 	}
 
 	public static GameData getGameData() {
