@@ -32,7 +32,6 @@ public class GameWindow extends JFrame {
 
 	public JPanel activeMainPanel;
 	public GameWindow gw;
-	public static GameData gameData;
 	public JButton start, video, registerset, exit;
 	public ActionListener buttonListener = new MainMenuButtonListener();
 	public JTextField loginfield;
@@ -52,7 +51,6 @@ public class GameWindow extends JFrame {
 		super(SingletonWorker.gameProperties().gameTitle());
 		SingletonWorker.setGameWindow(this);
 		gw = this; //TODO becoming obsolete!
-		GameWindow.gameData = SingletonWorker.gameData(); //TODO becoming obsolete!
 		GameWindowWorker.initGui();
 		GameWindowWorker.initMenu();
 		validate();
@@ -68,7 +66,7 @@ public class GameWindow extends JFrame {
 		SingletonWorker.gameData().setGameState(GameData.INGAME);
 		SingletonWorker.gameData().startNewSession(); //TODO becoming obsolete!
 		gw.setIgnoreRepaint(true);
-		GamePanel gp = new GamePanel(gameData);
+		GamePanel gp = new GamePanel(SingletonWorker.gameData());
 		gw.activeMainPanel = gp;
 		gw.activeMainPanel.setBounds(0, 0, width, height);
 		gw.activeMainPanel.setLayout(null);
@@ -86,9 +84,9 @@ public class GameWindow extends JFrame {
 		t.start();
 		String pw = new String(gw.passwordfield.getPassword());
 		gw.passwordfield.setText("");
-		SingletonWorker.setNetworkHandlerThread(new NetworkHandlerThread(gameData.getGameSessionData(),gw.loginfield.getText(),pw,sc));
-		getGameData().setNetworkHandlerThread(SingletonWorker.networkHandlerThread()); //TODO becoming obsolete!
-		Thread tn = new Thread(gameData.getNetworkHandlerThread());
+		SingletonWorker.setNetworkHandlerThread(new NetworkHandlerThread(SingletonWorker.gameData().getGameSessionData(),gw.loginfield.getText(),pw,sc));
+		SingletonWorker.gameData().setNetworkHandlerThread(SingletonWorker.networkHandlerThread()); //TODO becoming obsolete!
+		Thread tn = new Thread(SingletonWorker.networkHandlerThread());
 		tn.start();
 
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(SingletonWorker.gameControllerThread());
@@ -103,14 +101,6 @@ public class GameWindow extends JFrame {
 
 	public static int getWindowHeight() {
 		return height; //TODO becoming obsolete!
-	}
-
-	public static GameData getGameData() {
-		return gameData;
-	}
-
-	public static void setGameData(GameData gd) {
-		GameWindow.gameData = gd;
 	}
 
 	public void setCursor(String src){

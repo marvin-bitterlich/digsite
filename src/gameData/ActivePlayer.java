@@ -4,6 +4,8 @@ import gameView.GameWindow;
 
 import java.awt.Graphics;
 
+import recources.SingletonWorker;
+
 public class ActivePlayer extends Player {
 
 	private Inventory inventory = new Inventory(100);
@@ -35,8 +37,7 @@ public class ActivePlayer extends Player {
 		this.inventory = i;
 		this.inventory.changed = true;
 		DrawableInventory di = ((DrawableInventory)(
-				GameWindow
-				.getGameData()
+				SingletonWorker.gameData()
 				.getGameSessionData()
 				.getUiItemMap()
 				.get(GameProperties.MENU_ID_INVENTORY))

@@ -215,8 +215,8 @@ KeyEventDispatcher {
 				GameProperties.playerx += screenXMovement;
 			}
 
-			GameWindow.getGameData().getNetworkHandlerThread().sendMovement(GameProperties.playerx,GameProperties.playery);
-			GameData gamedata = GameWindow.getGameData();
+			SingletonWorker.gameData().getNetworkHandlerThread().sendMovement(GameProperties.playerx,GameProperties.playery);
+			GameData gamedata = SingletonWorker.gameData();
 			g = (Graphics2D) SingletonWorker.gameData().bufferstrategy().getDrawGraphics();
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
@@ -387,8 +387,8 @@ KeyEventDispatcher {
 			if (e.getID() == KeyEvent.KEY_PRESSED){
 				int x = GameProperties.getPlayerBlockX();
 				int y = GameProperties.getPlayerBlockY();
-				GameWindow.getGameData().getNetworkHandlerThread().placeLadder(x,y,11);
-				GameWindow.getGameData().getNetworkHandlerThread().placeLadder(x,y,12);
+				SingletonWorker.gameData().getNetworkHandlerThread().placeLadder(x,y,11);
+				SingletonWorker.gameData().getNetworkHandlerThread().placeLadder(x,y,12);
 			}
 
 		} else if (e.getKeyCode() == KeyEvent.VK_W) {

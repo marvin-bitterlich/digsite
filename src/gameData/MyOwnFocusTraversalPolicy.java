@@ -5,7 +5,7 @@ import java.awt.Container;
 import java.awt.FocusTraversalPolicy;
 import java.util.Vector;
 
-public static class MyOwnFocusTraversalPolicy extends FocusTraversalPolicy{
+public class MyOwnFocusTraversalPolicy extends FocusTraversalPolicy{
 	Vector<Component> order;
 
 	public MyOwnFocusTraversalPolicy(Vector<Component> order) {

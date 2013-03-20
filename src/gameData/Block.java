@@ -4,6 +4,8 @@ import gameView.GameWindow;
 
 import java.awt.Graphics;
 
+import recources.SingletonWorker;
+
 /***********************************************************************************
  * @author:	Marvin Hofmann	Klasse: DQI10	*
  * Prog.Name: Block.java	Beschreibung	*
@@ -50,7 +52,7 @@ public class Block extends Texture{
 	public void hit(ActivePlayer activePlayer){
 		if(isBreakable()){
 			if(--health <= 0){
-				GameWindow.getGameData().getNetworkHandlerThread().breakBlock(this);
+				SingletonWorker.gameData().getNetworkHandlerThread().breakBlock(this);
 				
 //				activePlayer.addItem(id,1);
 //				this.id = 1;
@@ -85,7 +87,7 @@ public class Block extends Texture{
 										- (GameWindow.getWindowHeight() / 2))
 										< GameProperties.GRAPHICS_SIZE_BLOCK*2.5  )
 				{
-					GameWindow.getGameData().getNetworkHandlerThread().deshadowBlock(this);
+					SingletonWorker.gameData().getNetworkHandlerThread().deshadowBlock(this);
 					shadow = false;
 				}
 			}

@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 import recources.ConstantsWorker;
+import recources.SingletonWorker;
 
 /***********************************************************************************
  * @author:	Marvin Hofmann	Klasse: DQI10	*
@@ -69,7 +70,7 @@ public class Mine {
 					if(!map.containsKey(x+"-"+y)){
 						map.put(x+"-"+y, new Chunk(x,y));
 						System.out.println("load chunk:	" + x + " x-|-y " + y);
-						GameWindow.getGameData().getNetworkHandlerThread().requestChunk(x,y);
+						SingletonWorker.gameData().getNetworkHandlerThread().requestChunk(x,y);
 					}
 					map.get(x+"-"+y).draw(g);
 				}	

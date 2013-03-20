@@ -1,6 +1,7 @@
 package network;
 
 import recources.NumberWorker;
+import recources.SingletonWorker;
 import recources.XStreamWorker;
 import gameData.Block;
 import gameData.Chunk;
@@ -9,7 +10,6 @@ import gameData.GameProperties;
 import gameData.GameSessionData;
 import gameData.Inventory;
 import gameData.Player;
-import gameView.GameWindow;
 
 /***********************************************************************************
  * @author:	Marvin Hofmann	Klasse: DQI10	*
@@ -48,7 +48,7 @@ public class NetworkHandlerThread implements Runnable {
 							int entity = NumberWorker.getNumber(cut[1]);
 							int x = NumberWorker.getNumber(cut[2]);
 							int y = NumberWorker.getNumber(cut[3]);
-							Entity e = GameWindow.getGameData().getGameSessionData().getEntityMap().get(entity);
+							Entity e = SingletonWorker.gameData().getGameSessionData().getEntityMap().get(entity);
 							if(entity != userID){
 								if(e != null){
 									e.setXPos(x);
@@ -69,7 +69,7 @@ public class NetworkHandlerThread implements Runnable {
 							int x = NumberWorker.getNumber(cut[2]);
 							int y = NumberWorker.getNumber(cut[3]);
 							if(entity != userID){
-								GameWindow.getGameData().getGameSessionData().getEntityMap().put(entity,
+								SingletonWorker.gameData().getGameSessionData().getEntityMap().put(entity,
 										new Player(20, 20, 20,20, 20, 20, 20,
 												10, Player.CLASS_BRUTE, 10, x, y)
 										);
@@ -83,7 +83,7 @@ public class NetworkHandlerThread implements Runnable {
 						if(cut.length >= 2){
 							int entity = NumberWorker.getNumber(cut[1]);
 							if(entity != userID){
-								GameWindow.getGameData().getGameSessionData().getEntityMap().remove(entity);
+								SingletonWorker.gameData().getGameSessionData().getEntityMap().remove(entity);
 							}
 						}
 					}

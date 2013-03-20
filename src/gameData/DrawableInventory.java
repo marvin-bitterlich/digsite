@@ -7,6 +7,8 @@ import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+import recources.SingletonWorker;
 import utilities.ImageUtil;
 
 public class DrawableInventory extends UIItem {
@@ -52,7 +54,7 @@ public class DrawableInventory extends UIItem {
 
 	@Override
 	public void process(long duration) {
-		if(GameWindow.getGameData().getGameSessionData().getActivePlayer().getInventory().hasChanged()){
+		if(SingletonWorker.gameData().getGameSessionData().getActivePlayer().getInventory().hasChanged()){
 			this.pageList = this.createInventoryPages();
 			if (this.currentPage >= this.pageList.size()) {
 				this.currentPage = 0;
@@ -65,8 +67,8 @@ public class DrawableInventory extends UIItem {
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g);
-		int mousex = GameWindow.getGameData().getGameSessionData().getActivePlayer().getMouseX();
-		int mousey = GameWindow.getGameData().getGameSessionData().getActivePlayer().getMouseY();
+		int mousex = SingletonWorker.gameData().getGameSessionData().getActivePlayer().getMouseX();
+		int mousey = SingletonWorker.gameData().getGameSessionData().getActivePlayer().getMouseY();
 
 		//		if (backBtn.isInRange(mousex, mousey)) {
 		//			currentPage--;
@@ -107,7 +109,7 @@ public class DrawableInventory extends UIItem {
 		// TODO in draw oder GameControllerThread
 
 		int currentItemCategory = 0;
-		for (int item : GameWindow.getGameData().getGameSessionData()
+		for (int item : SingletonWorker.gameData().getGameSessionData()
 				.getActivePlayer().getEquiped()) {
 			if (item != Integer.MAX_VALUE) {
 				Image itemImage = ItemManager.getItem(item).getSprite()
@@ -155,15 +157,15 @@ public class DrawableInventory extends UIItem {
 		ArrayList<InventoryPage> pageList = new ArrayList<InventoryPage>();
 
 		Object[][] invPage;
-		if (GameWindow.getGameData().getGameSessionData().getActivePlayer()
+		if (SingletonWorker.gameData().getGameSessionData().getActivePlayer()
 				.getInventory().getSize() >= (rows + 1) * (cells + 1)) {
 			invPage = new Object[(rows + 1) * (cells + 1)][6];
 		} else {
-			invPage = new Object[GameWindow.getGameData().getGameSessionData()
+			invPage = new Object[SingletonWorker.gameData().getGameSessionData()
 			                     .getActivePlayer().getInventory().getSize()][6];
 		}
 
-		for (DrawableItemStack is : GameWindow.getGameData().getGameSessionData()
+		for (DrawableItemStack is : SingletonWorker.gameData().getGameSessionData()
 				.getActivePlayer().getInventory().getInventoryList()) {
 
 			int startX = (int) (GameWindow.getWindowWidth()
@@ -195,18 +197,18 @@ public class DrawableInventory extends UIItem {
 					pageList.add(new InventoryPage(invPage,itemWidth,itemHeight));
 				}
 
-				if (GameWindow.getGameData().getGameSessionData()
+				if (SingletonWorker.gameData().getGameSessionData()
 						.getActivePlayer().getInventory().getSize()
 						- ((pageList.size() * ((rows + 1) * (cells + 1)))) >= (rows + 1)
 						* (cells + 1)) {
 
-					if (GameWindow.getGameData().getGameSessionData()
+					if (SingletonWorker.gameData().getGameSessionData()
 							.getActivePlayer().getInventory().getSize()
 							- ((pageList.size() * ((rows + 1) * (cells + 1)))) > 0) {
 
 						// System.out.println("Seite: " + currentPage);
 						// System.out.println("Gesamt: "
-						// + GameWindow.getGameData().getGameSessionData()
+						// + SingletonWorker.gameData().getGameSessionData()
 						// .getActivePlayer().getInventory()
 						// .size());
 						// System.out
@@ -214,7 +216,7 @@ public class DrawableInventory extends UIItem {
 						// + (pageList.size() * ((rows + 1) * (cells + 1))));
 						// System.out
 						// .println("Rest: "
-						// + (GameWindow.getGameData()
+						// + (SingletonWorker.gameData()
 						// .getGameSessionData()
 						// .getActivePlayer()
 						// .getInventory().size() - ((pageList
@@ -225,7 +227,7 @@ public class DrawableInventory extends UIItem {
 
 				} else {
 
-					invPage = new Object[GameWindow.getGameData()
+					invPage = new Object[SingletonWorker.gameData()
 					                     .getGameSessionData().getActivePlayer()
 					                     .getInventory().getSize()
 					                     - ((pageList.size() * ((rows + 1) * (cells + 1))))][6];
@@ -288,9 +290,9 @@ public class DrawableInventory extends UIItem {
 					if((int)item[4]==11 || (int)item[4]==12){
 						int x = GameProperties.getPlayerBlockX();
 						int y = GameProperties.getPlayerBlockY();
-						GameWindow.getGameData().getNetworkHandlerThread().placeLadder(x,y,(int)item[4]);
+						SingletonWorker.gameData().getNetworkHandlerThread().placeLadder(x,y,(int)item[4]);
 					}else{
-						GameWindow.getGameData().getNetworkHandlerThread().craftItem((int)item[4]);
+						SingletonWorker.gameData().getNetworkHandlerThread().craftItem((int)item[4]);
 					}
 				}else{
 					if(selectedEntry < 0){
@@ -310,19 +312,19 @@ public class DrawableInventory extends UIItem {
 		int itemCategory = ItemManager.getItem(item).getCategory();
 		if (itemCategory != Item.ITEM_CATEGORY_OTHERS) {
 
-			GameWindow.getGameData().getGameSessionData().getActivePlayer()
+			SingletonWorker.gameData().getGameSessionData().getActivePlayer()
 			.getEquiped()[itemCategory] = item;
 
 		}
 	}
 
 	private void unEquipItem(int category) {
-		GameWindow.getGameData().getGameSessionData().getActivePlayer()
+		SingletonWorker.gameData().getGameSessionData().getActivePlayer()
 		.getEquiped()[category] = Integer.MAX_VALUE;
 	}
 
 	private void change(int item1,int item2){
-		GameWindow.getGameData().getNetworkHandlerThread().changeItemsInInventory(item1,item2);
+		SingletonWorker.gameData().getNetworkHandlerThread().changeItemsInInventory(item1,item2);
 	}
 
 }

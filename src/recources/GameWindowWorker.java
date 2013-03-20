@@ -22,9 +22,9 @@ import utilities.ImageUtil;
 
 import gameData.GameProperties;
 import gameData.ImageCache;
+import gameData.MyOwnFocusTraversalPolicy;
 import gameData.TransparentButton;
 import gameView.GameWindow;
-import gameView.GameWindow.MyOwnFocusTraversalPolicy;
 
 public class GameWindowWorker {
 
