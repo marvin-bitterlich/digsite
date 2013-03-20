@@ -3,7 +3,8 @@ digsite
 
 a game of digging
 
-=if you want to contribute:=
+if you want to contribute:
+--------------------------
 - fork this repository
 - set up your workspace
  - remember to add all inside /lib as 'external' libraries!
