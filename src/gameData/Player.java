@@ -22,13 +22,15 @@ public class Player extends Entity {
 	public static final int STEP_DURATION_MILLIS = 500;
 
 	private int health, mana, strength, intelligence, agility, atk, def,
-			magRes, playerClass;
+	magRes, playerClass;
 	private boolean attacking = false;
 	private Sprite attackSprite;
-	private int attackAnimationStep = 0,
-			attackPartProgressMillis = Integer.MAX_VALUE, attackX, attackY,
-			mouseX, mouseY, moveAnimationStep = 0,
-			movePartProgressMillis = Integer.MAX_VALUE;
+//	private int attackAnimationStep = 0;
+//	private int attackPartProgressMillis = Integer.MAX_VALUE;
+	private int attackX, attackY;
+	private int mouseX, mouseY; 
+//	private int moveAnimationStep = 0;
+//	private int movePartProgressMillis = Integer.MAX_VALUE;
 
 	public Player(int health, int mana, int strength, int intelligence,
 			int agility, int atk, int def, int magRes, int playerClass,
@@ -53,13 +55,13 @@ public class Player extends Entity {
 
 	@Override
 	public void draw(Graphics g) {
-		
+
 		double xp = (this.getXPos())
 				+(GameWindow.getWindowWidth() / 2)-GameProperties.GRAPHICS_SIZE_CHAR_WIDTH/2-GameProperties.playerx;
 
 		double yp = (this.getYPos())
 				+(GameWindow.getWindowHeight() / 2)-GameProperties.GRAPHICS_SIZE_CHAR_HEIGHT*2-10-GameProperties.playery;
-		
+
 		if (this.attacking) {
 			g.drawImage(this.attackSprite.getImage(), (int) xp,
 					(int) yp, null);
@@ -80,10 +82,10 @@ public class Player extends Entity {
 		this.attackY = y;
 	}
 
-	private void attack() {
-		// TODO Angriff bzw. Schaden machen! (Projektil oder einfacher Treffer
-		// an Gegner)
-	}
+	//	private void attack() {
+	//		// TODO Angriff bzw. Schaden machen! (Projektil oder einfacher Treffer
+	//		// an Gegner)
+	//	}
 
 	public double calculateNextXPosition(long duration) {
 		return this.getXPos()
@@ -97,69 +99,40 @@ public class Player extends Entity {
 
 	@Override
 	public void updateImageDirection(long duration) {
-		this.updateDirection();
+//		this.updateDirection();
 
-		if (!attacking) {
+		//		if (!attacking) {
 
-			// moveAnimationStep = 0, movePartProgressMillis
-			Image fullMovementImage = SpriteManager.getSprite(
-					Player.getMovementAnimation(this.playerClass), false)
-					.getImage();
-			int heightBlocks = fullMovementImage.getHeight(null)
-					/ GameProperties.GRAPHICS_SIZE_CHAR_HEIGHT;
-
-			if (this.movePartProgressMillis > (Player.STEP_DURATION_MILLIS / heightBlocks)) {
-				this.movePartProgressMillis = 0;
-
-				this.getSprite().setImage(
-						cutCurrentAttackingFrame(fullMovementImage,
-								this.moveAnimationStep));
-
-				this.moveAnimationStep++;
-				if (this.moveAnimationStep >= heightBlocks) {
-					this.moveAnimationStep = 0;
-					this.movePartProgressMillis = 0;
-				}
-
-			} else {
-				this.movePartProgressMillis += duration;
-			}
-			 this.getSprite().setImage(
-			 ImageUtil.resizeImage(ImageUtil.splitImage(
-			 (BufferedImage) SpriteManager.getSprite(
-			 Player.getMovementAnimation(this
-			 .getPlayerClass()), false)
-			 .getImage(), 4, 2)[Direction.getValue(this
-			 .getDirection())],
-			 GameProperties.GRAPHICS_SIZE_CHAR_WIDTH,
-			 GameProperties.GRAPHICS_SIZE_CHAR_HEIGHT));
-		} else {
-
-			Image fullAttackImage = SpriteManager.getSprite(
-					Player.getAttackAnimation(this.playerClass), false)
-					.getImage();
-			int heightBlocks = fullAttackImage.getHeight(null)
-					/ GameProperties.GRAPHICS_SIZE_CHAR_HEIGHT;
-
-			// TODO attackspeed berechnung verebssern; attacksPerSecond oder so
-			if (this.attackPartProgressMillis > ((10000 / this.agility) / heightBlocks)) {
-				this.attackPartProgressMillis = 0;
-
-				this.attackSprite.setImage(cutCurrentAttackingFrame(
-						fullAttackImage, this.attackAnimationStep));
-
-				this.attackAnimationStep++;
-				if (this.attackAnimationStep >= heightBlocks) {
-					this.attackAnimationStep = 0;
-					this.attacking = false;
-					this.attackPartProgressMillis = Integer.MAX_VALUE;
-					this.attack();
-				}
-
-			} else {
-				this.attackPartProgressMillis += duration;
-			}
-		}
+		// moveAnimationStep = 0, movePartProgressMillis
+		
+		this.getSprite().setImage(ImageCache.getPlayerSprite(Direction.down));
+		//		} else {
+		//
+		//			Image fullAttackImage = SpriteManager.getSprite(
+		//					Player.getAttackAnimation(this.playerClass), false)
+		//					.getImage();
+		//			int heightBlocks = fullAttackImage.getHeight(null)
+		//					/ GameProperties.GRAPHICS_SIZE_CHAR_HEIGHT;
+		//
+		//			// TODO attackspeed berechnung verebssern; attacksPerSecond oder so
+		//			if (this.attackPartProgressMillis > ((10000 / this.agility) / heightBlocks)) {
+		//				this.attackPartProgressMillis = 0;
+		//
+		//				this.attackSprite.setImage(cutCurrentAttackingFrame(
+		//						fullAttackImage, this.attackAnimationStep));
+		//
+		//				this.attackAnimationStep++;
+		//				if (this.attackAnimationStep >= heightBlocks) {
+		//					this.attackAnimationStep = 0;
+		//					this.attacking = false;
+		//					this.attackPartProgressMillis = Integer.MAX_VALUE;
+		//					this.attack();
+		//				}
+		//
+		//			} else {
+		//				this.attackPartProgressMillis += duration;
+		//			}
+		//		}
 	}
 
 	private BufferedImage cutCurrentAttackingFrame(Image full, int animationStep) {
@@ -173,41 +146,41 @@ public class Player extends Entity {
 		int picturePartIndex = (((animationStep) * widthBlocks)
 				+ (attackDiretion + 1) - 1);
 
-//		System.out
-//				.println("Width: " + widthBlocks + " height: " + heightBlocks);
-//		System.out.println("Width: " + full.getWidth(null) + " height: "
-//				+ full.getHeight(null));
-//		System.out.println(ImageUtil.splitImage((BufferedImage) full,
-//				heightBlocks, widthBlocks)[picturePartIndex].getHeight());
-//		System.out.println(ImageUtil.splitImage((BufferedImage) full,
-//				heightBlocks, widthBlocks)[picturePartIndex].getWidth());
+		//		System.out
+		//				.println("Width: " + widthBlocks + " height: " + heightBlocks);
+		//		System.out.println("Width: " + full.getWidth(null) + " height: "
+		//				+ full.getHeight(null));
+		//		System.out.println(ImageUtil.splitImage((BufferedImage) full,
+		//				heightBlocks, widthBlocks)[picturePartIndex].getHeight());
+		//		System.out.println(ImageUtil.splitImage((BufferedImage) full,
+		//				heightBlocks, widthBlocks)[picturePartIndex].getWidth());
 
 		Image currentAttackAnimationStep = ImageUtil.resizeImage(
 				ImageUtil.splitImage((BufferedImage) full, widthBlocks,
 						heightBlocks)[picturePartIndex],
-				GameProperties.GRAPHICS_SIZE_CHAR_WIDTH,
-				GameProperties.GRAPHICS_SIZE_CHAR_HEIGHT);
+						GameProperties.GRAPHICS_SIZE_CHAR_WIDTH,
+						GameProperties.GRAPHICS_SIZE_CHAR_HEIGHT);
 
 		return (BufferedImage) currentAttackAnimationStep;
 	}
 
-	private void updateDirection() {
-		int mouseXDiff = (int) (this.mouseX - this.getXPos());
-		int mouseYDiff = (int) (this.mouseY - this.getYPos());
-
-		if (mouseXDiff < 0 && Math.abs(mouseXDiff) > Math.abs(mouseYDiff)) {
-			this.setDirection(Direction.left);
-		} else if (mouseXDiff > 0
-				&& Math.abs(mouseXDiff) > Math.abs(mouseYDiff)) {
-			this.setDirection(Direction.right);
-		} else if (mouseYDiff > 0
-				&& Math.abs(mouseYDiff) > Math.abs(mouseXDiff)) {
-			this.setDirection(Direction.down);
-		} else if (mouseYDiff < 0
-				&& Math.abs(mouseYDiff) > Math.abs(mouseXDiff)) {
-			this.setDirection(Direction.up);
-		}
-	}
+//	private void updateDirection() {
+//		int mouseXDiff = (int) (this.mouseX - this.getXPos());
+//		int mouseYDiff = (int) (this.mouseY - this.getYPos());
+//
+//		if (mouseXDiff < 0 && Math.abs(mouseXDiff) > Math.abs(mouseYDiff)) {
+//			this.setDirection(Direction.left);
+//		} else if (mouseXDiff > 0
+//				&& Math.abs(mouseXDiff) > Math.abs(mouseYDiff)) {
+//			this.setDirection(Direction.right);
+//		} else if (mouseYDiff > 0
+//				&& Math.abs(mouseYDiff) > Math.abs(mouseXDiff)) {
+//			this.setDirection(Direction.down);
+//		} else if (mouseYDiff < 0
+//				&& Math.abs(mouseYDiff) > Math.abs(mouseXDiff)) {
+//			this.setDirection(Direction.up);
+//		}
+//	}
 
 	public static String getMovementAnimation(int playerClass) {
 		switch (playerClass) {

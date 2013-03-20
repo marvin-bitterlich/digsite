@@ -1,9 +1,11 @@
 package gameData;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
 
@@ -20,6 +22,7 @@ import utilities.ImageUtil;
 public class ImageCache {
 
 	private static HashMap<Integer, Sprite[]> map = new HashMap<Integer, Sprite[]>();
+	private static BufferedImage[] playerimages;
 
 	public static Sprite getSprite(int id) {
 		if(map.containsKey(id)){
@@ -90,17 +93,29 @@ public class ImageCache {
 		map.put(id, sprites);
 		return sprites[0];
 	}
-	
+
 	public static BufferedImage getRecource(String filename){
 		File f = new File(SingletonWorker.gameProperties().gamePath() + File.separator + "rec" + File.separator + filename);
 		try {
 			return ImageIO.read(f);
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			SingletonWorker.logger().log(Level.SEVERE, "Failed to read the Recource " + filename + "! The System is inconsistent and has to exit!" ,e);
+			System.exit(-1);
 		}
-		System.err.println("Failed to read the Recource " + filename + "! The System is inconsistent and has to exit!");
-		System.exit(-1);
 		return null;
 	}
-	
+
+	public static Image getPlayerSprite(Direction direction) {
+		if(playerimages == null){
+			BufferedImage fullimage = getRecource(SingletonWorker.gameProperties().playerPath());
+			playerimages = ImageUtil.splitImage(fullimage, 4, 1);
+			for (int i = 0; i < playerimages.length; i++) {
+				playerimages[i] = ImageUtil.resizeImage(playerimages[i],
+						GameProperties.GRAPHICS_SIZE_CHAR_WIDTH,
+						GameProperties.GRAPHICS_SIZE_CHAR_HEIGHT);
+			}
+		}
+		return playerimages[Direction.getValue(direction)];
+	}
+
 }

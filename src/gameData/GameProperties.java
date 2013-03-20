@@ -146,4 +146,7 @@ public class GameProperties {
 	public String splashPath(){
 		return "splash.png";
 	}
+	public String playerPath() {
+		return "player.png";
+	}
 }
