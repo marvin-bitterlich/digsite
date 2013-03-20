@@ -111,7 +111,7 @@ public class GameProperties {
 	public Font gameFont(){
 		if(gameFont == null){
 			try{
-				gameFont = Font.createFont(Font.TRUETYPE_FONT,	new File(gamePath() + File.separator + "rec" + File.separator + "PiecesOfEight.ttf"));
+				gameFont = Font.createFont(Font.TRUETYPE_FONT,	new File(gamePath() + File.separator + "rec" + File.separator + "digsite.ttf"));
 			} catch (Exception e){
 				System.out.println(e.getLocalizedMessage());
 				gameFont = new Font(Font.MONOSPACED, Font.BOLD, 40);
