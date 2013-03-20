@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -39,8 +40,8 @@ public class GameWindow extends JFrame {
 	public TransparentButton register;
 	public MyOwnFocusTraversalPolicy registerPolicy;
 	public MyOwnFocusTraversalPolicy loginPolicy;
-	public TransparentButton loginfeedback;
-	public TransparentButton registerfeedback;
+	public JLabel loginfeedback;
+	public JLabel registerfeedback;
 	public GameWindow() {
 		super(SingletonWorker.gameProperties().gameTitle());
 		SingletonWorker.setGameWindow(this);

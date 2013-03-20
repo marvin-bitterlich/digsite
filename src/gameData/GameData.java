@@ -7,7 +7,7 @@ import gameController.GameControllerThread;
 import gameView.GamePanel;
 
 public class GameData {
-	public static boolean gameLoaded = false;
+	public boolean gameLoaded = false;
 
 	private GameSessionData gsd;
 	private GameControllerThread gct;

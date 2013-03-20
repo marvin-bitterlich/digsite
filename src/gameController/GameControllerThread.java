@@ -50,9 +50,6 @@ KeyEventDispatcher {
 
 	private File bg = new File(GameProperties.getGamePath()
 			+ "/rec/" + GameProperties.SPLASH_PIC_BACKGROUND);
-	private File splash = new File(GameProperties.getGamePath()
-			+ "/rec/" + GameProperties.SPLASH_PIC_START);
-	private BufferedImage splashimage;
 	private BufferedImage background = null;
 	private BufferedImage basic = null;
 	public Font f;
@@ -88,25 +85,16 @@ KeyEventDispatcher {
 
 	@Override
 	public void run() {
-		
+
 		f = SingletonWorker.gameProperties().gameFont();
 		Graphics2D g = (Graphics2D) SingletonWorker.gameData().bufferstrategy().getDrawGraphics();
-		try {
-			if(splashimage == null){
-				splashimage = ImageIO.read(splash);
-			}
-			g.drawImage(ImageUtil.resizeImage(
-					splashimage,
-					GameWindow.getWindowWidth(),
-					GameWindow.getWindowHeight()), 0, 0, null);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+		BufferedImage splashimage = ImageCache.getRecource(SingletonWorker.gameProperties().splashPath());
+		g.drawImage(ImageUtil.resizeImage(splashimage,GameWindow.getWindowWidth(),GameWindow.getWindowHeight()), 0, 0, null);
 		g.dispose();
 		SingletonWorker.gameData().bufferstrategy().show();
 		this.initGameValues();
 
-		GameData.gameLoaded = true;
+		SingletonWorker.gameData().gameLoaded = true;
 
 		long duration;
 		long cycleStartTime = System.currentTimeMillis();
@@ -118,7 +106,7 @@ KeyEventDispatcher {
 				framecount = 0;
 				frametime += 1000;
 			}
-			
+
 			duration = System.currentTimeMillis() - cycleStartTime;
 			cycleStartTime = System.currentTimeMillis();
 
@@ -252,11 +240,11 @@ KeyEventDispatcher {
 				.get(gamedata.getGameSessionData().getActiveMenu()).draw(g);
 			}
 			g.drawString("Frames: " + frames + " Miliseconds:" + time + "/" + timeout, 50, 50);
-//			System.out.println("Frames: " + frames + " Miliseconds:" + time + "/" + timeout);
+			//			System.out.println("Frames: " + frames + " Miliseconds:" + time + "/" + timeout);
 			g.dispose();
 			SingletonWorker.gameData().bufferstrategy().show();
 			time = System.currentTimeMillis()-cycleStartTime; 
-			
+
 			try {
 				timeout = (1000 / REFRESHS_PER_SECOND)-time;
 				Thread.sleep((timeout > 0) ? timeout : 5);
@@ -363,7 +351,7 @@ KeyEventDispatcher {
 
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent e) {
-		if (!GameData.gameLoaded)
+		if (!SingletonWorker.gameData().gameLoaded)
 			return true;
 
 		if (e.getKeyCode() == KeyEvent.VK_I
@@ -432,7 +420,7 @@ KeyEventDispatcher {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (!GameData.gameLoaded)
+		if (!SingletonWorker.gameData().gameLoaded)
 			return;
 
 		if (gsd.getActiveMenu() != Integer.MAX_VALUE) {
@@ -444,37 +432,37 @@ KeyEventDispatcher {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		if (!GameData.gameLoaded)
+		if (!SingletonWorker.gameData().gameLoaded)
 			return;
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		if (!GameData.gameLoaded)
+		if (!SingletonWorker.gameData().gameLoaded)
 			return;
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if (!GameData.gameLoaded)
+		if (!SingletonWorker.gameData().gameLoaded)
 			return;
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		if (!GameData.gameLoaded)
+		if (!SingletonWorker.gameData().gameLoaded)
 			return;
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		if (!GameData.gameLoaded)
+		if (!SingletonWorker.gameData().gameLoaded)
 			return;
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		if (!GameData.gameLoaded)
+		if (!SingletonWorker.gameData().gameLoaded)
 			return;
 
 		gsd.getActivePlayer().setMouseX(e.getX());

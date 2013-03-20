@@ -28,6 +28,7 @@ public class MainMenuButtonListener implements ActionListener {
 		}
 
 		if (l.equals(gw.login)) {
+			gw.loginfeedback.setText("Logging in...");
 			gw.loginfeedback.setVisible(true);
 			if(sc == null){
 				sc = new ServerConnection();

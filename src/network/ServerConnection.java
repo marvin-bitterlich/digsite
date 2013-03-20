@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.logging.Level;
 
+import recources.SingletonWorker;
+
 /***********************************************************************************
  * @author:	Marvin Hofmann	Klasse: DQI10	*
  * Prog.Name: ServerConnection.java	Beschreibung	*
@@ -32,7 +34,7 @@ public class ServerConnection {
 
 	public void disconnectFromServer(){
 		if(connected == true){
-			log("Trenne Verbindung!", Level.INFO);
+			SingletonWorker.logger().info("Trenne Verbindung!");
 			if(out != null){
 				out.close();
 			}
@@ -57,20 +59,20 @@ public class ServerConnection {
 
 	public boolean connectToServer(){
 		if(connected == true){
-			log("Du bist schon verbunden!", Level.WARNING);
+			SingletonWorker.logger().warning("Du bist schon verbunden!");
 			return false;
 		}
 		try {
 			connection = new Socket(GAMESERVER_URL, GAMESERVER_PORT);
-			log("Connection from Port " + connection.getLocalPort() 
+			SingletonWorker.logger().info("Connection from Port " + connection.getLocalPort() 
 					+ " to Port " + connection.getPort() 
-					+ " is established!", Level.INFO);
+					+ " is established!");
 			out = new PrintWriter(connection.getOutputStream(),true);
 			in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			connected = true;
 			selected = "chose";
 		} catch (IOException e) {
-			log("Connection failed! " + e.getLocalizedMessage(), Level.WARNING);
+			SingletonWorker.logger().warning("Connection failed! " + e.getLocalizedMessage());
 		}
 		return true;
 	}
@@ -78,15 +80,11 @@ public class ServerConnection {
 	//Blockiert den aufrufenden Thread!
 	public boolean loginPlayer(String Username, String Password){
 		if(connected == false){
-			log("Du bist nicht verbunden!", Level.WARNING);
+			SingletonWorker.logger().warning("Du bist nicht verbunden!");
 			return false;
 		}
-		if(selected == "login"){
-			log("logincheck", Level.INFO);
-			return checkCredentials(Username, Password);
-		}
 		if(selected != "chose"){
-			log("Server erwartet " + selected + ", reconnecting!", Level.INFO);
+			SingletonWorker.logger().info("Server erwartet " + selected + ", reconnecting!");
 			disconnectFromServer();
 			connectToServer();
 		}
@@ -95,37 +93,34 @@ public class ServerConnection {
 		sendLine("login");
 		String response = getLine();
 		if(response.equals("ready")){
-			log("Server is ready for login, sending credentials!",Level.INFO);
+			SingletonWorker.logger().info("Server is ready for login, sending credentials!");
 			return checkCredentials(Username, Password);
 		}else{
-			log("Login got denied! " + response, Level.SEVERE);
+			SingletonWorker.logger().severe("Login got denied! " + response);
 			return false;
 		}
 	}
 
 	private boolean checkCredentials(String Username, String Password){
-		log("login2", Level.INFO);
 		sendLine(Username + " " + Password);
-		log("login3", Level.INFO);
 		String response = getLine();
-		log("login4 >> " + response, Level.INFO);
 		if(response.equals("You logged in successfull")){
-			log("Server accepted credentials, proceding!",Level.INFO);
+			SingletonWorker.logger().info("Server accepted credentials, proceding!");
 			userid = Integer.parseInt(getLine());
 			return true;
 		}else{
-			log("Credentials were denied! " + response, Level.INFO);
+			SingletonWorker.logger().info("Credentials were denied! " + response);
 			return false;
 		}
 	}
 
 	public boolean enableRegister(){
 		if(connected == false){
-			log("Du bist nicht verbunden!", Level.WARNING);
+			SingletonWorker.logger().warning("Du bist nicht verbunden!");
 			return false;
 		}
 		if(selected != "chose"){
-			log("Server erwartet " + selected + ", reconnecting!", Level.INFO);
+			SingletonWorker.logger().info("Server erwartet " + selected + ", reconnecting!");
 			disconnectFromServer();
 			connectToServer();
 		}
@@ -133,61 +128,61 @@ public class ServerConnection {
 		sendLine("register");
 		String response = getLine();
 		if(response.equals("ready")){
-			log("Server is ready for registration!",Level.INFO);
+			SingletonWorker.logger().info("Server is ready for registration!");
 			return true;
 		}else{
-			log("Registration got denied! " + response, Level.SEVERE);
+			SingletonWorker.logger().severe("Registration got denied! " + response);
 			return false;
 		}
 	} 
 
 	public boolean checkUsername(String Username){
 		if(connected == false){
-			log("Du bist nicht verbunden!", Level.WARNING);
+			SingletonWorker.logger().warning("Du bist nicht verbunden!");
 			return false;
 		}
 		if(selected != "register"){
-			log("Server erwartet " + selected + ", stopping!", Level.INFO);
+			SingletonWorker.logger().info("Server erwartet " + selected + ", stopping!");
 			return false;
 		}
 		sendLine(Username);
 		String response = getLine();
 		if(response.equals("true")){
-			log("Server accepted Username, you can proceed!",Level.INFO);
+			SingletonWorker.logger().info("Server accepted Username, you can proceed!");
 			return true;
 		}else{
-			log("Username already taken! " + response, Level.INFO);
+			SingletonWorker.logger().info("Username already taken! " + response);
 			return false;
 		}
 	}
 
 	public boolean checkEmail(String Email){
 		if(connected == false){
-			log("Du bist nicht verbunden!", Level.WARNING);
+			SingletonWorker.logger().warning("Du bist nicht verbunden!");
 			return false;
 		}
 		if(selected != "register"){
-			log("Server erwartet " + selected + ", stopping!", Level.INFO);
+			SingletonWorker.logger().info("Server erwartet " + selected + ", stopping!");
 			return false;
 		}
 		sendLine("email " + Email);
 		String response = getLine();
 		if(response.equals("true")){
-			log("Server accepted Email, you can proceed!",Level.INFO);
+			SingletonWorker.logger().info("Server accepted Email, you can proceed!");
 			return true;
 		}else{
-			log("Email already taken! " + response, Level.INFO);
+			SingletonWorker.logger().info("Email already taken! " + response);
 			return false;
 		}
 	}
 
 	public boolean register(String Username, String Password, String Email){
 		if(connected == false){
-			log("Du bist nicht verbunden!", Level.WARNING);
+			SingletonWorker.logger().warning("Du bist nicht verbunden!");
 			return false;
 		}
 		if(selected != "register"){
-			log("Server erwartet " + selected + ", stopping!", Level.INFO);
+			SingletonWorker.logger().info("Server erwartet " + selected + ", stopping!");
 			return false;
 		}
 		if(!checkUsername(Username) || !checkEmail(Email)){
@@ -196,17 +191,14 @@ public class ServerConnection {
 		sendLine(Username + " " + Password + " " + Email);
 		String response = getLine();
 		if(response.equals("Register done!")){
-			log("Server accepted Register, you can login!",Level.INFO);
+			SingletonWorker.logger().info("Server accepted Register, you can login!");
 			return true;
 		}else{
-			log("Register failed! " + response, Level.INFO);
+			SingletonWorker.logger().info("Register failed! " + response);
 			return false;
 		}
 	}
 
-	private void log(String message, Level loglevel){
-		System.out.println("[" + loglevel.toString() + "] " + message);
-	}
 
 	void sendLine(String line){
 		if(out != null){
@@ -219,7 +211,7 @@ public class ServerConnection {
 			try {
 				return in.readLine();
 			} catch (IOException e) {
-				log("Reading failed! " + e.getLocalizedMessage(), Level.WARNING);
+				SingletonWorker.logger().log(Level.WARNING,"Reading failed! " + e.getLocalizedMessage(), e);
 			}
 		}
 		return "";

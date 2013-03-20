@@ -28,7 +28,6 @@ public class GameProperties {
 	public static final String MENU_PIC_VIDEO = "videomenu.png";
 	public static final String MENU_PIC_AUDIO = "audiomenu.png";
 	public static final String MENU_PIC_INV = "inventory.png";
-	public static final String SPLASH_PIC_START = "splash.png";
 	public static final String SPLASH_PIC_BACKGROUND = "background.jpg";
 	public static final int INV_CELLS = 4;
 	public static final int INV_ROWS = 5;
@@ -143,5 +142,8 @@ public class GameProperties {
 	}
 	public String backgroundPath(){
 		return "totenkopf_bigger.jpg";
+	}
+	public String splashPath(){
+		return "splash.png";
 	}
 }

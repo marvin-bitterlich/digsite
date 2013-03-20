@@ -9,6 +9,8 @@ import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
 import java.util.Vector;
 
@@ -18,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import network.NetworkHandlerThread;
 import network.ServerConnection;
@@ -69,7 +72,7 @@ public class GameWindowWorker {
 		gw.setFocusTraversalPolicy(gw.registerPolicy);
 		gw.usernamefield.requestFocus();
 	}
-	
+
 	public static void initGui() {
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		SingletonWorker.gameData().setWidth((int) screen.getWidth());
@@ -93,7 +96,7 @@ public class GameWindowWorker {
 		gw.setVisible(true);
 
 	}
-	
+
 	public static void initMenu(){
 		GameWindow gw = SingletonWorker.gameWindow();
 		int width = SingletonWorker.gameData().width();
@@ -128,6 +131,16 @@ public class GameWindowWorker {
 				SingletonWorker.gameWindow().login.doClick();
 			}
 		});
+		gw.loginfield.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent arg0) {}
+
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				SingletonWorker.gameWindow().loginfield.selectAll();
+			}
+		});
 
 		gw.usernamefield = new JTextField(GameProperties.USERNAME);
 		gw.usernamefield.setBounds(width/2-150,height /2-250, 300, 50);
@@ -138,6 +151,16 @@ public class GameWindowWorker {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				SingletonWorker.gameWindow().register.doClick();
+			}
+		});
+		gw.usernamefield.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent arg0) {}
+
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				SingletonWorker.gameWindow().usernamefield.selectAll();
 			}
 		});
 
@@ -159,6 +182,16 @@ public class GameWindowWorker {
 				SingletonWorker.gameWindow().register.doClick();
 			}
 		});
+		gw.emailfield.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent arg0) {}
+
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				SingletonWorker.gameWindow().emailfield.selectAll();
+			}
+		});
 
 		gw.emailcheck = new TransparentButton(GameProperties.CHECKEMAIL);
 		gw.emailcheck.setBounds(width/2+100,height /2-150, 300, 50);
@@ -178,6 +211,16 @@ public class GameWindowWorker {
 				SingletonWorker.gameWindow().register.doClick();
 			}
 		});
+		gw.passwortfield.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent arg0) {}
+
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				SingletonWorker.gameWindow().passwortfield.selectAll();
+			}
+		});
 
 		gw.passwordfield = new JPasswordField(50);
 		gw.passwordfield.setBounds(width/2-150,height /2-150, 300, 50);
@@ -188,6 +231,16 @@ public class GameWindowWorker {
 				SingletonWorker.gameWindow().login.doClick();
 			}
 		});
+		gw.passwordfield.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent arg0) {}
+
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				SingletonWorker.gameWindow().passwordfield.selectAll();
+			}
+		});
 
 		gw.register = new TransparentButton(GameProperties.REGISTER);
 		gw.register.setBounds(width/2-150,height /2+50, 300, 50);
@@ -196,10 +249,9 @@ public class GameWindowWorker {
 		gw.register.setForeground(Color.WHITE);
 		gw.register.setVisible(false);
 
-		gw.registerfeedback = new TransparentButton(GameProperties.REGISTER);
+		gw.registerfeedback = new JLabel(GameProperties.REGISTER);
 		gw.registerfeedback.setBounds(width/2-150,height /2+100, 300, 50);
 		gw.registerfeedback.setFont(f);
-		gw.registerfeedback.addActionListener(gw.buttonListener);
 		gw.registerfeedback.setForeground(Color.WHITE);
 		gw.registerfeedback.setVisible(false);
 
@@ -210,11 +262,11 @@ public class GameWindowWorker {
 		gw.login.setForeground(Color.BLACK);
 		gw.login.setVisible(false);
 
-		gw.loginfeedback = new TransparentButton(GameProperties.LOGIN);
-		gw.loginfeedback.setBounds(width/2-150,height /2, 300, 50);
+		gw.loginfeedback = new JLabel();
+		gw.loginfeedback.setBounds(width/2-150,height/2, 300, 50);
 		gw.loginfeedback.setFont(f);
-		gw.loginfeedback.addActionListener(gw.buttonListener);
-		gw.loginfeedback.setForeground(Color.BLACK);
+		gw.loginfeedback.setForeground(Color.WHITE);
+		gw.loginfeedback.setHorizontalAlignment( SwingConstants.CENTER );
 		gw.loginfeedback.setVisible(false);
 
 		gw.registerset = new TransparentButton(GameProperties.REGISTERSET);
@@ -240,13 +292,13 @@ public class GameWindowWorker {
 		registerorder.add(gw.usernamefield);
 		registerorder.add(gw.emailfield);
 		registerorder.add(gw.passwortfield);
-		registerorder.add(gw.register);
+//		registerorder.add(gw.register);
 		gw.registerPolicy = new MyOwnFocusTraversalPolicy(registerorder);
 
 		Vector<Component> loginorder = new Vector<Component>(3);
 		loginorder.add(gw.loginfield);
 		loginorder.add(gw.passwordfield);
-		loginorder.add(gw.login);
+//		loginorder.add(gw.login);
 		gw.loginPolicy = new MyOwnFocusTraversalPolicy(loginorder);
 
 
@@ -263,6 +315,8 @@ public class GameWindowWorker {
 		gw.activeMainPanel.add(gw.registerset);
 		gw.activeMainPanel.add(gw.video);
 		gw.activeMainPanel.add(gw.exit);
+		gw.activeMainPanel.add(gw.loginfeedback);
+		gw.activeMainPanel.add(gw.registerfeedback);
 
 		gw.activeMainPanel.add(menuPicture);
 
