@@ -32,10 +32,10 @@ public class SingletonWorker {
 	 * not belonging anywhere else.
 	 * */
 	public GameData gameData;
-	public static void setGameData(GameData _gameData) {
-		getSingletonWorker().gameData = _gameData;
-	}
 	public static GameData gameData() {
+		if(getSingletonWorker().gameData == null){
+			getSingletonWorker().gameData = new GameData();
+		}
 		return getSingletonWorker().gameData;
 	}
 	

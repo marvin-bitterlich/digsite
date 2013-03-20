@@ -7,31 +7,30 @@ import gameController.GameControllerThread;
 import gameView.GamePanel;
 
 public class GameData {
-	public static final int MENU = 0;
-	public static final int INGAME = 1;
 	public static boolean gameLoaded = false;
 
-	private int gameState = 0;
 	private GameSessionData gsd;
 	private GameControllerThread gct;
 	private NetworkHandlerThread nht;
 	private GamePanel gp;
-	public static BufferStrategy bufferstrategy;
+
 
 	public void startNewSession() {
-		this.gsd = new GameSessionData();
+		this.gsd = new GameSessionData(); //TODO becoming obsolete!
 	}
 
 	public GameSessionData getGameSessionData() {
 		return gsd;
 	}
 
-	public int getGameState() {
-		return gameState;
-	}
-
+	public static final int MENU = 0;
+	public static final int INGAME = 1;
+	private int gameState = 0;
 	public void setGameState(int gameState) {
 		this.gameState = gameState;
+	}
+	public int getGameState() {
+		return gameState;
 	}
 
 	public GameControllerThread getGameControllerThread() {
@@ -70,7 +69,7 @@ public class GameData {
 	public int width() {
 		return width;
 	}
-	
+
 	/*
 	 * Integer of the height of the GameWindow.
 	 * Equals the users Screenheight!
@@ -81,6 +80,14 @@ public class GameData {
 	}
 	public int height() {
 		return height;
+	}
+
+	private BufferStrategy bufferstrategy;
+	public void setBufferstrategy(BufferStrategy _bufferStrategy) {
+		bufferstrategy = _bufferStrategy;
+	}
+	public BufferStrategy bufferstrategy(){
+		return bufferstrategy;
 	}
 
 }

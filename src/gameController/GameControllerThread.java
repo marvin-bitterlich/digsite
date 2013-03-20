@@ -20,7 +20,6 @@ import gameData.Texture;
 import gameView.GameWindow;
 
 import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.Graphics2D;
 import java.awt.KeyEventDispatcher;
 import java.awt.RenderingHints;
@@ -35,6 +34,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
+
+import recources.SingletonWorker;
 
 import utilities.ImageUtil;
 
@@ -54,7 +55,6 @@ KeyEventDispatcher {
 	private BufferedImage splashimage;
 	private BufferedImage background = null;
 	private BufferedImage basic = null;
-	private static final Font FONT = new Font(Font.MONOSPACED, Font.BOLD, 40);
 	public Font f;
 	public int frames = 0;
 	public int framecount = 0;
@@ -89,19 +89,8 @@ KeyEventDispatcher {
 	@Override
 	public void run() {
 		
-		try {
-			f = Font.createFont(Font.TRUETYPE_FONT,
-					new File(GameProperties.getGamePath() + "/rec/"
-							+ GameProperties.FONT_NAME));
-		} catch (FontFormatException e){
-			System.out.println(e.getLocalizedMessage());
-			f = FONT;
-		}catch (IOException e) {
-			System.out.println(e.getLocalizedMessage());
-			f = FONT;
-		}
-		f = f.deriveFont(60f);
-		Graphics2D g = (Graphics2D) GameData.bufferstrategy.getDrawGraphics();
+		f = SingletonWorker.gameProperties().gameFont();
+		Graphics2D g = (Graphics2D) SingletonWorker.gameData().bufferstrategy().getDrawGraphics();
 		try {
 			if(splashimage == null){
 				splashimage = ImageIO.read(splash);
@@ -114,7 +103,7 @@ KeyEventDispatcher {
 			e1.printStackTrace();
 		}
 		g.dispose();
-		GameData.bufferstrategy.show();
+		SingletonWorker.gameData().bufferstrategy().show();
 		this.initGameValues();
 
 		GameData.gameLoaded = true;
@@ -228,7 +217,7 @@ KeyEventDispatcher {
 
 			GameWindow.getGameData().getNetworkHandlerThread().sendMovement(GameProperties.playerx,GameProperties.playery);
 			GameData gamedata = GameWindow.getGameData();
-			g = (Graphics2D) GameData.bufferstrategy.getDrawGraphics();
+			g = (Graphics2D) SingletonWorker.gameData().bufferstrategy().getDrawGraphics();
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
 			g.setFont(f);
@@ -265,7 +254,7 @@ KeyEventDispatcher {
 			g.drawString("Frames: " + frames + " Miliseconds:" + time + "/" + timeout, 50, 50);
 //			System.out.println("Frames: " + frames + " Miliseconds:" + time + "/" + timeout);
 			g.dispose();
-			GameData.bufferstrategy.show();
+			SingletonWorker.gameData().bufferstrategy().show();
 			time = System.currentTimeMillis()-cycleStartTime; 
 			
 			try {

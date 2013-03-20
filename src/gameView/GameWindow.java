@@ -56,7 +56,6 @@ public class GameWindow extends JFrame {
 		super(SingletonWorker.gameProperties().gameTitle());
 		SingletonWorker.setGameWindow(this);
 		gw = this; //TODO becoming obsolete!
-		SingletonWorker.setGameData(new GameData());
 		GameWindow.gameData = SingletonWorker.gameData(); //TODO becoming obsolete!
 		GameWindowWorker.initGui();
 		GameWindowWorker.initMenu();
@@ -68,11 +67,11 @@ public class GameWindow extends JFrame {
 
 
 	public void initGame(ServerConnection sc) {
-
+		GameWindow gw = SingletonWorker.gameWindow();
 		gw.removeAll();
-		GameWindow.gameData.setGameState(GameData.INGAME);
-		GameWindow.gameData.startNewSession();
-		setIgnoreRepaint(true);
+		SingletonWorker.gameData().setGameState(GameData.INGAME);
+		SingletonWorker.gameData().startNewSession(); //TODO becoming obsolete!
+		gw.setIgnoreRepaint(true);
 		GamePanel gp = new GamePanel(gameData);
 		gw.activeMainPanel = gp;
 		gw.activeMainPanel.setBounds(0, 0, width, height);
@@ -80,10 +79,10 @@ public class GameWindow extends JFrame {
 		gw.activeMainPanel.setVisible(true);
 		gw.add(activeMainPanel);
 		gw.validate();
-		gw.update(getGraphics());
+		gw.update(gw.getGraphics());
 		gw.pack();
-		createBufferStrategy(2);
-		GameData.bufferstrategy = getBufferStrategy();
+		gw.createBufferStrategy(2);
+		SingletonWorker.gameData().setBufferstrategy(gw.getBufferStrategy());
 
 		gameData.setGameControllerThread(new GameControllerThread(gameData
 				.getGameSessionData()));
