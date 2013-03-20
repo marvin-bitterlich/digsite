@@ -1,5 +1,6 @@
 package gameData;
 
+import java.awt.Font;
 import java.io.File;
 
 import recources.SingletonWorker;
@@ -106,6 +107,21 @@ public class GameProperties {
 		return gamePath;
 	}
 
+	private Font gameFont;
+	public Font gameFont(){
+		if(gameFont == null){
+			try{
+				gameFont = Font.createFont(Font.TRUETYPE_FONT,	new File(gamePath() + File.separator + "rec" + File.separator + "PiecesOfEight.ttf"));
+			} catch (Exception e){
+				System.out.println(e.getLocalizedMessage());
+				gameFont = new Font(Font.MONOSPACED, Font.BOLD, 40);
+			}
+			gameFont = gameFont.deriveFont(60f);
+		}
+
+		return gameFont;
+	}
+
 	public static int getPlayerBlockX() {
 		int x = (GameProperties.playerx+62)/GameProperties.GRAPHICS_SIZE_BLOCK;
 		if(GameProperties.playerx+62<0){
@@ -127,9 +143,5 @@ public class GameProperties {
 	}
 	public String backgroundPath(){
 		return "totenkopf_bigger.jpg";
-	}
-
-	public String fontPath() {
-		return gamePath() + File.separator + "rec" + File.separator + "PiecesOfEight.ttf";
 	}
 }

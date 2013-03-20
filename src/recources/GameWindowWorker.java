@@ -9,7 +9,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -101,14 +100,8 @@ public class GameWindowWorker {
 		JLabel menuPicture = new JLabel(menuBackground);
 		menuPicture.setBounds(0, 0, width, height);
 
-		Font f;
-		try {
-			f = Font.createFont(Font.TRUETYPE_FONT, new File(SingletonWorker.gameProperties().fontPath()));
-		} catch (Exception e){
-			System.out.println(e.getLocalizedMessage());
-			f = gw.FONT;
-		}
-		f = f.deriveFont(60f);
+		Font f = SingletonWorker.gameProperties().gameFont();
+
 
 		gw.start = new TransparentButton(GameProperties.START);
 		gw.start.setBounds(50, width / 25 * 1, 300, 50);

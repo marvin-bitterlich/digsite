@@ -58,16 +58,11 @@ public class GameWindow extends JFrame {
 		gw = this; //TODO becoming obsolete!
 		SingletonWorker.setGameData(new GameData());
 		GameWindow.gameData = SingletonWorker.gameData(); //TODO becoming obsolete!
-
-
-
-
-
 		GameWindowWorker.initGui();
 		GameWindowWorker.initMenu();
-		gw.validate();
-		gw.update(gw.getGraphics());
-		gw.pack();
+		validate();
+		update(getGraphics());
+		pack();
 	}
 
 
@@ -109,11 +104,11 @@ public class GameWindow extends JFrame {
 	}
 
 	public static int getWindowWidth() {
-		return width;
+		return width; //TODO becoming obsolete!
 	}
 
 	public static int getWindowHeight() {
-		return height;
+		return height; //TODO becoming obsolete!
 	}
 
 	public class MainMenuButtonListener implements ActionListener {
