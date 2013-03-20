@@ -2,7 +2,10 @@ digsite
 =======
 
 *a game of digging*
-wiki: http://digsite.de
+
+website: http://digsite.de
+
+wiki: http://wiki.digsite.de
 
 if you want to contribute:
 --------------------------
@@ -16,4 +19,5 @@ if you want to contribute:
 - start it throught digsite.exe (there is an internal starter in the package main, not downloading any recources thought!)
 
 **feedback, pull requests and issues are appreciated!**
+
 **at the moment working on a complete overhaul of all code, please stand by!**
