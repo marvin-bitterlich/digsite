@@ -1,11 +1,12 @@
 package gameData;
 
 
+
 public abstract class Entity extends Texture {
 
-	public Entity(double xPos, double yPos, String src) {
+	public Entity(double xPos, double yPos) {
 		super(xPos, yPos);
-		this.setSprite(SpriteManager.getSprite(src, false));
+		this.setSprite(new Sprite(ImageCache.getPlayerSprite(getDirection())));
 	}
 
 	public static final byte LAYER_FLY = 0;

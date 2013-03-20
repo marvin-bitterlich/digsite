@@ -3,10 +3,6 @@ package gameData;
 import gameView.GameWindow;
 
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-
-import utilities.ImageUtil;
 
 public class Player extends Entity {
 
@@ -35,7 +31,7 @@ public class Player extends Entity {
 	public Player(int health, int mana, int strength, int intelligence,
 			int agility, int atk, int def, int magRes, int playerClass,
 			int speed, int xPos, int yPos) {
-		super(xPos, yPos, getMovementAnimation(playerClass));
+		super(xPos, yPos);
 		this.health = health;
 		this.mana = mana;
 		this.strength = strength;
@@ -47,10 +43,6 @@ public class Player extends Entity {
 		this.playerClass = playerClass;
 		this.updateImageDirection(0);
 		this.setSpeedPxlsPerSec(speed);
-		this.attackSprite = new Sprite(this.cutCurrentAttackingFrame(
-				SpriteManager.getSprite(
-						Player.getAttackAnimation(this.playerClass), false)
-						.getImage(), 0));
 	}
 
 	@Override
@@ -135,34 +127,7 @@ public class Player extends Entity {
 		//		}
 	}
 
-	private BufferedImage cutCurrentAttackingFrame(Image full, int animationStep) {
-
-		int heightBlocks = full.getHeight(null)
-				/ GameProperties.GRAPHICS_SIZE_CHAR_HEIGHT;
-		int widthBlocks = full.getWidth(null)
-				/ GameProperties.GRAPHICS_SIZE_CHAR_WIDTH;
-
-		int attackDiretion = Direction.getValue(this.getDirection());
-		int picturePartIndex = (((animationStep) * widthBlocks)
-				+ (attackDiretion + 1) - 1);
-
-		//		System.out
-		//				.println("Width: " + widthBlocks + " height: " + heightBlocks);
-		//		System.out.println("Width: " + full.getWidth(null) + " height: "
-		//				+ full.getHeight(null));
-		//		System.out.println(ImageUtil.splitImage((BufferedImage) full,
-		//				heightBlocks, widthBlocks)[picturePartIndex].getHeight());
-		//		System.out.println(ImageUtil.splitImage((BufferedImage) full,
-		//				heightBlocks, widthBlocks)[picturePartIndex].getWidth());
-
-		Image currentAttackAnimationStep = ImageUtil.resizeImage(
-				ImageUtil.splitImage((BufferedImage) full, widthBlocks,
-						heightBlocks)[picturePartIndex],
-						GameProperties.GRAPHICS_SIZE_CHAR_WIDTH,
-						GameProperties.GRAPHICS_SIZE_CHAR_HEIGHT);
-
-		return (BufferedImage) currentAttackAnimationStep;
-	}
+	
 
 //	private void updateDirection() {
 //		int mouseXDiff = (int) (this.mouseX - this.getXPos());

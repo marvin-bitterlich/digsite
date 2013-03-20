@@ -11,7 +11,7 @@ public abstract class UIItem extends Texture {
 
 	public UIItem(int startX, int startY, int endX, int endY, String src) {
 		super(startX, startY);
-		this.setSprite(SpriteManager.getSprite(src, true));
+		this.setSprite(new Sprite(ImageCache.getRecource(src)));
 		this.getSprite().setImage(
 				ImageUtil.resizeImage((BufferedImage) this.getSprite()
 						.getImage(), endX - startX, endY - startY));
