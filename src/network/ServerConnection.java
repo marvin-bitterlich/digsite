@@ -96,12 +96,11 @@ public class ServerConnection {
 		String response = getLine();
 		if(response.equals("ready")){
 			log("Server is ready for login, sending credentials!",Level.INFO);
-			checkCredentials(Username, Password);
+			return checkCredentials(Username, Password);
 		}else{
 			log("Login got denied! " + response, Level.SEVERE);
 			return false;
 		}
-		return true;
 	}
 
 	private boolean checkCredentials(String Username, String Password){

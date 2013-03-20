@@ -1,14 +1,11 @@
 package gameView;
 
-import gameController.GameControllerThread;
-import gameData.GameData;
 import gameData.MainMenuButtonListener;
 import gameData.MyOwnFocusTraversalPolicy;
 import gameData.TransparentButton;
 
 import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
@@ -20,9 +17,6 @@ import javax.swing.JTextField;
 
 import recources.GameWindowWorker;
 import recources.SingletonWorker;
-
-import network.NetworkHandlerThread;
-import network.ServerConnection;
 
 public class GameWindow extends JFrame {
 	private static final long serialVersionUID = 8144111541455084091L;
@@ -56,43 +50,6 @@ public class GameWindow extends JFrame {
 		validate();
 		update(getGraphics());
 		pack();
-	}
-
-
-
-	public void initGame(ServerConnection sc) {
-		GameWindow gw = SingletonWorker.gameWindow();
-		gw.removeAll();
-		SingletonWorker.gameData().setGameState(GameData.INGAME);
-		SingletonWorker.gameData().startNewSession(); //TODO becoming obsolete!
-		gw.setIgnoreRepaint(true);
-		GamePanel gp = new GamePanel(SingletonWorker.gameData());
-		gw.activeMainPanel = gp;
-		gw.activeMainPanel.setBounds(0, 0, width, height);
-		gw.activeMainPanel.setLayout(null);
-		gw.activeMainPanel.setVisible(true);
-		gw.add(activeMainPanel);
-		gw.validate();
-		gw.update(gw.getGraphics());
-		gw.pack();
-		gw.createBufferStrategy(2);
-		SingletonWorker.gameData().setBufferstrategy(gw.getBufferStrategy());
-
-		SingletonWorker.setGameControllerThread(new GameControllerThread(SingletonWorker.gameData().getGameSessionData()));
-		SingletonWorker.gameData().setGameControllerThread(SingletonWorker.gameControllerThread()); //TODO becoming obsolete!
-		Thread t = new Thread(SingletonWorker.gameControllerThread());
-		t.start();
-		String pw = new String(gw.passwordfield.getPassword());
-		gw.passwordfield.setText("");
-		SingletonWorker.setNetworkHandlerThread(new NetworkHandlerThread(SingletonWorker.gameData().getGameSessionData(),gw.loginfield.getText(),pw,sc));
-		SingletonWorker.gameData().setNetworkHandlerThread(SingletonWorker.networkHandlerThread()); //TODO becoming obsolete!
-		Thread tn = new Thread(SingletonWorker.networkHandlerThread());
-		tn.start();
-
-		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(SingletonWorker.gameControllerThread());
-		gw.addMouseListener(SingletonWorker.gameControllerThread());
-		gw.addMouseMotionListener(SingletonWorker.gameControllerThread());
-
 	}
 
 	public static int getWindowWidth() {

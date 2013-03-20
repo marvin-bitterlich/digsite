@@ -42,7 +42,7 @@ public class MainMenuButtonListener implements ActionListener {
 			if(sc.loginPlayer(gw.loginfield.getText(),pw)){
 				gw.loginfeedback.setText("logged in!");
 				gw.loginfeedback.setVisible(false);
-				gw.initGame(sc);
+				GameWindowWorker.initGame(sc);
 			}else{
 				gw.loginfeedback.setText("Login failed!");
 			}

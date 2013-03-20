@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,12 +19,18 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import network.NetworkHandlerThread;
+import network.ServerConnection;
+
 import utilities.ImageUtil;
 
+import gameController.GameControllerThread;
+import gameData.GameData;
 import gameData.GameProperties;
 import gameData.ImageCache;
 import gameData.MyOwnFocusTraversalPolicy;
 import gameData.TransparentButton;
+import gameView.GamePanel;
 import gameView.GameWindow;
 
 public class GameWindowWorker {
@@ -263,4 +270,38 @@ public class GameWindowWorker {
 		gw.add(gw.activeMainPanel);
 	}
 
+	public static void initGame(ServerConnection sc) {
+		GameWindow gw = SingletonWorker.gameWindow();
+		gw.removeAll();
+		SingletonWorker.gameData().setGameState(GameData.INGAME);
+		SingletonWorker.gameData().startNewSession(); //TODO becoming obsolete!
+		gw.setIgnoreRepaint(true);
+		GamePanel gp = new GamePanel(SingletonWorker.gameData());
+		gw.activeMainPanel = gp;
+		gw.activeMainPanel.setBounds(0, 0, SingletonWorker.gameData().width(), SingletonWorker.gameData().height());
+		gw.activeMainPanel.setLayout(null);
+		gw.activeMainPanel.setVisible(true);
+		gw.add(gw.activeMainPanel);
+		gw.validate();
+		gw.update(gw.getGraphics());
+		gw.pack();
+		gw.createBufferStrategy(2);
+		SingletonWorker.gameData().setBufferstrategy(gw.getBufferStrategy());
+
+		SingletonWorker.setGameControllerThread(new GameControllerThread(SingletonWorker.gameData().getGameSessionData()));
+		SingletonWorker.gameData().setGameControllerThread(SingletonWorker.gameControllerThread()); //TODO becoming obsolete!
+		Thread t = new Thread(SingletonWorker.gameControllerThread());
+		t.start();
+		String pw = new String(gw.passwordfield.getPassword());
+		gw.passwordfield.setText("");
+		SingletonWorker.setNetworkHandlerThread(new NetworkHandlerThread(SingletonWorker.gameData().getGameSessionData(),gw.loginfield.getText(),pw,sc));
+		SingletonWorker.gameData().setNetworkHandlerThread(SingletonWorker.networkHandlerThread()); //TODO becoming obsolete!
+		Thread tn = new Thread(SingletonWorker.networkHandlerThread());
+		tn.start();
+
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(SingletonWorker.gameControllerThread());
+		gw.addMouseListener(SingletonWorker.gameControllerThread());
+		gw.addMouseMotionListener(SingletonWorker.gameControllerThread());
+
+	}
 }
