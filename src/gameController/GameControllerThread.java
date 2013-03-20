@@ -2,6 +2,7 @@ package gameController;
 
 import gameData.ActivePlayer;
 import gameData.Block;
+import gameData.Direction;
 import gameData.Entity;
 import gameData.GameData;
 import gameData.GameSessionData;
@@ -118,7 +119,15 @@ KeyEventDispatcher {
 					.calculateScreenXMovement(duration);
 			int screenYMovement = +GRAVITY_Y;
 
-
+			if(leftPressed){
+				gsd.getActivePlayer().setDirection(Direction.left);
+			}else if (rightPressed){
+				gsd.getActivePlayer().setDirection(Direction.right);
+			}else if (forwardPressed){
+				gsd.getActivePlayer().setDirection(Direction.up);
+			}else if (backwardPressed){
+				gsd.getActivePlayer().setDirection(Direction.down);
+			}
 			gsd.getActivePlayer().updateImageDirection(duration);
 			LinkedList<Texture> textures = gsd.getMine().getTextures();
 			this.updateMenus(duration);

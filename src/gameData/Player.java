@@ -97,7 +97,7 @@ public class Player extends Entity {
 
 		// moveAnimationStep = 0, movePartProgressMillis
 		
-		this.getSprite().setImage(ImageCache.getPlayerSprite(Direction.down));
+		this.getSprite().setImage(ImageCache.getPlayerSprite(this.getDirection()));
 		//		} else {
 		//
 		//			Image fullAttackImage = SpriteManager.getSprite(
