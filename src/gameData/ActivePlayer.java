@@ -38,8 +38,7 @@ public class ActivePlayer extends Player {
 		this.inventory.changed = true;
 		DrawableInventory di = ((DrawableInventory)(
 				SingletonWorker.gameData()
-				.getGameSessionData()
-				.getUiItemMap()
+				.uiItemMap()
 				.get(GameProperties.MENU_ID_INVENTORY))
 				);
 		if(di != null){

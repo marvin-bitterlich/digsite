@@ -5,7 +5,6 @@ import gameData.Block;
 import gameData.Direction;
 import gameData.Entity;
 import gameData.GameData;
-import gameData.GameSessionData;
 import gameData.GameProperties;
 import gameData.DrawableInventory;
 import gameData.ImageCache;
@@ -13,11 +12,11 @@ import gameData.Inventory;
 import gameData.Item;
 import gameData.ItemManager;
 import gameData.MainMenu;
-import gameData.Mine;
 import gameData.Player;
 import gameData.RelativeBoxPosition;
 import gameData.SkillMenu;
 import gameData.Texture;
+import gameData.UIItem;
 import gameView.GameWindow;
 
 import java.awt.Font;
@@ -43,7 +42,6 @@ import utilities.ImageUtil;
 public class GameControllerThread implements Runnable, MouseListener, MouseMotionListener,
 KeyEventDispatcher {
 
-	private GameSessionData gsd;
 	private static final int REFRESHS_PER_SECOND = 60;
 	private boolean forwardPressed, backwardPressed, leftPressed, rightPressed;
 	public static boolean rendering;
@@ -60,47 +58,38 @@ KeyEventDispatcher {
 	private long timeout;
 	private long time;
 
-
-	public GameControllerThread(GameSessionData gsd) {
-		this.gsd = gsd;
-	}
-
 	private void fillItemsAndInventoryTest() {
 		HashMap<Integer, Item> itemList = new HashMap<Integer, Item>();
 		for (int i = 0; i < 11; i++) {
 			itemList.put(i, new Item(i));
 		}
 		ItemManager.setItemList(itemList);
-		gsd.getActivePlayer().setInventory(new Inventory(100));
+		SingletonWorker.gameData().activePlayer().setInventory(new Inventory(100));
 
 		int[] equipedItems = new int[9];
 		for (int i = 0; i < 9; i++) {
 			equipedItems[i] = Integer.MAX_VALUE;
 		}
-		gsd.getActivePlayer().setEquiped(equipedItems);
-	}
-
-	private void fillMap() {
-		gsd.setMine(new Mine());
+		SingletonWorker.gameData().activePlayer().setEquiped(equipedItems);
 	}
 
 	@Override
 	public void run() {
-
+		GameData gamedata = SingletonWorker.gameData();
 		f = SingletonWorker.gameProperties().gameFont();
-		Graphics2D g = (Graphics2D) SingletonWorker.gameData().bufferstrategy().getDrawGraphics();
+		Graphics2D g = (Graphics2D) gamedata.bufferstrategy().getDrawGraphics();
 		BufferedImage splashimage = ImageCache.getRecource(SingletonWorker.gameProperties().splashPath());
 		g.drawImage(ImageUtil.resizeImage(splashimage,GameWindow.getWindowWidth(),GameWindow.getWindowHeight()), 0, 0, null);
 		g.dispose();
-		SingletonWorker.gameData().bufferstrategy().show();
+		gamedata.bufferstrategy().show();
 		this.initGameValues();
 
-		SingletonWorker.gameData().gameLoaded = true;
-
+		gamedata.gameLoaded = true;
+		
 		long duration;
 		long cycleStartTime = System.currentTimeMillis();
 		frametime = System.currentTimeMillis();
-		while (!gsd.isReturnToMenu()) {
+		while(true){ //game heartbeat thread running indefinitely, until explicit break
 			framecount++;
 			if((System.currentTimeMillis() - frametime) >= 1000){
 				frames = framecount;
@@ -115,21 +104,21 @@ KeyEventDispatcher {
 			this.updateMenuActiveStates();
 			//			boolean onLadder = false;
 			boolean movementPossible = true;
-			int screenXMovement = (int) gsd.getActivePlayer()
+			int screenXMovement = (int) gamedata.activePlayer()
 					.calculateScreenXMovement(duration);
 			int screenYMovement = +GRAVITY_Y;
 
 			if(leftPressed){
-				gsd.getActivePlayer().setDirection(Direction.left);
+				gamedata.activePlayer().setDirection(Direction.left);
 			}else if (rightPressed){
-				gsd.getActivePlayer().setDirection(Direction.right);
+				gamedata.activePlayer().setDirection(Direction.right);
 			}else if (forwardPressed){
-				gsd.getActivePlayer().setDirection(Direction.up);
+				gamedata.activePlayer().setDirection(Direction.up);
 			}else if (backwardPressed){
-				gsd.getActivePlayer().setDirection(Direction.down);
+				gamedata.activePlayer().setDirection(Direction.down);
 			}
-			gsd.getActivePlayer().updateImageDirection(duration);
-			LinkedList<Texture> textures = gsd.getMine().getTextures();
+			gamedata.activePlayer().updateImageDirection(duration);
+			LinkedList<Texture> textures = gamedata.mine().getTextures();
 			this.updateMenus(duration);
 			boolean digging = false;
 			//move y direction
@@ -140,14 +129,14 @@ KeyEventDispatcher {
 
 			for(Texture curTexture : textures){
 				if(curTexture instanceof Block){
-					if(gsd.getActivePlayer().intercectsOffset(curTexture,0,+5)){
+					if(gamedata.activePlayer().intercectsOffset(curTexture,0,+5)){
 						Block current = ((Block) curTexture);
 						if(current.getID() == 11 || current.getID() == 12){
-							screenYMovement = (int) gsd.getActivePlayer().calculateScreenYMovement(duration);
+							screenYMovement = (int) gamedata.activePlayer().calculateScreenYMovement(duration);
 						}
-					}else if(gsd.getActivePlayer().intercectsOffset(curTexture,0,+10)){
+					}else if(gamedata.activePlayer().intercectsOffset(curTexture,0,+10)){
 						Block current = ((Block) curTexture);
-						Block ontop = gsd.getMine().getBlock(current.xPos, current.yPos-1);
+						Block ontop = gamedata.mine().getBlock(current.xPos, current.yPos-1);
 						if((current.getID() == 11 || current.getID() == 12) && !backwardPressed){
 							if(ontop == null || (ontop.getID() != 11 && ontop.getID() != 12)){
 								screenYMovement = 0;
@@ -159,23 +148,23 @@ KeyEventDispatcher {
 			for (Texture currentTexture : textures) {
 				if(movementPossible){
 
-					if (currentTexture instanceof Block && gsd.getActivePlayer().intercectsOffset(currentTexture,0,screenYMovement*5)) {
+					if (currentTexture instanceof Block && gamedata.activePlayer().intercectsOffset(currentTexture,0,screenYMovement*5)) {
 						outofbounds = false;
 						Block current = ((Block) currentTexture);
 						if (current.isMassive()){
 							movementPossible = false;
-							if(!gsd.getActivePlayer().intercectsOffset(currentTexture,0,5)){
+							if(!gamedata.activePlayer().intercectsOffset(currentTexture,0,5)){
 								GameProperties.playery += 1;
 							}
 							if((current.yPos > GameProperties.getPlayerBlockY() && backwardPressed) || (current.yPos < GameProperties.getPlayerBlockY() && forwardPressed)){
-								current.hit(gsd.getActivePlayer());
+								current.hit(gamedata.activePlayer());
 								digging = true;
 							}
 						}
 
-					} else if (gsd.getActivePlayer().hits(currentTexture)) {
+					} else if (gamedata.activePlayer().hits(currentTexture)) {
 
-						gsd.getActivePlayer().collide(currentTexture);
+						gamedata.activePlayer().collide(currentTexture);
 
 					}
 				}
@@ -189,19 +178,19 @@ KeyEventDispatcher {
 			for (Texture currentTexture : textures) {
 				if(movementPossible){
 					if (currentTexture instanceof Block &&
-							gsd.getActivePlayer().intercectsOffset(currentTexture,screenXMovement*3,0)) {
+							gamedata.activePlayer().intercectsOffset(currentTexture,screenXMovement*3,0)) {
 						Block current = ((Block) currentTexture);
 						if (current.isMassive()){
 							movementPossible = false;
 
 							if(((current.xPos < GameProperties.getPlayerBlockX() && leftPressed) || (current.xPos > GameProperties.getPlayerBlockX() && rightPressed)) && !digging){
-								current.hit(gsd.getActivePlayer());
+								current.hit(gamedata.activePlayer());
 							}
 						}
 
-					} else if (gsd.getActivePlayer().hits(currentTexture)) {
+					} else if (gamedata.activePlayer().hits(currentTexture)) {
 
-						gsd.getActivePlayer().collide(currentTexture);
+						gamedata.activePlayer().collide(currentTexture);
 
 					}
 				}
@@ -212,9 +201,8 @@ KeyEventDispatcher {
 				GameProperties.playerx += screenXMovement;
 			}
 
-			SingletonWorker.gameData().getNetworkHandlerThread().sendMovement(GameProperties.playerx,GameProperties.playery);
-			GameData gamedata = SingletonWorker.gameData();
-			g = (Graphics2D) SingletonWorker.gameData().bufferstrategy().getDrawGraphics();
+			gamedata.getNetworkHandlerThread().sendMovement(GameProperties.playerx,GameProperties.playery);
+			g = (Graphics2D) gamedata.bufferstrategy().getDrawGraphics();
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
 			g.setFont(f);
@@ -238,20 +226,20 @@ KeyEventDispatcher {
 			}
 			g.drawImage(background, -(GameWindow.getWindowWidth()/2)-(GameProperties.playerx/2), -200-(GameProperties.playery/2) , null);
 
-			gamedata.getGameSessionData().getMine().draw(g);
+			gamedata.mine().draw(g);
 
-			gamedata.getGameSessionData().getActivePlayer().draw(g);
-			for(Entity e : gamedata.getGameSessionData().getEntityMap().values()){
+			gamedata.activePlayer().draw(g);
+			for(Entity e : gamedata.entityMap().values()){
 				e.draw(g);
 			}
-			if (gamedata.getGameSessionData().getActiveMenu() != Integer.MAX_VALUE) {
-				gamedata.getGameSessionData().getUiItemMap()
-				.get(gamedata.getGameSessionData().getActiveMenu()).draw(g);
+			if (gamedata.getActiveMenu() != Integer.MAX_VALUE) {
+				gamedata.uiItemMap()
+				.get(gamedata.getActiveMenu()).draw(g);
 			}
 			g.drawString("Frames: " + frames + " Miliseconds:" + time + "/" + timeout, 50, 50);
 			//			System.out.println("Frames: " + frames + " Miliseconds:" + time + "/" + timeout);
 			g.dispose();
-			SingletonWorker.gameData().bufferstrategy().show();
+			gamedata.bufferstrategy().show();
 			time = System.currentTimeMillis()-cycleStartTime; 
 
 			try {
@@ -265,13 +253,12 @@ KeyEventDispatcher {
 	}
 
 	private void initGameValues() {
-		this.gsd.setActivePlayer(new ActivePlayer(20, 20, 20,20, 20, 20, 20,
+		SingletonWorker.gameData().setActivePlayer(new ActivePlayer(20, 20, 20,20, 20, 20, 20,
 				10, Player.CLASS_BRUTE, 200));
 
-		// this.gsd.getTextureList().add(gsd.getActivePlayer());
+		// this.gsd.getTextureList().add(gamedata.activePlayer());
 
 		this.fillItemsAndInventoryTest();
-		this.fillMap();
 
 
 		// gsd.setStructureList(MapBuilder.buildMap(new
@@ -281,26 +268,27 @@ KeyEventDispatcher {
 	}
 
 	private void updateMenus(long duration) {
-		for (int uiKey : gsd.getUiItemMap().keySet())
-			gsd.getUiItemMap().get(uiKey).process(duration);
+		for (UIItem uiitem : SingletonWorker.gameData().uiItemMap().values()){
+			uiitem.process(duration);
+		}
 	}
 
 	private void addMenus() {
-		gsd.getUiItemMap().put(
+		SingletonWorker.gameData().uiItemMap().put(
 				GameProperties.MENU_ID_MAIN,
 				new MainMenu(0, 0, GameWindow.getWindowWidth(), GameWindow
 						.getWindowHeight(), GameProperties.MENU_PIC_MAIN));
-		gsd.getUiItemMap().put(GameProperties.MENU_ID_INVENTORY,
+		SingletonWorker.gameData().uiItemMap().put(GameProperties.MENU_ID_INVENTORY,
 				this.createInventory());
-		gsd.getUiItemMap().put(
+		SingletonWorker.gameData().uiItemMap().put(
 				GameProperties.MENU_ID_SKILL,
 				new SkillMenu(0, 0, GameWindow.getWindowWidth(), GameWindow
 						.getWindowHeight(), GameProperties.MENU_PIC_SKILL));
-		gsd.getUiItemMap().put(
+		SingletonWorker.gameData().uiItemMap().put(
 				GameProperties.MENU_ID_VIDEO,
 				new SkillMenu(0, 0, GameWindow.getWindowWidth(), GameWindow
 						.getWindowHeight(), GameProperties.MENU_PIC_VIDEO));
-		gsd.getUiItemMap().put(
+		SingletonWorker.gameData().uiItemMap().put(
 				GameProperties.MENU_ID_AUDIO,
 				new SkillMenu(0, 0, GameWindow.getWindowWidth(), GameWindow
 						.getWindowHeight(), GameProperties.MENU_PIC_AUDIO));
@@ -308,52 +296,52 @@ KeyEventDispatcher {
 
 	private void updateMenuActiveStates() {
 		for (int i = 0; i <= 4; i++) {
-			if (gsd.getActiveMenu() == i) {
-				gsd.getUiItemMap().get(i).setActive(true);
+			if (SingletonWorker.gameData().getActiveMenu() == i) {
+				SingletonWorker.gameData().uiItemMap().get(i).setActive(true);
 			} else {
-				gsd.getUiItemMap().get(i).setActive(false);
+				SingletonWorker.gameData().uiItemMap().get(i).setActive(false);
 			}
 		}
 	}
 
 	private void hideOrShowMenu(int menu) {
-		if (gsd.getActiveMenu() == menu) {
-			gsd.setActiveMenu(Integer.MAX_VALUE);
+		if (SingletonWorker.gameData().getActiveMenu() == menu) {
+			SingletonWorker.gameData().setActiveMenu(Integer.MAX_VALUE);
 		} else {
-			gsd.setActiveMenu(menu);
+			SingletonWorker.gameData().setActiveMenu(menu);
 		}
 	}
 
 	private void calculateMovements() {
-
+		GameData gamedata = SingletonWorker.gameData();
 		if (forwardPressed && backwardPressed) {
-			gsd.getActivePlayer().setYPerSec(0);
+			gamedata.activePlayer().setYPerSec(0);
 
 		} else if (forwardPressed) {
-			gsd.getActivePlayer().setYPerSec(
-					-gsd.getActivePlayer().getSpeedPxlsPerSec());
+			gamedata.activePlayer().setYPerSec(
+					-gamedata.activePlayer().getSpeedPxlsPerSec());
 
 		} else if (backwardPressed) {
-			gsd.getActivePlayer().setYPerSec(
-					gsd.getActivePlayer().getSpeedPxlsPerSec());
+			gamedata.activePlayer().setYPerSec(
+					gamedata.activePlayer().getSpeedPxlsPerSec());
 
 		} else {
-			gsd.getActivePlayer().setYPerSec(0);
+			gamedata.activePlayer().setYPerSec(0);
 		}
 
 		if (leftPressed && rightPressed) {
-			gsd.getActivePlayer().setXPerSec(0);
+			gamedata.activePlayer().setXPerSec(0);
 
 		} else if (leftPressed) {
-			gsd.getActivePlayer().setXPerSec(
-					-gsd.getActivePlayer().getSpeedPxlsPerSec());
+			gamedata.activePlayer().setXPerSec(
+					-gamedata.activePlayer().getSpeedPxlsPerSec());
 
 		} else if (rightPressed) {
-			gsd.getActivePlayer().setXPerSec(
-					gsd.getActivePlayer().getSpeedPxlsPerSec());
+			gamedata.activePlayer().setXPerSec(
+					gamedata.activePlayer().getSpeedPxlsPerSec());
 
 		} else {
-			gsd.getActivePlayer().setXPerSec(0);
+			gamedata.activePlayer().setXPerSec(0);
 		}
 
 	}
@@ -432,10 +420,10 @@ KeyEventDispatcher {
 		if (!SingletonWorker.gameData().gameLoaded)
 			return;
 
-		if (gsd.getActiveMenu() != Integer.MAX_VALUE) {
-			gsd.getUiItemMap().get(gsd.getActiveMenu()).mouseKlicked(e);
+		if (SingletonWorker.gameData().getActiveMenu() != Integer.MAX_VALUE) {
+			SingletonWorker.gameData().uiItemMap().get(SingletonWorker.gameData().getActiveMenu()).mouseKlicked(e);
 		} else {
-			gsd.getActivePlayer().attack(e.getX(), e.getY());
+			SingletonWorker.gameData().activePlayer().attack(e.getX(), e.getY());
 		}
 	}
 
@@ -474,8 +462,8 @@ KeyEventDispatcher {
 		if (!SingletonWorker.gameData().gameLoaded)
 			return;
 
-		gsd.getActivePlayer().setMouseX(e.getX());
-		gsd.getActivePlayer().setMouseY(e.getY());
+		SingletonWorker.gameData().activePlayer().setMouseX(e.getX());
+		SingletonWorker.gameData().activePlayer().setMouseY(e.getY());
 	}
 
 	private DrawableInventory createInventory() {
@@ -500,7 +488,4 @@ KeyEventDispatcher {
 				GameProperties.INV_RELATIVE_FWD_BTN, equipmentBoxes);
 	}
 
-	public GameSessionData getGsd() {
-		return gsd;
-	}
 }

@@ -328,7 +328,6 @@ public class GameWindowWorker {
 		GameWindow gw = SingletonWorker.gameWindow();
 		gw.removeAll();
 		SingletonWorker.gameData().setGameState(GameData.INGAME);
-		SingletonWorker.gameData().startNewSession(); //TODO becoming obsolete!
 		gw.setIgnoreRepaint(true);
 		GamePanel gp = new GamePanel(SingletonWorker.gameData());
 		gw.activeMainPanel = gp;
@@ -342,13 +341,13 @@ public class GameWindowWorker {
 		gw.createBufferStrategy(2);
 		SingletonWorker.gameData().setBufferstrategy(gw.getBufferStrategy());
 
-		SingletonWorker.setGameControllerThread(new GameControllerThread(SingletonWorker.gameData().getGameSessionData()));
+		SingletonWorker.setGameControllerThread(new GameControllerThread());
 		SingletonWorker.gameData().setGameControllerThread(SingletonWorker.gameControllerThread()); //TODO becoming obsolete!
 		Thread t = new Thread(SingletonWorker.gameControllerThread());
 		t.start();
 		String pw = new String(gw.passwordfield.getPassword());
 		gw.passwordfield.setText("");
-		SingletonWorker.setNetworkHandlerThread(new NetworkHandlerThread(SingletonWorker.gameData().getGameSessionData(),gw.loginfield.getText(),pw,sc));
+		SingletonWorker.setNetworkHandlerThread(new NetworkHandlerThread(gw.loginfield.getText(),pw,sc));
 		SingletonWorker.gameData().setNetworkHandlerThread(SingletonWorker.networkHandlerThread()); //TODO becoming obsolete!
 		Thread tn = new Thread(SingletonWorker.networkHandlerThread());
 		tn.start();

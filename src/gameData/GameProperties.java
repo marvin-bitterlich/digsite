@@ -138,13 +138,13 @@ public class GameProperties {
 		return "ohnebg.png";
 	}
 	public String cursorPath() {
-		return File.separator + "rec" + File.separator + "cursor_1.png";
+		return File.separator + "rec" + File.separator + "cursor.png";
 	}
 	public String backgroundPath(){
-		return "totenkopf_bigger.jpg";
+		return "menu.jpg";
 	}
 	public String splashPath(){
-		return "splash.png";
+		return "loading.jpg";
 	}
 	public String playerPath() {
 		return "player.png";

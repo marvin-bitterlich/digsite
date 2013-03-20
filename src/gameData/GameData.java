@@ -1,6 +1,7 @@
 package gameData;
 
 import java.awt.image.BufferStrategy;
+import java.util.HashMap;
 
 import network.NetworkHandlerThread;
 import gameController.GameControllerThread;
@@ -9,19 +10,9 @@ import gameView.GamePanel;
 public class GameData {
 	public boolean gameLoaded = false;
 
-	private GameSessionData gsd;
 	private GameControllerThread gct;
 	private NetworkHandlerThread nht;
 	private GamePanel gp;
-
-
-	public void startNewSession() {
-		this.gsd = new GameSessionData(); //TODO becoming obsolete!
-	}
-
-	public GameSessionData getGameSessionData() {
-		return gsd;
-	}
 
 	public static final int MENU = 0;
 	public static final int INGAME = 1;
@@ -88,6 +79,46 @@ public class GameData {
 	}
 	public BufferStrategy bufferstrategy(){
 		return bufferstrategy;
+	}
+	
+	private HashMap<Integer,Entity> entitymap;
+	public HashMap<Integer,Entity> entityMap() {
+		if(entitymap == null){
+			entitymap = new HashMap<Integer,Entity>();
+		}
+		return entitymap;
+	}
+	
+	private HashMap<Integer, UIItem> uiItemMap;
+	public HashMap<Integer, UIItem> uiItemMap() {
+		if(uiItemMap == null){
+			uiItemMap = new HashMap<Integer, UIItem>();
+		}
+		return uiItemMap;
+	}
+	
+	private ActivePlayer activePlayer;
+	public void setActivePlayer(ActivePlayer p) {
+		this.activePlayer = p;
+	}
+	public ActivePlayer activePlayer() {
+		return activePlayer;
+	}
+	
+	private int activeMenu = Integer.MAX_VALUE;
+	public void setActiveMenu(int activeMenu) {
+		this.activeMenu = activeMenu;
+	}
+	public int getActiveMenu() {
+		return activeMenu;
+	}
+	
+	private Mine mine;
+	public Mine mine() {
+		if(mine == null){
+			mine = new Mine();
+		}
+		return mine;
 	}
 
 }

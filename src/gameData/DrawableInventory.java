@@ -54,7 +54,7 @@ public class DrawableInventory extends UIItem {
 
 	@Override
 	public void process(long duration) {
-		if(SingletonWorker.gameData().getGameSessionData().getActivePlayer().getInventory().hasChanged()){
+		if(SingletonWorker.gameData().activePlayer().getInventory().hasChanged()){
 			this.pageList = this.createInventoryPages();
 			if (this.currentPage >= this.pageList.size()) {
 				this.currentPage = 0;
@@ -67,8 +67,8 @@ public class DrawableInventory extends UIItem {
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g);
-		int mousex = SingletonWorker.gameData().getGameSessionData().getActivePlayer().getMouseX();
-		int mousey = SingletonWorker.gameData().getGameSessionData().getActivePlayer().getMouseY();
+		int mousex = SingletonWorker.gameData().activePlayer().getMouseX();
+		int mousey = SingletonWorker.gameData().activePlayer().getMouseY();
 
 		//		if (backBtn.isInRange(mousex, mousey)) {
 		//			currentPage--;
@@ -109,8 +109,7 @@ public class DrawableInventory extends UIItem {
 		// TODO in draw oder GameControllerThread
 
 		int currentItemCategory = 0;
-		for (int item : SingletonWorker.gameData().getGameSessionData()
-				.getActivePlayer().getEquiped()) {
+		for (int item : SingletonWorker.gameData().activePlayer().getEquiped()) {
 			if (item != Integer.MAX_VALUE) {
 				Image itemImage = ItemManager.getItem(item).getSprite()
 						.getImage();
@@ -157,16 +156,14 @@ public class DrawableInventory extends UIItem {
 		ArrayList<InventoryPage> pageList = new ArrayList<InventoryPage>();
 
 		Object[][] invPage;
-		if (SingletonWorker.gameData().getGameSessionData().getActivePlayer()
+		if (SingletonWorker.gameData().activePlayer()
 				.getInventory().getSize() >= (rows + 1) * (cells + 1)) {
 			invPage = new Object[(rows + 1) * (cells + 1)][6];
 		} else {
-			invPage = new Object[SingletonWorker.gameData().getGameSessionData()
-			                     .getActivePlayer().getInventory().getSize()][6];
+			invPage = new Object[SingletonWorker.gameData().activePlayer().getInventory().getSize()][6];
 		}
 
-		for (DrawableItemStack is : SingletonWorker.gameData().getGameSessionData()
-				.getActivePlayer().getInventory().getInventoryList()) {
+		for (DrawableItemStack is : SingletonWorker.gameData().activePlayer().getInventory().getInventoryList()) {
 
 			int startX = (int) (GameWindow.getWindowWidth()
 					* relativeFirstBox.getRelativeStartX()
@@ -197,13 +194,11 @@ public class DrawableInventory extends UIItem {
 					pageList.add(new InventoryPage(invPage,itemWidth,itemHeight));
 				}
 
-				if (SingletonWorker.gameData().getGameSessionData()
-						.getActivePlayer().getInventory().getSize()
+				if (SingletonWorker.gameData().activePlayer().getInventory().getSize()
 						- ((pageList.size() * ((rows + 1) * (cells + 1)))) >= (rows + 1)
 						* (cells + 1)) {
 
-					if (SingletonWorker.gameData().getGameSessionData()
-							.getActivePlayer().getInventory().getSize()
+					if (SingletonWorker.gameData().activePlayer().getInventory().getSize()
 							- ((pageList.size() * ((rows + 1) * (cells + 1)))) > 0) {
 
 						// System.out.println("Seite: " + currentPage);
@@ -227,8 +222,7 @@ public class DrawableInventory extends UIItem {
 
 				} else {
 
-					invPage = new Object[SingletonWorker.gameData()
-					                     .getGameSessionData().getActivePlayer()
+					invPage = new Object[SingletonWorker.gameData().activePlayer()
 					                     .getInventory().getSize()
 					                     - ((pageList.size() * ((rows + 1) * (cells + 1))))][6];
 
@@ -312,14 +306,14 @@ public class DrawableInventory extends UIItem {
 		int itemCategory = ItemManager.getItem(item).getCategory();
 		if (itemCategory != Item.ITEM_CATEGORY_OTHERS) {
 
-			SingletonWorker.gameData().getGameSessionData().getActivePlayer()
+			SingletonWorker.gameData().activePlayer()
 			.getEquiped()[itemCategory] = item;
 
 		}
 	}
 
 	private void unEquipItem(int category) {
-		SingletonWorker.gameData().getGameSessionData().getActivePlayer()
+		SingletonWorker.gameData().activePlayer()
 		.getEquiped()[category] = Integer.MAX_VALUE;
 	}
 

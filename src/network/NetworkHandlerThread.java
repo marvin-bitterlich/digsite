@@ -7,7 +7,6 @@ import gameData.Block;
 import gameData.Chunk;
 import gameData.Entity;
 import gameData.GameProperties;
-import gameData.GameSessionData;
 import gameData.Inventory;
 import gameData.Player;
 
@@ -22,10 +21,8 @@ public class NetworkHandlerThread implements Runnable {
 	String username;
 	String password;
 	ServerConnection connection = null;
-	private GameSessionData gsd;
 
-	public NetworkHandlerThread(GameSessionData gameSessionData,String username,String password, ServerConnection sc) {
-		this.gsd = gameSessionData;
+	public NetworkHandlerThread(String username,String password, ServerConnection sc) {
 		connection = sc;
 		this.username = username;
 		this.password = password;
@@ -48,7 +45,7 @@ public class NetworkHandlerThread implements Runnable {
 							int entity = NumberWorker.getNumber(cut[1]);
 							int x = NumberWorker.getNumber(cut[2]);
 							int y = NumberWorker.getNumber(cut[3]);
-							Entity e = SingletonWorker.gameData().getGameSessionData().getEntityMap().get(entity);
+							Entity e = SingletonWorker.gameData().entityMap().get(entity);
 							if(entity != userID){
 								if(e != null){
 									e.setXPos(x);
@@ -69,7 +66,7 @@ public class NetworkHandlerThread implements Runnable {
 							int x = NumberWorker.getNumber(cut[2]);
 							int y = NumberWorker.getNumber(cut[3]);
 							if(entity != userID){
-								SingletonWorker.gameData().getGameSessionData().getEntityMap().put(entity,
+								SingletonWorker.gameData().entityMap().put(entity,
 										new Player(20, 20, 20,20, 20, 20, 20,
 												10, Player.CLASS_BRUTE, 10, x, y)
 										);
@@ -83,25 +80,25 @@ public class NetworkHandlerThread implements Runnable {
 						if(cut.length >= 2){
 							int entity = NumberWorker.getNumber(cut[1]);
 							if(entity != userID){
-								SingletonWorker.gameData().getGameSessionData().getEntityMap().remove(entity);
+								SingletonWorker.gameData().entityMap().remove(entity);
 							}
 						}
 					}
 
 					if(cmd == NetworkConstants.SERVER_COMMUNICATION_SENDCHUNK){
 						Chunk c = (Chunk) XStreamWorker.fromXML(cut[1]);
-						gsd.getMine().addChunk(c);
+						SingletonWorker.gameData().mine().addChunk(c);
 					}
 
 					if(cmd == NetworkConstants.SERVER_COMMUNICATION_SENDBLOCK){
 						Block b = (Block) XStreamWorker.fromXML(cut[1]);
-						gsd.getMine().updateBlock(b);
+						SingletonWorker.gameData().mine().updateBlock(b);
 					}
 
 					if(cmd == NetworkConstants.SERVER_COMMUNICATION_SENDINVENTORY){
 						Inventory i = (Inventory) XStreamWorker.fromXML(cut[1]);
 						//TODO bad fix!
-						if(gsd.getActivePlayer() == null){
+						while(SingletonWorker.gameData().activePlayer() == null){
 							try {
 								Thread.sleep(100);
 							} catch (InterruptedException e) {
@@ -109,7 +106,7 @@ public class NetworkHandlerThread implements Runnable {
 								e.printStackTrace();
 							}
 						}
-						gsd.getActivePlayer().setInventory(i);
+						SingletonWorker.gameData().activePlayer().setInventory(i);
 					}
 				}
 			}
