@@ -3,19 +3,17 @@ package gameView;
 import gameController.GameControllerThread;
 import gameData.GameData;
 import gameData.GameProperties;
+import gameData.ImageCache;
 
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.FocusTraversalPolicy;
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.awt.Frame;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -23,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -43,7 +40,8 @@ import utilities.ImageUtil;
 public class GameWindow extends JFrame {
 	private static final long serialVersionUID = 8144111541455084091L;
 	private static final Font FONT = new Font(Font.MONOSPACED, Font.BOLD, 40);
-	private static int width, height;
+	public static int width;
+	public static int height;
 
 	private JPanel activeMainPanel;
 	private GameWindow gw;
@@ -74,60 +72,20 @@ public class GameWindow extends JFrame {
 
 
 
-		gw.initGui();
+		GameWindowWorker.initGui();
 		gw.initMenu();
 		gw.validate();
 		gw.update(gw.getGraphics());
 		gw.pack();
 	}
 
-	private void initGui() {
-		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		SingletonWorker.gameData().setWidth((int) screen.getWidth());
-		SingletonWorker.gameData().setHeight((int) screen.getHeight());
-		GameWindow.width = SingletonWorker.gameData().width(); //TODO becoming obsolete!
-		GameWindow.height = SingletonWorker.gameData().height(); //TODO becoming obsolete!
-
-		BufferedImage image = null;
-		try {
-			File f = new File(GameProperties.getGamePath() + File.separator + "rec" + File.separator + "ohnebg.png");
-			image = ImageIO.read(f);
-			gw.setIconImage(image);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		gw.setMinimumSize(new Dimension(width, height));
-		gw.setExtendedState(Frame.MAXIMIZED_BOTH);
-		gw.setLocationRelativeTo(null);
-		gw.setLayout(null);
-		gw.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		gw.setUndecorated(true);
-		gw.setCursor("/rec/cursor_1.png");
-
-		gw.setVisible(true);
-
-	}
-
-	private void setCursor(String src){
-		//		Toolkit t = getToolkit();
-		//		t.getBestCursorSize(preferredWidth, preferredHeight)
-		Cursor c = getToolkit()
-				.createCustomCursor(
-						new ImageIcon(GameProperties.getGamePath()
-								+ src).getImage(),
-								new Point(0, 0), "Cursor");
-		super.setCursor(c);
-	}
-
 	private void initMenu(){
+		GameWindow gw = SingletonWorker.gameWindow();
 		gw.activeMainPanel = new JPanel();
-		gw.activeMainPanel.setBounds(0, 0, width, height);
+		gw.activeMainPanel.setBounds(0, 0, SingletonWorker.gameData().width(), SingletonWorker.gameData().height());
 		gw.activeMainPanel.setLayout(null);
 
-		BufferedImage menu;
-		menu = ImageUtil.loadImage(GameProperties.getGamePath() + File.separator + "rec" + File.separator + GameProperties.MENU_PIC_NAME);
-
+		BufferedImage menu = ImageCache.getRecource(SingletonWorker.gameProperties().backgroundPath());
 		ImageIcon menuBackground = new ImageIcon(ImageUtil.resizeImage(menu,
 				width, height));
 		JLabel menuPicture = new JLabel(menuBackground);
@@ -162,7 +120,7 @@ public class GameWindow extends JFrame {
 		gw.loginfield.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				gw.login.doClick();
+				SingletonWorker.gameWindow().login.doClick();
 			}
 		});
 
@@ -174,7 +132,7 @@ public class GameWindow extends JFrame {
 		gw.usernamefield.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				gw.register.doClick();
+				SingletonWorker.gameWindow().register.doClick();
 			}
 		});
 
@@ -193,7 +151,7 @@ public class GameWindow extends JFrame {
 		gw.emailfield.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				gw.register.doClick();
+				SingletonWorker.gameWindow().register.doClick();
 			}
 		});
 
@@ -212,7 +170,7 @@ public class GameWindow extends JFrame {
 		gw.passwortfield.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				gw.register.doClick();
+				SingletonWorker.gameWindow().register.doClick();
 			}
 		});
 
@@ -222,7 +180,7 @@ public class GameWindow extends JFrame {
 		gw.passwordfield.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				gw.login.doClick();
+				SingletonWorker.gameWindow().login.doClick();
 			}
 		});
 
@@ -523,4 +481,13 @@ public class GameWindow extends JFrame {
 		GameWindow.gameData = gd;
 	}
 
+	public void setCursor(String src){
+		Cursor c = getToolkit()
+				.createCustomCursor(
+						new ImageIcon(SingletonWorker.gameProperties().gamePath()
+								+ src).getImage(),
+								new Point(0, 0), "Cursor");
+		super.setCursor(c);
+	}
+	
 }

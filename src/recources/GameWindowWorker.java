@@ -1,5 +1,13 @@
 package recources;
 
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+
+import javax.swing.JFrame;
+
+import gameData.ImageCache;
 import gameView.GameWindow;
 
 public class GameWindowWorker {
@@ -38,5 +46,30 @@ public class GameWindowWorker {
 		gw.setFocusTraversalPolicy(gw.registerPolicy);
 		gw.usernamefield.requestFocus();
 	}
+	
+	public static void initGui() {
+		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+		SingletonWorker.gameData().setWidth((int) screen.getWidth());
+		SingletonWorker.gameData().setHeight((int) screen.getHeight());
+		GameWindow.width = SingletonWorker.gameData().width(); //TODO becoming obsolete!
+		GameWindow.height = SingletonWorker.gameData().height(); //TODO becoming obsolete!
+
+		BufferedImage image = ImageCache.getRecource(SingletonWorker.gameProperties().logoPath());
+		GameWindow gw = SingletonWorker.gameWindow();
+		gw.setIconImage(image);
+
+
+		gw.setMinimumSize(new Dimension(SingletonWorker.gameData().width(), SingletonWorker.gameData().height()));
+		gw.setExtendedState(Frame.MAXIMIZED_BOTH);
+		gw.setLocationRelativeTo(null);
+		gw.setLayout(null);
+		gw.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		gw.setUndecorated(true);
+		gw.setCursor(SingletonWorker.gameProperties().cursorPath());
+
+		gw.setVisible(true);
+
+	}
+	
 
 }
