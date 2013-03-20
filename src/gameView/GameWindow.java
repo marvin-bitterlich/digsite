@@ -2,29 +2,22 @@ package gameView;
 
 import gameController.GameControllerThread;
 import gameData.GameData;
-import gameData.GameProperties;
-import gameData.ImageCache;
+import gameData.TransparentButton;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.FocusTraversalPolicy;
 import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -35,19 +28,17 @@ import recources.SingletonWorker;
 import network.NetworkHandlerThread;
 import network.ServerConnection;
 
-import utilities.ImageUtil;
-
 public class GameWindow extends JFrame {
 	private static final long serialVersionUID = 8144111541455084091L;
-	private static final Font FONT = new Font(Font.MONOSPACED, Font.BOLD, 40);
+	public final Font FONT = new Font(Font.MONOSPACED, Font.BOLD, 40);
 	public static int width;
 	public static int height;
 
-	private JPanel activeMainPanel;
-	private GameWindow gw;
-	private static GameData gameData;
-	private JButton start, video, registerset, exit;
-	private ActionListener buttonListener = new MainMenuButtonListener();
+	public JPanel activeMainPanel;
+	public GameWindow gw;
+	public static GameData gameData;
+	public JButton start, video, registerset, exit;
+	public ActionListener buttonListener = new MainMenuButtonListener();
 	public JTextField loginfield;
 	public JPasswordField passwordfield;
 	public TransparentButton login;
@@ -73,197 +64,13 @@ public class GameWindow extends JFrame {
 
 
 		GameWindowWorker.initGui();
-		gw.initMenu();
+		GameWindowWorker.initMenu();
 		gw.validate();
 		gw.update(gw.getGraphics());
 		gw.pack();
 	}
 
-	private void initMenu(){
-		GameWindow gw = SingletonWorker.gameWindow();
-		gw.activeMainPanel = new JPanel();
-		gw.activeMainPanel.setBounds(0, 0, SingletonWorker.gameData().width(), SingletonWorker.gameData().height());
-		gw.activeMainPanel.setLayout(null);
 
-		BufferedImage menu = ImageCache.getRecource(SingletonWorker.gameProperties().backgroundPath());
-		ImageIcon menuBackground = new ImageIcon(ImageUtil.resizeImage(menu,
-				width, height));
-		JLabel menuPicture = new JLabel(menuBackground);
-		menuPicture.setBounds(0, 0, width, height);
-
-		Font f;
-		try {
-			f = Font.createFont(Font.TRUETYPE_FONT,
-					new File(GameProperties.getGamePath() + "/rec/"
-							+ GameProperties.FONT_NAME));
-		} catch (FontFormatException e){
-			System.out.println(e.getLocalizedMessage());
-			f = FONT;
-		}catch (IOException e) {
-			System.out.println(e.getLocalizedMessage());
-			f = FONT;
-		}
-		f = f.deriveFont(60f);
-
-		gw.start = new TransparentButton(GameProperties.START);
-		gw.start.setBounds(50, width / 25 * 1, 300, 50);
-		gw.start.setFont(f);
-		gw.start.setForeground(Color.WHITE);
-		gw.start.addActionListener(gw.buttonListener);
-
-
-		gw.loginfield = new JTextField("Marvin");
-		gw.loginfield.setBounds(width/2-150,height /2-250, 300, 50);
-		gw.loginfield.setFont(f);
-		gw.loginfield.setForeground(Color.BLACK);
-		gw.loginfield.setVisible(false);
-		gw.loginfield.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				SingletonWorker.gameWindow().login.doClick();
-			}
-		});
-
-		gw.usernamefield = new JTextField(GameProperties.USERNAME);
-		gw.usernamefield.setBounds(width/2-150,height /2-250, 300, 50);
-		gw.usernamefield.setFont(f);
-		gw.usernamefield.setForeground(Color.BLACK);
-		gw.usernamefield.setVisible(false);
-		gw.usernamefield.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				SingletonWorker.gameWindow().register.doClick();
-			}
-		});
-
-		gw.usernamecheck = new TransparentButton(GameProperties.CHECKUSERNAME);
-		gw.usernamecheck.setBounds(width/2+100,height /2-250, 300, 50);
-		gw.usernamecheck.setFont(f);
-		gw.usernamecheck.setForeground(Color.WHITE);
-		gw.usernamecheck.addActionListener(gw.buttonListener);
-		gw.usernamecheck.setVisible(false);
-
-		gw.emailfield = new JTextField(GameProperties.EMAIL);
-		gw.emailfield.setBounds(width/2-150,height /2-150, 300, 50);
-		gw.emailfield.setFont(f.deriveFont((float) 22));
-		gw.emailfield.setForeground(Color.BLACK);
-		gw.emailfield.setVisible(false);
-		gw.emailfield.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				SingletonWorker.gameWindow().register.doClick();
-			}
-		});
-
-		gw.emailcheck = new TransparentButton(GameProperties.CHECKEMAIL);
-		gw.emailcheck.setBounds(width/2+100,height /2-150, 300, 50);
-		gw.emailcheck.setFont(f);
-		gw.emailcheck.setForeground(Color.WHITE);
-		gw.emailcheck.addActionListener(gw.buttonListener);
-		gw.emailcheck.setVisible(false);
-
-		gw.passwortfield = new JTextField(GameProperties.PASSWORT);
-		gw.passwortfield.setBounds(width/2-150,height /2-50, 300, 50);
-		gw.passwortfield.setFont(f);
-		gw.passwortfield.setForeground(Color.BLACK);
-		gw.passwortfield.setVisible(false);
-		gw.passwortfield.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				SingletonWorker.gameWindow().register.doClick();
-			}
-		});
-
-		gw.passwordfield = new JPasswordField(50);
-		gw.passwordfield.setBounds(width/2-150,height /2-150, 300, 50);
-		gw.passwordfield.setVisible(false);
-		gw.passwordfield.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				SingletonWorker.gameWindow().login.doClick();
-			}
-		});
-
-		gw.register = new TransparentButton(GameProperties.REGISTER);
-		gw.register.setBounds(width/2-150,height /2+50, 300, 50);
-		gw.register.setFont(f);
-		gw.register.addActionListener(gw.buttonListener);
-		gw.register.setForeground(Color.WHITE);
-		gw.register.setVisible(false);
-
-		gw.registerfeedback = new TransparentButton(GameProperties.REGISTER);
-		gw.registerfeedback.setBounds(width/2-150,height /2+100, 300, 50);
-		gw.registerfeedback.setFont(f);
-		gw.registerfeedback.addActionListener(gw.buttonListener);
-		gw.registerfeedback.setForeground(Color.WHITE);
-		gw.registerfeedback.setVisible(false);
-
-		gw.login = new TransparentButton(GameProperties.LOGIN);
-		gw.login.setBounds(width/2-150,height /2-50, 300, 50);
-		gw.login.setFont(f);
-		gw.login.addActionListener(gw.buttonListener);
-		gw.login.setForeground(Color.BLACK);
-		gw.login.setVisible(false);
-
-		gw.loginfeedback = new TransparentButton(GameProperties.LOGIN);
-		gw.loginfeedback.setBounds(width/2-150,height /2, 300, 50);
-		gw.loginfeedback.setFont(f);
-		gw.loginfeedback.addActionListener(gw.buttonListener);
-		gw.loginfeedback.setForeground(Color.BLACK);
-		gw.loginfeedback.setVisible(false);
-
-		gw.registerset = new TransparentButton(GameProperties.REGISTERSET);
-		gw.registerset.setBounds(50, width / 25 * 2, 300, 50);
-		gw.registerset.setFont(f);
-		gw.registerset.addActionListener(gw.buttonListener);
-		gw.registerset.setForeground(Color.WHITE);
-
-		gw.video = new TransparentButton(GameProperties.VIDEO);
-		gw.video.setBounds(50, width / 25 * 3, 300, 50);
-		gw.video.setFont(f);
-		gw.video.addActionListener(gw.buttonListener);
-		gw.video.setForeground(Color.WHITE);
-
-		gw.exit = new TransparentButton(GameProperties.EXIT);
-		gw.exit.setBounds(50, width / 25 * 4, 300, 50);
-		gw.exit.setFont(f);
-		gw.exit.addActionListener(gw.buttonListener);
-		gw.exit.setForeground(Color.WHITE);
-
-
-		Vector<Component> registerorder = new Vector<Component>(4);
-		registerorder.add(gw.usernamefield);
-		registerorder.add(gw.emailfield);
-		registerorder.add(gw.passwortfield);
-		registerorder.add(gw.register);
-		registerPolicy = new MyOwnFocusTraversalPolicy(registerorder);
-
-		Vector<Component> loginorder = new Vector<Component>(3);
-		loginorder.add(gw.loginfield);
-		loginorder.add(gw.passwordfield);
-		loginorder.add(gw.login);
-		loginPolicy = new MyOwnFocusTraversalPolicy(loginorder);
-
-
-		gw.activeMainPanel.add(start);
-		gw.activeMainPanel.add(loginfield);
-		gw.activeMainPanel.add(passwordfield);
-		gw.activeMainPanel.add(login);
-		gw.activeMainPanel.add(usernamefield);
-		gw.activeMainPanel.add(usernamecheck);
-		gw.activeMainPanel.add(emailfield);
-		gw.activeMainPanel.add(emailcheck);
-		gw.activeMainPanel.add(passwortfield);
-		gw.activeMainPanel.add(register);
-		gw.activeMainPanel.add(registerset);
-		gw.activeMainPanel.add(video);
-		gw.activeMainPanel.add(exit);
-
-		gw.activeMainPanel.add(menuPicture);
-
-		gw.activeMainPanel.setVisible(true);
-		gw.add(activeMainPanel);
-	}
 
 	private void initGame(ServerConnection sc) {
 
@@ -422,18 +229,6 @@ public class GameWindow extends JFrame {
 
 		}
 
-	}
-
-	public class TransparentButton extends JButton {
-		private static final long serialVersionUID = 8225611310676742450L;
-
-		public TransparentButton(String text) {
-			super(text);
-			setBorder(null);
-			setBorderPainted(false);
-			setContentAreaFilled(false);
-			setOpaque(false);
-		}
 	}
 
 	public static class MyOwnFocusTraversalPolicy extends FocusTraversalPolicy{

@@ -15,7 +15,6 @@ public class GameProperties {
 	public static final int GRAPHICS_SIZE_BLOCK = 128;
 	public static final int GRAPHICS_SIZE_CHAR_HEIGHT = 64;
 	public static final int GRAPHICS_SIZE_CHAR_WIDTH = 32;
-	public static final String FONT_NAME = "PiecesOfEight.ttf";
 
 	public static final String savePath = (System.getenv("APPDATA") + SEPERATOR + "BlueBrickGames" + SEPERATOR + "Arr - Die Piratenbucht" + SEPERATOR);
 	public static final int MENU_ID_INVENTORY = 1;
@@ -124,9 +123,13 @@ public class GameProperties {
 		return "ohnebg.png";
 	}
 	public String cursorPath() {
-		return "/rec/cursor_1.png";
+		return File.separator + "rec" + File.separator + "cursor_1.png";
 	}
 	public String backgroundPath(){
 		return "totenkopf_bigger.jpg";
+	}
+
+	public String fontPath() {
+		return gamePath() + File.separator + "rec" + File.separator + "PiecesOfEight.ttf";
 	}
 }
