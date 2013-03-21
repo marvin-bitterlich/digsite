@@ -57,7 +57,7 @@ public class ActivePlayer extends Player {
 	public void draw(Graphics g) {
 		g.drawImage(this.getImage(), (int) this.getXPos(), (int) this.getYPos(), null);
 		g.drawString(GameProperties.playerx + " | " + GameProperties.playery, 100, 100);
-		g.drawString(GameProperties.getPlayerBlockX() + " | " + GameProperties.getPlayerBlockY(), 100, 200);
+		g.drawString(SingletonWorker.gameProperties().getPlayerBlockX() + " | " + SingletonWorker.gameProperties().getPlayerBlockY(), 100, 200);
 	}
 	
 	public int[] getEquiped() {

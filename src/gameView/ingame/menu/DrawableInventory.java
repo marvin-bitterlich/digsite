@@ -13,7 +13,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import recources.ImageCache;
-import singleton.GameProperties;
 import singleton.SingletonWorker;
 import utilities.ImageUtil;
 
@@ -285,8 +284,8 @@ public class DrawableInventory extends UIItem {
 			if (currentItemBox.isInRange(e.getX(), e.getY())) {
 				if(rightclick){
 					if((int)item[4]==11 || (int)item[4]==12){
-						int x = GameProperties.getPlayerBlockX();
-						int y = GameProperties.getPlayerBlockY();
+						int x = SingletonWorker.gameProperties().getPlayerBlockX();
+						int y = SingletonWorker.gameProperties().getPlayerBlockY();
 						SingletonWorker.gameData().getNetworkHandlerThread().placeLadder(x,y,(int)item[4]);
 					}else{
 						SingletonWorker.gameData().getNetworkHandlerThread().craftItem((int)item[4]);

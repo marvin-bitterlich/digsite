@@ -123,7 +123,7 @@ public class GameProperties {
 		return gameFont;
 	}
 
-	public static int getPlayerBlockX() {
+	public int getPlayerBlockX() {
 		int x = (GameProperties.playerx+62)/GameProperties.GRAPHICS_SIZE_BLOCK;
 		if(GameProperties.playerx+62<0){
 			x--;
@@ -131,7 +131,7 @@ public class GameProperties {
 		return x;
 	}
 
-	public static int getPlayerBlockY() {
+	public int getPlayerBlockY() {
 		int y = (GameProperties.playery-31)	/GameProperties.GRAPHICS_SIZE_BLOCK;
 		return y;
 	}
