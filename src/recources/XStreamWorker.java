@@ -2,9 +2,9 @@ package recources;
 
 import gameData.Block;
 import gameData.Chunk;
-import gameData.DrawableItemStack;
-import gameData.Inventory;
 import gameData.Mine;
+import gameView.ingame.inventory.DrawableItemStack;
+import gameView.ingame.inventory.Inventory;
 
 import java.io.StringWriter;
 

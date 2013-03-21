@@ -3,6 +3,8 @@ package gameData;
 import java.awt.Graphics;
 import java.util.LinkedList;
 
+import singleton.GameProperties;
+
 /***********************************************************************************
  * @author:	Marvin Hofmann	Klasse: DQI10	*
  * Prog.Name: Chunk.java	Beschreibung	*

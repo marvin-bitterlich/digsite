@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.logging.Level;
 
-import recources.SingletonWorker;
+import singleton.SingletonWorker;
 
 /***********************************************************************************
  * @author:	Marvin Hofmann	Klasse: DQI10	*

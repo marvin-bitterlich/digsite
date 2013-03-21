@@ -1,4 +1,4 @@
-package gameData;
+package gameView.ingame.datatypes;
 
 public enum Direction {
 	up, right, down, left;

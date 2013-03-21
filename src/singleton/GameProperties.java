@@ -1,10 +1,11 @@
-package gameData;
+package singleton;
+
+import gameView.ingame.datatypes.RelativeBoxPosition;
 
 import java.awt.Font;
 import java.io.File;
 import java.util.logging.Level;
 
-import recources.SingletonWorker;
 
 public class GameProperties {
 	public static final String SEPERATOR = System.lineSeparator();

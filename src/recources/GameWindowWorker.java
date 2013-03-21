@@ -25,16 +25,16 @@ import javax.swing.SwingConstants;
 import network.NetworkHandlerThread;
 import network.ServerConnection;
 
+import singleton.GameData;
+import singleton.GameProperties;
+import singleton.SingletonWorker;
 import utilities.ImageUtil;
 
 import gameController.GameControllerThread;
-import gameData.GameData;
-import gameData.GameProperties;
-import gameData.ImageCache;
-import gameData.MyOwnFocusTraversalPolicy;
-import gameData.TransparentButton;
 import gameView.GamePanel;
 import gameView.GameWindow;
+import gameView.components.GameWindowFocusTraversalPolicy;
+import gameView.components.TransparentButton;
 
 public class GameWindowWorker {
 
@@ -294,13 +294,13 @@ public class GameWindowWorker {
 		registerorder.add(gw.emailfield);
 		registerorder.add(gw.passwortfield);
 //		registerorder.add(gw.register);
-		gw.registerPolicy = new MyOwnFocusTraversalPolicy(registerorder);
+		gw.registerPolicy = new GameWindowFocusTraversalPolicy(registerorder);
 
 		Vector<Component> loginorder = new Vector<Component>(3);
 		loginorder.add(gw.loginfield);
 		loginorder.add(gw.passwordfield);
 //		loginorder.add(gw.login);
-		gw.loginPolicy = new MyOwnFocusTraversalPolicy(loginorder);
+		gw.loginPolicy = new GameWindowFocusTraversalPolicy(loginorder);
 
 
 		gw.activeMainPanel.add(gw.start);

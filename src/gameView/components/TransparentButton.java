@@ -1,4 +1,4 @@
-package gameData;
+package gameView.components;
 
 import javax.swing.JButton;
 

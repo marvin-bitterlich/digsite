@@ -1,4 +1,4 @@
-package gameData;
+package gameView.components;
 
 import gameView.GameWindow;
 
@@ -9,9 +9,9 @@ import javax.swing.JButton;
 
 import network.ServerConnection;
 import recources.GameWindowWorker;
-import recources.SingletonWorker;
+import singleton.SingletonWorker;
 
-public class MainMenuButtonListener implements ActionListener {
+public class GameWindowButtonListener implements ActionListener {
 	private ServerConnection sc;
 	private boolean registering = false;
 

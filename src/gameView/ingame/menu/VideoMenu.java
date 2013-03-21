@@ -1,4 +1,5 @@
-package gameData;
+package gameView.ingame.menu;
+
 
 import java.awt.event.MouseEvent;
 

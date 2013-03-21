@@ -1,4 +1,6 @@
-package gameData;
+package gameView.ingame.inventory;
+
+import gameData.ItemStack;
 
 public class ConcreteItemStack implements ItemStack {
 

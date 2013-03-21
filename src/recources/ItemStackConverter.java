@@ -1,7 +1,7 @@
 package recources;
 
-import gameData.DrawableItemStack;
 import gameData.ItemStack;
+import gameView.ingame.inventory.DrawableItemStack;
 
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;

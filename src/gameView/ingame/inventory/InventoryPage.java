@@ -1,9 +1,10 @@
-package gameData;
+package gameView.ingame.inventory;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import recources.SingletonWorker;
+
+import singleton.SingletonWorker;
 
 public class InventoryPage {
 	private Object[][] items;

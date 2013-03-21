@@ -1,9 +1,10 @@
-package gameData;
+package gameView.ingame.menu;
+
 
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 
-import recources.SingletonWorker;
+import singleton.SingletonWorker;
 
 
 public class MainMenu extends UIItem {

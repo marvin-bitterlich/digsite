@@ -1,14 +1,14 @@
 package network;
 
 import recources.NumberWorker;
-import recources.SingletonWorker;
 import recources.XStreamWorker;
+import singleton.GameProperties;
+import singleton.SingletonWorker;
 import gameData.Block;
 import gameData.Chunk;
 import gameData.Entity;
-import gameData.GameProperties;
-import gameData.Inventory;
 import gameData.Player;
+import gameView.ingame.inventory.Inventory;
 
 /***********************************************************************************
  * @author:	Marvin Hofmann	Klasse: DQI10	*

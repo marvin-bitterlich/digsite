@@ -1,8 +1,8 @@
 package gameView;
 
-import gameData.MainMenuButtonListener;
-import gameData.MyOwnFocusTraversalPolicy;
-import gameData.TransparentButton;
+import gameView.components.GameWindowButtonListener;
+import gameView.components.GameWindowFocusTraversalPolicy;
+import gameView.components.TransparentButton;
 
 import java.awt.Cursor;
 import java.awt.Font;
@@ -17,7 +17,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import recources.GameWindowWorker;
-import recources.SingletonWorker;
+import singleton.SingletonWorker;
 
 public class GameWindow extends JFrame {
 	private static final long serialVersionUID = 8144111541455084091L;
@@ -28,7 +28,7 @@ public class GameWindow extends JFrame {
 	public JPanel activeMainPanel;
 	public GameWindow gw;
 	public JButton start, video, registerset, exit;
-	public ActionListener buttonListener = new MainMenuButtonListener();
+	public ActionListener buttonListener = new GameWindowButtonListener();
 	public JTextField loginfield;
 	public JPasswordField passwordfield;
 	public TransparentButton login;
@@ -38,8 +38,8 @@ public class GameWindow extends JFrame {
 	public JTextField usernamefield;
 	public JTextField passwortfield;
 	public TransparentButton register;
-	public MyOwnFocusTraversalPolicy registerPolicy;
-	public MyOwnFocusTraversalPolicy loginPolicy;
+	public GameWindowFocusTraversalPolicy registerPolicy;
+	public GameWindowFocusTraversalPolicy loginPolicy;
 	public JLabel loginfeedback;
 	public JLabel registerfeedback;
 	public GameWindow() {

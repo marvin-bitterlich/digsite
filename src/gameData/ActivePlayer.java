@@ -1,10 +1,13 @@
 package gameData;
 
 import gameView.GameWindow;
+import gameView.ingame.inventory.Inventory;
+import gameView.ingame.menu.DrawableInventory;
 
 import java.awt.Graphics;
 
-import recources.SingletonWorker;
+import singleton.GameProperties;
+import singleton.SingletonWorker;
 
 public class ActivePlayer extends Player {
 
@@ -52,7 +55,7 @@ public class ActivePlayer extends Player {
 
 	@Override
 	public void draw(Graphics g) {
-		g.drawImage(this.getSprite().getImage(), (int) this.getXPos(), (int) this.getYPos(), null);
+		g.drawImage(this.getImage(), (int) this.getXPos(), (int) this.getYPos(), null);
 		g.drawString(GameProperties.playerx + " | " + GameProperties.playery, 100, 100);
 		g.drawString(GameProperties.getPlayerBlockX() + " | " + GameProperties.getPlayerBlockY(), 100, 200);
 	}

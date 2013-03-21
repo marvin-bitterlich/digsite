@@ -1,6 +1,10 @@
-package gameData;
+package gameView.ingame.menu;
 
 import gameView.GameWindow;
+import gameView.ingame.datatypes.ClickPosition;
+import gameView.ingame.datatypes.RelativeBoxPosition;
+import gameView.ingame.inventory.DrawableItemStack;
+import gameView.ingame.inventory.InventoryPage;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -8,7 +12,9 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import recources.SingletonWorker;
+import recources.ImageCache;
+import singleton.GameProperties;
+import singleton.SingletonWorker;
 import utilities.ImageUtil;
 
 public class DrawableInventory extends UIItem {
@@ -111,8 +117,7 @@ public class DrawableInventory extends UIItem {
 		int currentItemCategory = 0;
 		for (int item : SingletonWorker.gameData().activePlayer().getEquiped()) {
 			if (item != Integer.MAX_VALUE) {
-				Image itemImage = ItemManager.getItem(item).getSprite()
-						.getImage();
+				Image itemImage = ImageCache.getIcon(item);
 
 				int width = (int) (equipmentBoxes[currentItemCategory]
 						.getEndX() - equipmentBoxes[currentItemCategory]
@@ -180,9 +185,7 @@ public class DrawableInventory extends UIItem {
 			invPage[index][0] = startX;
 			invPage[index][1] = startY;
 
-			invPage[index][2] = ImageUtil.resizeImage(
-					(BufferedImage) is.getSprite()
-					.getImage(), itemWidth, itemHeight);
+			invPage[index][2] = ImageUtil.resizeImage(is.getImage(), itemWidth, itemHeight);
 
 			invPage[index][3] = new ClickPosition(startX, startY, endX, endY);
 
@@ -298,17 +301,6 @@ public class DrawableInventory extends UIItem {
 				}
 
 			}
-		}
-	}
-
-	@SuppressWarnings("unused")
-	private void equipItem(int item) {
-		int itemCategory = ItemManager.getItem(item).getCategory();
-		if (itemCategory != Item.ITEM_CATEGORY_OTHERS) {
-
-			SingletonWorker.gameData().activePlayer()
-			.getEquiped()[itemCategory] = item;
-
 		}
 	}
 

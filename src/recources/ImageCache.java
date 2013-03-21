@@ -1,6 +1,7 @@
-package gameData;
+package recources;
 
-import java.awt.Image;
+import gameView.ingame.datatypes.Direction;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +10,8 @@ import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
 
-import recources.SingletonWorker;
+import singleton.GameProperties;
+import singleton.SingletonWorker;
 
 import utilities.ImageUtil;
 
@@ -21,12 +23,12 @@ import utilities.ImageUtil;
  * **********************************************************************************/
 public class ImageCache {
 
-	private static HashMap<Integer, Sprite[]> map = new HashMap<Integer, Sprite[]>();
+	private static HashMap<Integer, BufferedImage[]> map = new HashMap<Integer, BufferedImage[]>();
 	private static BufferedImage[] playerimages;
 
-	public static Sprite getSprite(int id) {
+	public static BufferedImage getSprite(int id) {
 		if(map.containsKey(id)){
-			Sprite[] spritearray = map.get(id);
+			BufferedImage[] spritearray = map.get(id);
 			return spritearray[(int)(Math.random()*spritearray.length)];
 		}
 
@@ -44,25 +46,18 @@ public class ImageCache {
 		int h = image.getHeight()/GameProperties.FILE_SIZE_BLOCK;
 
 		BufferedImage[] imageParts = ImageUtil.splitImage(image,w,h);
-
-		Sprite[] sprites = new Sprite[imageParts.length];
-
 		for (int i = 0; i < imageParts.length; i++) {
 			BufferedImage bi = imageParts[i];
-			Sprite sp = new Sprite(
-					ImageUtil.resizeImage(bi, GameProperties.GRAPHICS_SIZE_BLOCK, GameProperties.GRAPHICS_SIZE_BLOCK)
-					);
-			sprites[i] = sp;
+			imageParts[i] = ImageUtil.resizeImage(bi, GameProperties.GRAPHICS_SIZE_BLOCK, GameProperties.GRAPHICS_SIZE_BLOCK);
 		}
 
-		map.put(id, sprites);
-		return sprites[(int)(Math.random()*sprites.length)];
+		map.put(id, imageParts);
+		return imageParts[(int)(Math.random()*imageParts.length)];
 	}
 
-	public static Sprite getIcon(int id) {
+	public static BufferedImage getIcon(int id) {
 		if(map.containsKey(id)){
-			Sprite[] spritearray = map.get(id);
-			return spritearray[0];
+			return map.get(id)[0];
 		}
 
 		BufferedImage image = null;
@@ -79,19 +74,13 @@ public class ImageCache {
 		int h = image.getHeight()/GameProperties.FILE_SIZE_BLOCK;
 
 		BufferedImage[] imageParts = ImageUtil.splitImage(image,w,h);
-
-		Sprite[] sprites = new Sprite[imageParts.length];
-
 		for (int i = 0; i < imageParts.length; i++) {
 			BufferedImage bi = imageParts[i];
-			Sprite sp = new Sprite(
-					ImageUtil.resizeImage(bi, GameProperties.GRAPHICS_SIZE_BLOCK, GameProperties.GRAPHICS_SIZE_BLOCK)
-					);
-			sprites[i] = sp;
+			imageParts[i] = ImageUtil.resizeImage(bi, GameProperties.GRAPHICS_SIZE_BLOCK, GameProperties.GRAPHICS_SIZE_BLOCK);
 		}
 
-		map.put(id, sprites);
-		return sprites[0];
+		map.put(id, imageParts);
+		return imageParts[0];
 	}
 
 	public static BufferedImage getRecource(String filename){
@@ -105,7 +94,7 @@ public class ImageCache {
 		return null;
 	}
 
-	public static Image getPlayerSprite(Direction direction) {
+	public static BufferedImage getPlayerImage(Direction direction) {
 		if(playerimages == null){
 			BufferedImage fullimage = getRecource(SingletonWorker.gameProperties().playerPath());
 			playerimages = ImageUtil.splitImage(fullimage, 4, 1);

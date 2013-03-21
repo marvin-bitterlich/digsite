@@ -12,7 +12,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 import recources.ConstantsWorker;
-import recources.SingletonWorker;
+import singleton.GameProperties;
+import singleton.SingletonWorker;
 
 /***********************************************************************************
  * @author:	Marvin Hofmann	Klasse: DQI10	*

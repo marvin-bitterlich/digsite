@@ -1,4 +1,4 @@
-package gameData;
+package gameView.ingame.datatypes;
 
 public class RelativeBoxPosition {
 	private double relativeStartX, relativeStartY, relativeEndX, relativeEndY;

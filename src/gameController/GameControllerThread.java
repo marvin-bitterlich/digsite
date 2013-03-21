@@ -2,21 +2,16 @@ package gameController;
 
 import gameData.ActivePlayer;
 import gameData.Block;
-import gameData.Direction;
 import gameData.Entity;
-import gameData.GameData;
-import gameData.GameProperties;
-import gameData.DrawableInventory;
-import gameData.ImageCache;
-import gameData.Item;
-import gameData.ItemManager;
-import gameData.MainMenu;
 import gameData.Player;
-import gameData.RelativeBoxPosition;
-import gameData.SkillMenu;
 import gameData.Texture;
-import gameData.UIItem;
 import gameView.GameWindow;
+import gameView.ingame.datatypes.Direction;
+import gameView.ingame.datatypes.RelativeBoxPosition;
+import gameView.ingame.menu.DrawableInventory;
+import gameView.ingame.menu.MainMenu;
+import gameView.ingame.menu.SkillMenu;
+import gameView.ingame.menu.UIItem;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -29,12 +24,14 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
 
-import recources.SingletonWorker;
+import recources.ImageCache;
+import singleton.GameData;
+import singleton.GameProperties;
+import singleton.SingletonWorker;
 
 import utilities.ImageUtil;
 
@@ -58,12 +55,6 @@ KeyEventDispatcher {
 	private long time;
 
 	private void fillItemsAndInventoryTest() {
-		HashMap<Integer, Item> itemList = new HashMap<Integer, Item>();
-		for (int i = 0; i < 11; i++) {
-			itemList.put(i, new Item(i));
-		}
-		ItemManager.setItemList(itemList);
-
 		int[] equipedItems = new int[9];
 		for (int i = 0; i < 9; i++) {
 			equipedItems[i] = Integer.MAX_VALUE;
@@ -205,10 +196,7 @@ KeyEventDispatcher {
 					RenderingHints.VALUE_ANTIALIAS_ON);
 			g.setFont(f);
 			if(basic == null){
-				basic = ImageUtil.resizeImage(
-						(BufferedImage) ImageCache.getIcon(0).getImage(),
-						GameWindow.getWindowWidth(),
-						GameWindow.getWindowHeight());
+				basic = ImageUtil.resizeImage(ImageCache.getIcon(0),GameWindow.getWindowWidth(),GameWindow.getWindowHeight());
 			}
 			g.drawImage(basic, 0, 0, null);
 
@@ -465,15 +453,15 @@ KeyEventDispatcher {
 
 	private DrawableInventory createInventory() {
 		RelativeBoxPosition[] equipmentBoxes = new RelativeBoxPosition[9];
-		equipmentBoxes[Item.ITEM_CATEGORY_HAT] = GameProperties.INV_RELATIVE_HAT_BOX;
-		equipmentBoxes[Item.ITEM_CATEGORY_EYE_PATCH] = GameProperties.INV_RELATIVE_EYE_PATCH_BOX;
-		equipmentBoxes[Item.ITEM_CATEGORY_PARROT] = GameProperties.INV_RELATIVE_PARROT_BOX;
-		equipmentBoxes[Item.ITEM_CATEGORY_CHEST] = GameProperties.INV_RELATIVE_CHEST_BOX;
-		equipmentBoxes[Item.ITEM_CATEGORY_WAEPON] = GameProperties.INV_RELATIVE_WAEPON_BOX;
-		equipmentBoxes[Item.ITEM_CATEGORY_SECOND_HAND] = GameProperties.INV_RELATIVE_SECOND_HAND_BOX;
-		equipmentBoxes[Item.ITEM_CATEGORY_PANTS] = GameProperties.INV_RELATIVE_PANTS_BOX;
-		equipmentBoxes[Item.ITEM_CATEGORY_SHOE] = GameProperties.INV_RELATIVE_SHOE_BOX;
-		equipmentBoxes[Item.ITEM_CATEGORY_WOODEN_LEG] = GameProperties.INV_RELATIVE_WOODEN_LEG_BOX;
+		equipmentBoxes[0] = GameProperties.INV_RELATIVE_HAT_BOX;
+		equipmentBoxes[1] = GameProperties.INV_RELATIVE_EYE_PATCH_BOX;
+		equipmentBoxes[2] = GameProperties.INV_RELATIVE_PARROT_BOX;
+		equipmentBoxes[3] = GameProperties.INV_RELATIVE_CHEST_BOX;
+		equipmentBoxes[4] = GameProperties.INV_RELATIVE_WAEPON_BOX;
+		equipmentBoxes[5] = GameProperties.INV_RELATIVE_SECOND_HAND_BOX;
+		equipmentBoxes[6] = GameProperties.INV_RELATIVE_PANTS_BOX;
+		equipmentBoxes[7] = GameProperties.INV_RELATIVE_SHOE_BOX;
+		equipmentBoxes[8] = GameProperties.INV_RELATIVE_WOODEN_LEG_BOX;
 
 		return new DrawableInventory(0, 0, GameWindow.getWindowWidth(),
 				GameWindow.getWindowHeight(), GameProperties.MENU_PIC_INV,

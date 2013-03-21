@@ -4,7 +4,9 @@ import gameView.GameWindow;
 
 import java.awt.Graphics;
 
-import recources.SingletonWorker;
+import recources.ImageCache;
+import singleton.GameProperties;
+import singleton.SingletonWorker;
 
 /***********************************************************************************
  * @author:	Marvin Hofmann	Klasse: DQI10	*
@@ -41,9 +43,9 @@ public class Block extends Texture{
 		this.xPos = xPos;
 		this.yPos = yPos;
 		if(shadow){
-			this.setSprite(ImageCache.getSprite(0));
+			this.setImage(ImageCache.getSprite(0));
 		}else{
-			this.setSprite(ImageCache.getSprite(id));
+			this.setImage(ImageCache.getSprite(id));
 		}
 		this.breakable = breakable;
 		this.health = health;
@@ -97,8 +99,8 @@ public class Block extends Texture{
 	public void draw(Graphics g) {
 		updatePosition();
 		if(draw){
-			if (this.getSprite().getImage() != null){
-				g.drawImage(this.getSprite().getImage(), (int) this.getXPos(),
+			if (this.getImage() != null){
+				g.drawImage(this.getImage(), (int) this.getXPos(),
 						(int) this.getYPos(), null);
 				//				super.draw(g);
 				if(this.isMassive() && !shadow && this.id != 3){

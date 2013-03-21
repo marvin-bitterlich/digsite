@@ -1,4 +1,4 @@
-package recources;
+package singleton;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -12,10 +12,9 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+
 import network.NetworkHandlerThread;
 import gameController.GameControllerThread;
-import gameData.GameData;
-import gameData.GameProperties;
 import gameView.GameWindow;
 
 public class SingletonWorker {

@@ -1,10 +1,12 @@
-package gameData;
+package gameView.ingame.inventory;
 
 
+
+import gameData.ItemStack;
 
 import java.util.ArrayList;
 
-import recources.SingletonWorker;
+import singleton.SingletonWorker;
 
 
 
@@ -17,7 +19,7 @@ import recources.SingletonWorker;
 public class Inventory {
 	int size;
 	ArrayList<DrawableItemStack> itemstacks;
-	boolean changed = true;
+	public boolean changed = true;
 
 	public Inventory(int inventorysize){
 		this.size = inventorysize;

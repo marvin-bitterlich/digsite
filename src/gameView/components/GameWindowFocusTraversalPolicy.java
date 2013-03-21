@@ -1,14 +1,14 @@
-package gameData;
+package gameView.components;
 
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.FocusTraversalPolicy;
 import java.util.Vector;
 
-public class MyOwnFocusTraversalPolicy extends FocusTraversalPolicy{
+public class GameWindowFocusTraversalPolicy extends FocusTraversalPolicy{
 	Vector<Component> order;
 
-	public MyOwnFocusTraversalPolicy(Vector<Component> order) {
+	public GameWindowFocusTraversalPolicy(Vector<Component> order) {
 		this.order = new Vector<Component>(order.size());
 		this.order.addAll(order);
 	}

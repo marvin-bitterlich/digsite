@@ -2,11 +2,14 @@ package gameData;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+
+import singleton.GameProperties;
 
 public abstract class Texture {
 	private boolean massive;
 	private double xPos, yPos;
-	private Sprite sprite;
+	private BufferedImage image;
 
 	public Texture(double xPos, double yPos) {
 		this.xPos = xPos;
@@ -20,7 +23,7 @@ public abstract class Texture {
 	}
 
 	public void draw(Graphics g) {
-		g.drawImage(sprite.getImage(), (int) xPos, (int) yPos, null);
+		g.drawImage(image, (int) xPos, (int) yPos, null);
 	}
 
 	public abstract void process(long duration);
@@ -35,7 +38,7 @@ public abstract class Texture {
 					GameProperties.GRAPHICS_SIZE_CHAR_HEIGHT);
 		} else {
 			r = new Rectangle((int) this.getXPos(), (int) this.getYPos(), this
-					.getSprite().getWidth(), this.getSprite().getHeight());
+					.getImage().getWidth(), this.getImage().getHeight());
 		}
 
 		Rectangle r2;
@@ -46,7 +49,7 @@ public abstract class Texture {
 					GameProperties.GRAPHICS_SIZE_CHAR_HEIGHT);
 		} else {
 			r2 = new Rectangle((int) t.getXPos(), (int) t.getYPos(), t
-					.getSprite().getWidth(), t.getSprite().getHeight());
+					.getImage().getWidth(), t.getImage().getHeight());
 		}
 
 		return r.intersects(r2);
@@ -62,7 +65,7 @@ public abstract class Texture {
 					GameProperties.GRAPHICS_SIZE_CHAR_HEIGHT);
 		} else {
 			r = new Rectangle((int) this.getXPos()+xoffset, (int) this.getYPos()+yoffset, this
-					.getSprite().getWidth(), this.getSprite().getHeight());
+					.getImage().getWidth(), this.getImage().getHeight());
 		}
 
 		Rectangle r2;
@@ -73,7 +76,7 @@ public abstract class Texture {
 					GameProperties.GRAPHICS_SIZE_CHAR_HEIGHT);
 		} else {
 			r2 = new Rectangle((int) t.getXPos(), (int) t.getYPos(), t
-					.getSprite().getWidth(), t.getSprite().getHeight());
+					.getImage().getWidth(), t.getImage().getHeight());
 		}
 
 		return r.intersects(r2);
@@ -83,10 +86,10 @@ public abstract class Texture {
 	
 	public boolean hits(Texture t) {
 		Rectangle r = new Rectangle((int) this.getXPos(), (int) this.getYPos(),
-				this.getSprite().getWidth(), this.getSprite().getHeight());
+				this.getImage().getWidth(), this.getImage().getHeight());
 
 		Rectangle r2 = new Rectangle((int) t.getXPos(), (int) t.getYPos(), t
-				.getSprite().getWidth(), t.getSprite().getHeight());
+				.getImage().getWidth(), t.getImage().getHeight());
 
 		return r.intersects(r2);
 	}
@@ -107,12 +110,12 @@ public abstract class Texture {
 		this.yPos = yPos;
 	}
 
-	public Sprite getSprite() {
-		return sprite;
+	public BufferedImage getImage() {
+		return image;
 	}
 
-	public void setSprite(Sprite sprite) {
-		this.sprite = sprite;
+	public void setImage(BufferedImage image) {
+		this.image = image;
 	}
 
 	public boolean isMassive() {

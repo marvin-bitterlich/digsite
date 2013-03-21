@@ -4,6 +4,9 @@ import gameView.GameWindow;
 
 import java.awt.Graphics;
 
+import recources.ImageCache;
+import singleton.GameProperties;
+
 public class Player extends Entity {
 
 	public static final int CLASS_BRUTE = 0;
@@ -20,13 +23,12 @@ public class Player extends Entity {
 	private int health, mana, strength, intelligence, agility, atk, def,
 	magRes, playerClass;
 	private boolean attacking = false;
-	private Sprite attackSprite;
-//	private int attackAnimationStep = 0;
-//	private int attackPartProgressMillis = Integer.MAX_VALUE;
+	//	private int attackAnimationStep = 0;
+	//	private int attackPartProgressMillis = Integer.MAX_VALUE;
 	private int attackX, attackY;
 	private int mouseX, mouseY; 
-//	private int moveAnimationStep = 0;
-//	private int movePartProgressMillis = Integer.MAX_VALUE;
+	//	private int moveAnimationStep = 0;
+	//	private int movePartProgressMillis = Integer.MAX_VALUE;
 
 	public Player(int health, int mana, int strength, int intelligence,
 			int agility, int atk, int def, int magRes, int playerClass,
@@ -53,14 +55,8 @@ public class Player extends Entity {
 
 		double yp = (this.getYPos())
 				+(GameWindow.getWindowHeight() / 2)-GameProperties.GRAPHICS_SIZE_CHAR_HEIGHT*2-10-GameProperties.playery;
+		g.drawImage(this.getImage(),(int)xp,(int)yp, null);
 
-		if (this.attacking) {
-			g.drawImage(this.attackSprite.getImage(), (int) xp,
-					(int) yp, null);
-		} else {
-			g.drawImage(this.getSprite().getImage(), (int) xp,
-					(int) yp, null);
-		}	
 	}
 
 	@Override
@@ -91,13 +87,13 @@ public class Player extends Entity {
 
 	@Override
 	public void updateImageDirection(long duration) {
-//		this.updateDirection();
+		//		this.updateDirection();
 
 		//		if (!attacking) {
 
 		// moveAnimationStep = 0, movePartProgressMillis
-		
-		this.getSprite().setImage(ImageCache.getPlayerSprite(this.getDirection()));
+
+		this.setImage(ImageCache.getPlayerImage(this.getDirection()));
 		//		} else {
 		//
 		//			Image fullAttackImage = SpriteManager.getSprite(
@@ -127,25 +123,25 @@ public class Player extends Entity {
 		//		}
 	}
 
-	
 
-//	private void updateDirection() {
-//		int mouseXDiff = (int) (this.mouseX - this.getXPos());
-//		int mouseYDiff = (int) (this.mouseY - this.getYPos());
-//
-//		if (mouseXDiff < 0 && Math.abs(mouseXDiff) > Math.abs(mouseYDiff)) {
-//			this.setDirection(Direction.left);
-//		} else if (mouseXDiff > 0
-//				&& Math.abs(mouseXDiff) > Math.abs(mouseYDiff)) {
-//			this.setDirection(Direction.right);
-//		} else if (mouseYDiff > 0
-//				&& Math.abs(mouseYDiff) > Math.abs(mouseXDiff)) {
-//			this.setDirection(Direction.down);
-//		} else if (mouseYDiff < 0
-//				&& Math.abs(mouseYDiff) > Math.abs(mouseXDiff)) {
-//			this.setDirection(Direction.up);
-//		}
-//	}
+
+	//	private void updateDirection() {
+	//		int mouseXDiff = (int) (this.mouseX - this.getXPos());
+	//		int mouseYDiff = (int) (this.mouseY - this.getYPos());
+	//
+	//		if (mouseXDiff < 0 && Math.abs(mouseXDiff) > Math.abs(mouseYDiff)) {
+	//			this.setDirection(Direction.left);
+	//		} else if (mouseXDiff > 0
+	//				&& Math.abs(mouseXDiff) > Math.abs(mouseYDiff)) {
+	//			this.setDirection(Direction.right);
+	//		} else if (mouseYDiff > 0
+	//				&& Math.abs(mouseYDiff) > Math.abs(mouseXDiff)) {
+	//			this.setDirection(Direction.down);
+	//		} else if (mouseYDiff < 0
+	//				&& Math.abs(mouseYDiff) > Math.abs(mouseXDiff)) {
+	//			this.setDirection(Direction.up);
+	//		}
+	//	}
 
 	public static String getMovementAnimation(int playerClass) {
 		switch (playerClass) {

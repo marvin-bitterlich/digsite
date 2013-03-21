@@ -1,8 +1,9 @@
 package gameView;
 
-import gameData.GameData;
 import java.awt.Graphics;
 import javax.swing.JPanel;
+
+import singleton.GameData;
 
 public class GamePanel extends JPanel{
 

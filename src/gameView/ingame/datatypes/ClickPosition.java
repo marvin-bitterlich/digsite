@@ -1,6 +1,6 @@
-package gameData;
+package gameView.ingame.datatypes;
 
-import gameView.GameWindow;
+import singleton.SingletonWorker;
 
 public class ClickPosition {
 	private int startX, startY, endX, endY;
@@ -14,14 +14,10 @@ public class ClickPosition {
 	}
 
 	public ClickPosition(RelativeBoxPosition relativeBox) {
-		startX = (int) (relativeBox.getRelativeStartX() * (double) GameWindow
-				.getWindowWidth());
-		startY = (int) (relativeBox.getRelativeStartY() * (double) GameWindow
-				.getWindowHeight());
-		endX = (int) (relativeBox.getRelativeEndX() * (double) GameWindow
-				.getWindowWidth());
-		endY = (int) (relativeBox.getRelativeEndY() * (double) GameWindow
-				.getWindowHeight());
+		startX = (int) (relativeBox.getRelativeStartX() * (double)SingletonWorker.gameData().width());
+		startY = (int) (relativeBox.getRelativeStartY() * (double)SingletonWorker.gameData().height());
+		endX = (int) (relativeBox.getRelativeEndX() * (double)SingletonWorker.gameData().width());
+		endY = (int) (relativeBox.getRelativeEndY() * (double)SingletonWorker.gameData().height());
 	}
 
 	public boolean isInRange(int x, int y) {

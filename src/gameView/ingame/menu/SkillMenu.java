@@ -1,12 +1,13 @@
-package gameData;
+package gameView.ingame.menu;
+
 
 import java.awt.event.MouseEvent;
 
-public class AudioMenu extends UIItem {
+public class SkillMenu extends UIItem {
 
-	public AudioMenu(int startX, int startY, int endX, int endY, String src) {
+	public SkillMenu(int startX, int startY, int endX, int endY, String src) {
 		super(startX, startY, endX, endY, src);
-		// TODO Auto-generated constructor stub
+		// TODO Auto-generated method stub
 	}
 
 	@Override
