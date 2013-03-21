@@ -96,7 +96,7 @@ public class SingletonWorker {
 				log.mkdirs();
 				Handler ch = new ConsoleHandler();
 				Handler handler = new FileHandler( log.getAbsolutePath() + File.separator + "log_" + 
-				new SimpleDateFormat("dd_MM_yyyy_HH_mm_ss").format(new Date(System.currentTimeMillis())) + ".txt" );
+				new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(new Date(System.currentTimeMillis())) + ".txt" );
 				Formatter f = new Formatter() {
 
 

@@ -109,6 +109,17 @@ KeyEventDispatcher {
 			gamedata.activePlayer().updateImageDirection(duration);
 			LinkedList<Texture> textures = gamedata.mine().getTextures();
 			this.updateMenus(duration);
+			
+			
+			
+			/*
+			 * Start New Movement calculation Code!
+			 * */
+			
+			/*
+			 * End New Movement calculation Code!
+			 * */
+			
 			boolean digging = false;
 			//move y direction
 			boolean outofbounds = true;
