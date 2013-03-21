@@ -1,7 +1,7 @@
 digsite
 =======
 
-*a game of digging*
+*In digsite, you mine yourself throught endless worlds of minerals!*
 
 website: http://digsite.de
 
