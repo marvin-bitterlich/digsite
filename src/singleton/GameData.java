@@ -6,9 +6,9 @@ import java.util.HashMap;
 import network.NetworkHandlerThread;
 import gameController.GameControllerThread;
 import gameData.ActivePlayer;
-import gameData.Entity;
-import gameData.Mine;
 import gameView.GamePanel;
+import gameView.ingame.Mine;
+import gameView.ingame.datatypes.Entity;
 import gameView.ingame.menu.UIItem;
 
 public class GameData {

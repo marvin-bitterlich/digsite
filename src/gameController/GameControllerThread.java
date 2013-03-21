@@ -1,13 +1,13 @@
 package gameController;
 
 import gameData.ActivePlayer;
-import gameData.Block;
-import gameData.Entity;
 import gameData.Player;
-import gameData.Texture;
 import gameView.GameWindow;
+import gameView.ingame.Block;
 import gameView.ingame.datatypes.Direction;
+import gameView.ingame.datatypes.Entity;
 import gameView.ingame.datatypes.RelativeBoxPosition;
+import gameView.ingame.datatypes.Texture;
 import gameView.ingame.menu.DrawableInventory;
 import gameView.ingame.menu.MainMenu;
 import gameView.ingame.menu.SkillMenu;

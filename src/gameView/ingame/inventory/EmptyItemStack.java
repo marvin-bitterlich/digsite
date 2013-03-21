@@ -1,6 +1,6 @@
 package gameView.ingame.inventory;
 
-import gameData.ItemStack;
+import gameView.ingame.datatypes.ItemStack;
 
 public class EmptyItemStack implements ItemStack {
 

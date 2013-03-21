@@ -1,7 +1,7 @@
 package recources;
 
 
-import gameData.Block;
+import gameView.ingame.Block;
 
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;

@@ -1,6 +1,7 @@
 package gameData;
 
 import gameView.GameWindow;
+import gameView.ingame.datatypes.Entity;
 
 import java.awt.Graphics;
 

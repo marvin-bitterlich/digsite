@@ -1,6 +1,5 @@
-package gameData;
+package gameView.ingame.datatypes;
 
-import gameView.ingame.datatypes.Direction;
 import recources.ImageCache;
 
 

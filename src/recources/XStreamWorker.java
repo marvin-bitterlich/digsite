@@ -1,8 +1,8 @@
 package recources;
 
-import gameData.Block;
-import gameData.Chunk;
-import gameData.Mine;
+import gameView.ingame.Block;
+import gameView.ingame.Chunk;
+import gameView.ingame.Mine;
 import gameView.ingame.inventory.DrawableItemStack;
 import gameView.ingame.inventory.Inventory;
 

@@ -4,10 +4,10 @@ import recources.NumberWorker;
 import recources.XStreamWorker;
 import singleton.GameProperties;
 import singleton.SingletonWorker;
-import gameData.Block;
-import gameData.Chunk;
-import gameData.Entity;
 import gameData.Player;
+import gameView.ingame.Block;
+import gameView.ingame.Chunk;
+import gameView.ingame.datatypes.Entity;
 import gameView.ingame.inventory.Inventory;
 
 /***********************************************************************************

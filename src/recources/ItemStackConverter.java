@@ -1,6 +1,6 @@
 package recources;
 
-import gameData.ItemStack;
+import gameView.ingame.datatypes.ItemStack;
 import gameView.ingame.inventory.DrawableItemStack;
 
 import com.thoughtworks.xstream.converters.Converter;

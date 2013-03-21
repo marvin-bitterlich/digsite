@@ -1,6 +1,6 @@
 package gameView.ingame.menu;
 
-import gameData.Texture;
+import gameView.ingame.datatypes.Texture;
 
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;

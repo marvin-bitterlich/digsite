@@ -1,6 +1,8 @@
-package gameData;
+package gameView.ingame;
 
+import gameData.ActivePlayer;
 import gameView.GameWindow;
+import gameView.ingame.datatypes.Texture;
 
 import java.awt.Graphics;
 

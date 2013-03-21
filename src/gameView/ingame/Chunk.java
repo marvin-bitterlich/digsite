@@ -1,4 +1,6 @@
-package gameData;
+package gameView.ingame;
+
+import gameView.ingame.datatypes.Texture;
 
 import java.awt.Graphics;
 import java.util.LinkedList;

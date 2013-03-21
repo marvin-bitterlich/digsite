@@ -2,7 +2,7 @@ package gameView.ingame.inventory;
 
 
 
-import gameData.ItemStack;
+import gameView.ingame.datatypes.ItemStack;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,6 @@
-package gameData;
+package gameView.ingame.datatypes;
+
+import gameData.Player;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;

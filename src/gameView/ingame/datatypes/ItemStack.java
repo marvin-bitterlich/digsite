@@ -1,4 +1,4 @@
-package gameData;
+package gameView.ingame.datatypes;
 
 public interface ItemStack{
 

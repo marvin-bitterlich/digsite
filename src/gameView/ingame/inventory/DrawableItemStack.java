@@ -1,7 +1,7 @@
 package gameView.ingame.inventory;
 
-import gameData.ItemStack;
-import gameData.Texture;
+import gameView.ingame.datatypes.ItemStack;
+import gameView.ingame.datatypes.Texture;
 import recources.ImageCache;
 
 public class DrawableItemStack extends Texture implements ItemStack{
