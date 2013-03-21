@@ -65,7 +65,7 @@ public class Block extends Texture{
 			}
 		}
 	}
-
+	
 	public void updatePosition(){
 		int xp = (xPos*GameProperties.GRAPHICS_SIZE_BLOCK)
 				+ relativeplayerx;

@@ -114,6 +114,8 @@ public class NetworkHandlerThread implements Runnable {
 	public void requestChunk(int x, int y) {
 		connection.sendLine(NetworkConstants.SERVER_COMMUNICATION + NetworkConstants.SEPERATOR + NetworkConstants.SERVER_COMMUNICATION_GETCHUNK + NetworkConstants.SEPERATOR + 
 				x + NetworkConstants.SEPERATOR + y);
+		SingletonWorker.logger().info(NetworkConstants.SERVER_COMMUNICATION + NetworkConstants.SEPERATOR + NetworkConstants.SERVER_COMMUNICATION_GETCHUNK + NetworkConstants.SEPERATOR + 
+				x + NetworkConstants.SEPERATOR + y);
 	}
 
 	public void breakBlock(Block block) {

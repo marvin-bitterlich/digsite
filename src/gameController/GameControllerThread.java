@@ -122,75 +122,144 @@ KeyEventDispatcher {
 			Block bottom = gamedata.mine().getBlock(playerx, playery+1);
 			Block bottomright = gamedata.mine().getBlock(playerx+1, playery+1);
 
-			//start up/down movement
-			//Ignore vertical movement without ladder
-			boolean onLadder = false;
-			boolean verticalMovement = false;
-			if(BlockWorker.isLadder(current.getID())){
-				onLadder = true;
-			}else{
-				if(BlockWorker.isLadder(top.getID()) && player.intercects(top)){
-					onLadder = true;
-				}
+			boolean loaded = true;
+			if(	topleft == null &&
+					top == null &&
+					topright == null &&
+					left == null &&
+					current == null &&
+					right == null &&
+					bottomleft == null &&
+					bottom == null &&
+					bottomright == null){
+				loaded = false;
 			}
-			int prefix = 0;
-			int screenYMovement = 0;
-			if(onLadder){
+			boolean onLadder = false;
+			//no movement without correct chunks!
+			if(loaded){
+				//start up/down movement
+				//Ignore vertical movement without ladder
+				if(current != null && BlockWorker.isLadder(current.getID())){
+					onLadder = true;
+				}else{
+					if(top != null && BlockWorker.isLadder(top.getID()) && player.intercects(top)){
+						onLadder = true;
+					}
+				}
+				int prefix = 0;
+				int screenYMovement = 0;
+				boolean verticalMovement = false;
+				if(onLadder){
+					//if-statement uses ^ as an XOR-comparison!
+					if((forwardPressed || backwardPressed) && !(forwardPressed && backwardPressed)){
+						verticalMovement = true;
+
+						if(forwardPressed){
+							//UP-key pressed
+							if(top != null && top.isMassive() && player.intercectsOffset(top, 0, -2)){
+								verticalMovement = false;
+							}
+							prefix = -1;
+						}else{
+							//DOWN-key pressed
+							if(bottom != null && bottom.isMassive() && player.intercectsOffset(bottom, 0, -2)){
+								verticalMovement = false;
+							}
+							prefix = 1;
+						}
+					}
+					if(verticalMovement){
+						screenYMovement  = (int) (prefix * player.calculateScreenYMovement(duration));
+					}
+				}else{
+					screenYMovement = (int) gamedata.activePlayer().calculateScreenYMovement(duration)*GRAVITY_Y;
+					prefix = 1;
+				}
+				//interpolate running against walls!
+				if(screenYMovement != 0){
+					Block runagainst = null;
+					boolean tops = true;
+					if(screenYMovement < 0){
+						runagainst = top;
+						tops = true;
+					}else if(screenYMovement > 0){
+						runagainst = bottom;
+						tops = false;
+					}
+					if(runagainst != null){
+						if(player.intercectsOffset(runagainst, 0, prefix*3)){
+						}else if(player.intercectsOffset(runagainst, 0, screenYMovement)){
+							if(!player.intercectsOffset(runagainst, 0, prefix*2)){
+								GameProperties.playery += prefix;
+							}
+//							int i = 0;
+//							while(!player.intercectsOffset(runagainst, 0, prefix*2)){
+//								GameProperties.playery += prefix;
+//								i++;
+//								player;
+//								if(i == 100 || i == 1){
+//									System.out.println(i);
+//									System.out.println(player.intercects(runagainst) + " " + player.intercects(bottom) + " " + player.intercects(current));
+//									System.out.println(onLadder + " " + tops + " " + prefix + " vertical " + screenYMovement + "  " + player.getYPos() + "|" + runagainst.getYPos());
+//								}
+//							}
+						}else if(player.intercectsOffset(runagainst, 0, 2*screenYMovement)){
+							screenYMovement = screenYMovement/2;
+						}
+					}
+					GameProperties.playery += screenYMovement;
+				}
+				//start left/right movement
 				//if-statement uses ^ as an XOR-comparison!
-				if(forwardPressed ^ backwardPressed){
-					verticalMovement = true;
+				prefix = 0;
+				int screenXMovement = 0;
+				boolean horizontalMovement = false;
+				if((leftPressed || rightPressed) && !(leftPressed && rightPressed)){
 					
-					if(forwardPressed){
-						//UP-key pressed
-						if(top.isMassive() && player.intercectsOffset(top, 0, -2)){
-							verticalMovement = false;
+					horizontalMovement = true;
+					if(leftPressed){
+						//LEFT-key pressed
+						if(left != null && left.isMassive() && player.intercectsOffset(left, -2, 0)){
+							horizontalMovement = false;
 						}
 						prefix = -1;
+
 					}else{
-						//DOWN-key pressed
-						if(bottom.isMassive() && player.intercectsOffset(bottom, 0, -2)){
-							verticalMovement = false;
+						//RIGHT-key pressed
+						if(right != null && right.isMassive() && player.intercectsOffset(right, 2, 0)){
+							horizontalMovement = false;
 						}
 						prefix = 1;
 					}
 				}
-				if(verticalMovement){
-					screenYMovement  -= prefix * player.calculateScreenYMovement(duration);
+				if(horizontalMovement){
+					screenXMovement  = (int) (prefix * player.calculateScreenXMovement(duration));
 				}
-			}else{
-				screenYMovement += (int) gamedata.activePlayer().calculateScreenYMovement(duration)*GRAVITY_Y;
-			}
-			//interpolate running against walls!
-			if(screenYMovement != 0){
-				Block runagainst = null;
-				if(screenYMovement < 0){
-					runagainst = top;
-				}else if(screenYMovement > 0){
-					runagainst = bottom;
-				}
-				if(player.intercectsOffset(runagainst, 0, screenYMovement)){
-					while(!player.intercectsOffset(runagainst, 0, prefix*2)){
-						GameProperties.playery += prefix;
+				//interpolate running against walls!
+				if(screenXMovement != 0){
+					Block runagainst = null;
+					if(screenXMovement < 0){
+						runagainst = left;
+					}else if(screenXMovement > 0){
+						runagainst = right;
 					}
-				}else if(player.intercectsOffset(runagainst, 0, 2*screenYMovement)){
-					screenYMovement = screenYMovement/2;
+					if(runagainst != null){
+						if(player.intercectsOffset(runagainst, screenXMovement, 0)){
+							int i = 0;
+							while(!player.intercectsOffset(runagainst, prefix*2, 0)){
+								GameProperties.playerx += prefix;
+								i++;
+								if(i > 100){
+									System.out.println(prefix + " horizontal " + runagainst.getXPos() + "|" + runagainst.getYPos());
+								}
+							}
+						}else if(player.intercectsOffset(runagainst, 2*screenXMovement, 0)){
+							screenXMovement = screenXMovement/2;
+						}
+					}
+					GameProperties.playerx += screenXMovement;
 				}
-				GameProperties.playery += screenYMovement;
 			}
-			//start left/right movement
-			//if-statement uses ^ as an XOR-comparison!
-			if(leftPressed ^ rightPressed){
-				if(leftPressed){
-					//LEFT-key pressed
-
-
-				}else{
-					//RIGHT-key pressed
-
-
-				}
-			}
-
 			//			SingletonWorker.gameProperties().playerx += screenXMovement;
 			//			SingletonWorker.gameProperties().playery += screenYMovement;
 

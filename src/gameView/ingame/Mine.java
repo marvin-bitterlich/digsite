@@ -69,12 +69,7 @@ public class Mine {
 				for (int i = -2; i < 2; i++) {
 					int x = ((int)px)+i;
 					int y = ((int)py)+j;
-					if(!map.containsKey(x+"-"+y)){
-						map.put(x+"-"+y, new Chunk(x,y));
-						SingletonWorker.logger().info("load chunk:	" + x + " x-|-y " + y);
-						SingletonWorker.gameData().getNetworkHandlerThread().requestChunk(x,y);
-					}
-					map.get(x+"-"+y).draw(g);
+					getChunk(x, y).draw(g);
 				}	
 			}
 		}
@@ -130,6 +125,7 @@ public class Mine {
 		if(!map.containsKey(coordinates)){
 			map.put(coordinates, new Chunk(x,y));
 			SingletonWorker.logger().info("load chunk:	" + x + " x-|-y " + y);
+			SingletonWorker.gameData().getNetworkHandlerThread().requestChunk(x,y);
 		}
 		return map.get(coordinates);
 	}
