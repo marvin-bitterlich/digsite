@@ -31,6 +31,10 @@ public class ActivePlayer extends Player {
 //		SingletonWorker.logger().info(">>>" + ((double) duration * (double) this.getYPerSec()) / 1000d);
 		return ((double) duration * (double) this.getYPerSec()) / 1000d;
 	}
+	
+	public double getCalculatedMovement(long duration){
+		return ((double) duration) / 4d;
+	}
 
 	public Inventory getInventory() {
 		if(inventory == null){

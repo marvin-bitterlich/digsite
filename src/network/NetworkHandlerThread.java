@@ -85,6 +85,7 @@ public class NetworkHandlerThread implements Runnable {
 
 					if(cmd == NetworkConstants.SERVER_COMMUNICATION_SENDCHUNK){
 						Chunk c = (Chunk) XStreamWorker.fromXML(cut[1]);
+						SingletonWorker.logger().info(cut[1]);
 						SingletonWorker.gameData().mine().addChunk(c);
 					}
 

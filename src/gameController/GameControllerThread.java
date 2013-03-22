@@ -12,9 +12,11 @@ import gameView.ingame.menu.MainMenu;
 import gameView.ingame.menu.SkillMenu;
 import gameView.ingame.menu.UIItem;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.KeyEventDispatcher;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -86,8 +88,8 @@ KeyEventDispatcher {
 
 			duration = System.currentTimeMillis() - cycleStartTime;
 			cycleStartTime = System.currentTimeMillis();
-
-			this.calculateMovements();
+			//			Unwanted behaviour!
+			//			this.calculateMovements();
 			this.updateMenuActiveStates();
 
 			if(leftPressed){
@@ -121,7 +123,7 @@ KeyEventDispatcher {
 			Block bottomleft = gamedata.mine().getBlock(playerx-1, playery+1);
 			Block bottom = gamedata.mine().getBlock(playerx, playery+1);
 			Block bottomright = gamedata.mine().getBlock(playerx+1, playery+1);
-
+			String debug = "";
 			boolean loaded = true;
 			if(	topleft == null &&
 					top == null &&
@@ -134,18 +136,26 @@ KeyEventDispatcher {
 					bottomright == null){
 				loaded = false;
 			}
+			double movementspeed = player.getCalculatedMovement(duration);
+			//			debug += " movementspeed:" + movementspeed;
 			boolean onLadder = false;
 			//no movement without correct chunks!
+			debug += " loaded:" + loaded;
 			if(loaded){
+
 				//start up/down movement
 				//Ignore vertical movement without ladder
 				if(current != null && BlockWorker.isLadder(current.getID())){
 					onLadder = true;
 				}else{
-					if(top != null && BlockWorker.isLadder(top.getID()) && player.intercects(top)){
+					if(top != null && BlockWorker.isLadder(top.getID()) && player.intercectsOffset(top, 0, -5)){
+						onLadder = true;
+					}
+					if(bottom != null && BlockWorker.isLadder(bottom.getID()) && player.intercectsOffset(bottom, 0, 5)){
 						onLadder = true;
 					}
 				}
+				debug += " onLadder:" + onLadder;
 				int prefix = 0;
 				int screenYMovement = 0;
 				boolean verticalMovement = false;
@@ -153,14 +163,15 @@ KeyEventDispatcher {
 					//if-statement uses ^ as an XOR-comparison!
 					if((forwardPressed || backwardPressed) && !(forwardPressed && backwardPressed)){
 						verticalMovement = true;
-
 						if(forwardPressed){
 							//UP-key pressed
+							debug += " up  ";
 							if(top != null && top.isMassive() && player.intercectsOffset(top, 0, -2)){
 								verticalMovement = false;
 							}
 							prefix = -1;
 						}else{
+							debug += " down";
 							//DOWN-key pressed
 							if(bottom != null && bottom.isMassive() && player.intercectsOffset(bottom, 0, -2)){
 								verticalMovement = false;
@@ -169,11 +180,24 @@ KeyEventDispatcher {
 						}
 					}
 					if(verticalMovement){
-						screenYMovement  = (int) (prefix * player.calculateScreenYMovement(duration));
+						screenYMovement  = (int) (prefix * movementspeed);
 					}
 				}else{
-					screenYMovement = (int) gamedata.activePlayer().calculateScreenYMovement(duration)*GRAVITY_Y;
-					prefix = 1;
+					debug += " grav";
+					boolean gravitation = true;
+					if(bottom != null && bottom.isMassive() && player.intercectsOffset(bottom, 0, -2)){
+						gravitation = false;
+					}
+					if(bottomleft != null && bottomleft.isMassive() && player.intercectsOffset(bottomleft, 0, -2)){
+						gravitation = false;
+					}
+					if(bottomright != null && bottomright.isMassive() && player.intercectsOffset(bottomright, 0, -2)){
+						gravitation = false;
+					}
+					if(gravitation){
+						screenYMovement = (int) (movementspeed*GRAVITY_Y);
+						prefix = 1;
+					}
 				}
 				//interpolate running against walls!
 				if(screenYMovement != 0){
@@ -192,21 +216,22 @@ KeyEventDispatcher {
 							if(!player.intercectsOffset(runagainst, 0, prefix*2)){
 								GameProperties.playery += prefix;
 							}
-//							int i = 0;
-//							while(!player.intercectsOffset(runagainst, 0, prefix*2)){
-//								GameProperties.playery += prefix;
-//								i++;
-//								player;
-//								if(i == 100 || i == 1){
-//									System.out.println(i);
-//									System.out.println(player.intercects(runagainst) + " " + player.intercects(bottom) + " " + player.intercects(current));
-//									System.out.println(onLadder + " " + tops + " " + prefix + " vertical " + screenYMovement + "  " + player.getYPos() + "|" + runagainst.getYPos());
-//								}
-//							}
+							//							int i = 0;
+							//							while(!player.intercectsOffset(runagainst, 0, prefix*2)){
+							//								GameProperties.playery += prefix;
+							//								i++;
+							//								player;
+							//								if(i == 100 || i == 1){
+							//									System.out.println(i);
+							//									System.out.println(player.intercects(runagainst) + " " + player.intercects(bottom) + " " + player.intercects(current));
+							//									System.out.println(onLadder + " " + tops + " " + prefix + " vertical " + screenYMovement + "  " + player.getYPos() + "|" + runagainst.getYPos());
+							//								}
+							//							}
 						}else if(player.intercectsOffset(runagainst, 0, 2*screenYMovement)){
 							screenYMovement = screenYMovement/2;
 						}
 					}
+					debug += " move " + prefix + " " + screenYMovement;
 					GameProperties.playery += screenYMovement;
 				}
 				//start left/right movement
@@ -215,10 +240,11 @@ KeyEventDispatcher {
 				int screenXMovement = 0;
 				boolean horizontalMovement = false;
 				if((leftPressed || rightPressed) && !(leftPressed && rightPressed)){
-					
+
 					horizontalMovement = true;
 					if(leftPressed){
 						//LEFT-key pressed
+						debug += " left ";
 						if(left != null && left.isMassive() && player.intercectsOffset(left, -2, 0)){
 							horizontalMovement = false;
 						}
@@ -226,6 +252,7 @@ KeyEventDispatcher {
 
 					}else{
 						//RIGHT-key pressed
+						debug += " right";
 						if(right != null && right.isMassive() && player.intercectsOffset(right, 2, 0)){
 							horizontalMovement = false;
 						}
@@ -233,7 +260,7 @@ KeyEventDispatcher {
 					}
 				}
 				if(horizontalMovement){
-					screenXMovement  = (int) (prefix * player.calculateScreenXMovement(duration));
+					screenXMovement  = (int) (prefix * movementspeed);
 				}
 				//interpolate running against walls!
 				if(screenXMovement != 0){
@@ -245,18 +272,19 @@ KeyEventDispatcher {
 					}
 					if(runagainst != null){
 						if(player.intercectsOffset(runagainst, screenXMovement, 0)){
-							int i = 0;
-							while(!player.intercectsOffset(runagainst, prefix*2, 0)){
-								GameProperties.playerx += prefix;
-								i++;
-								if(i > 100){
-									System.out.println(prefix + " horizontal " + runagainst.getXPos() + "|" + runagainst.getYPos());
-								}
-							}
+							//							int i = 0;
+							//							while(!player.intercectsOffset(runagainst, prefix*2, 0)){
+							//								GameProperties.playerx += prefix;
+							//								i++;
+							//								if(i > 100){
+							//									System.out.println(prefix + " horizontal " + runagainst.getXPos() + "|" + runagainst.getYPos());
+							//								}
+							//							}
 						}else if(player.intercectsOffset(runagainst, 2*screenXMovement, 0)){
 							screenXMovement = screenXMovement/2;
 						}
 					}
+					debug += " vert " + prefix + " " + screenXMovement;
 					GameProperties.playerx += screenXMovement;
 				}
 			}
@@ -394,6 +422,46 @@ KeyEventDispatcher {
 				.get(gamedata.getActiveMenu()).draw(g);
 			}
 			g.drawString("Frames: " + frames + " Miliseconds:" + time + "/" + timeout, 50, 50);
+			g.drawString("Debug: " + debug, 50, 900);
+			boolean debugcollision = true;
+			if(debugcollision){
+				g.setColor(Color.red);
+				g.drawRect((int) player.getXPos(), (int)player.getYPos(), GameProperties.GRAPHICS_SIZE_CHAR_WIDTH, GameProperties.GRAPHICS_SIZE_CHAR_HEIGHT);
+
+				g.setColor(Color.yellow);
+				if(top != null){
+					g.drawRect((int) top.getXPos(), (int) top.getYPos(), top.getImage().getWidth(), top.getImage().getHeight());
+				}
+				if(topleft != null){
+					g.drawRect((int) topleft.getXPos(), (int) topleft.getYPos(), topleft.getImage().getWidth(), topleft.getImage().getHeight());
+				}
+				if(topright != null){
+					g.drawRect((int) topright.getXPos(), (int) topright.getYPos(), topright.getImage().getWidth(), topright.getImage().getHeight());
+				}
+				
+				g.setColor(Color.blue);
+				if(current != null){
+					g.drawRect((int) current.getXPos(), (int) current.getYPos(), current.getImage().getWidth(), current.getImage().getHeight());
+				}
+				if(left != null){
+					g.drawRect((int) left.getXPos(), (int) left.getYPos(), left.getImage().getWidth(), left.getImage().getHeight());
+				}
+				if(right != null){
+					g.drawRect((int) right.getXPos(), (int) right.getYPos(), right.getImage().getWidth(), right.getImage().getHeight());
+				}
+				
+				g.setColor(Color.magenta);
+				if(bottom != null){
+					g.drawRect((int) bottom.getXPos(), (int) bottom.getYPos(), bottom.getImage().getWidth(), bottom.getImage().getHeight());
+				}
+				if(bottomleft != null){
+					g.drawRect((int) bottomleft.getXPos(), (int) bottomleft.getYPos(), bottomleft.getImage().getWidth(), bottomleft.getImage().getHeight());
+				}
+				if(bottomright != null){
+					g.drawRect((int) bottomright.getXPos(), (int) bottomright.getYPos(), bottomright.getImage().getWidth(), bottomright.getImage().getHeight());
+				}
+				
+			}
 			g.dispose();
 			gamedata.bufferstrategy().show();
 			time = System.currentTimeMillis()-cycleStartTime; 
