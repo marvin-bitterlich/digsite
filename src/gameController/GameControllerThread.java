@@ -16,7 +16,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.KeyEventDispatcher;
-import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -145,37 +144,41 @@ KeyEventDispatcher {
 
 				//start up/down movement
 				//Ignore vertical movement without ladder
+				debug += " onLadder:";
 				if(current != null && BlockWorker.isLadder(current.getID())){
+					debug += "n ";
 					onLadder = true;
 				}else{
 					if(top != null && BlockWorker.isLadder(top.getID()) && player.intercectsOffset(top, 0, -5)){
+						debug += "t ";
 						onLadder = true;
 					}
 					if(bottom != null && BlockWorker.isLadder(bottom.getID()) && player.intercectsOffset(bottom, 0, 5)){
+						debug += "b ";
 						onLadder = true;
 					}
 				}
-				debug += " onLadder:" + onLadder;
+				debug +=onLadder;
 				int prefix = 0;
 				int screenYMovement = 0;
 				boolean verticalMovement = false;
 				if(onLadder){
 					//if-statement uses ^ as an XOR-comparison!
-					if((forwardPressed || backwardPressed) && !(forwardPressed && backwardPressed)){
+					if(forwardPressed ^ backwardPressed){
 						verticalMovement = true;
 						if(forwardPressed){
 							//UP-key pressed
 							debug += " up  ";
-							if(top != null && top.isMassive() && player.intercectsOffset(top, 0, -2)){
-								verticalMovement = false;
-							}
+//							if(top != null && top.isMassive() && player.intercectsOffset(top, 0, -2)){
+//								verticalMovement = false;
+//							}
 							prefix = -1;
 						}else{
 							debug += " down";
 							//DOWN-key pressed
-							if(bottom != null && bottom.isMassive() && player.intercectsOffset(bottom, 0, -2)){
-								verticalMovement = false;
-							}
+//							if(bottom != null && bottom.isMassive() && player.intercectsOffset(bottom, 0, -2)){
+//								verticalMovement = false;
+//							}
 							prefix = 1;
 						}
 					}
@@ -185,13 +188,13 @@ KeyEventDispatcher {
 				}else{
 					debug += " grav";
 					boolean gravitation = true;
-					if(bottom != null && bottom.isMassive() && player.intercectsOffset(bottom, 0, -2)){
+					if(bottom != null && bottom.isMassive() && player.intercectsOffset(bottom, 0, 5)){
 						gravitation = false;
 					}
-					if(bottomleft != null && bottomleft.isMassive() && player.intercectsOffset(bottomleft, 0, -2)){
+					if(bottomleft != null && bottomleft.isMassive() && player.intercectsOffset(bottomleft, 0, 5)){
 						gravitation = false;
 					}
-					if(bottomright != null && bottomright.isMassive() && player.intercectsOffset(bottomright, 0, -2)){
+					if(bottomright != null && bottomright.isMassive() && player.intercectsOffset(bottomright, 0, 5)){
 						gravitation = false;
 					}
 					if(gravitation){
@@ -201,61 +204,61 @@ KeyEventDispatcher {
 				}
 				//interpolate running against walls!
 				if(screenYMovement != 0){
-					Block runagainst = null;
-					boolean tops = true;
-					if(screenYMovement < 0){
-						runagainst = top;
-						tops = true;
-					}else if(screenYMovement > 0){
-						runagainst = bottom;
-						tops = false;
-					}
-					if(runagainst != null){
-						if(player.intercectsOffset(runagainst, 0, prefix*3)){
-						}else if(player.intercectsOffset(runagainst, 0, screenYMovement)){
-							if(!player.intercectsOffset(runagainst, 0, prefix*2)){
-								GameProperties.playery += prefix;
-							}
-							//							int i = 0;
-							//							while(!player.intercectsOffset(runagainst, 0, prefix*2)){
-							//								GameProperties.playery += prefix;
-							//								i++;
-							//								player;
-							//								if(i == 100 || i == 1){
-							//									System.out.println(i);
-							//									System.out.println(player.intercects(runagainst) + " " + player.intercects(bottom) + " " + player.intercects(current));
-							//									System.out.println(onLadder + " " + tops + " " + prefix + " vertical " + screenYMovement + "  " + player.getYPos() + "|" + runagainst.getYPos());
-							//								}
-							//							}
-						}else if(player.intercectsOffset(runagainst, 0, 2*screenYMovement)){
-							screenYMovement = screenYMovement/2;
-						}
-					}
+//					Block runagainst = null;
+//					boolean tops = true;
+//					if(screenYMovement < 0){
+//						runagainst = top;
+//						tops = true;
+//					}else if(screenYMovement > 0){
+//						runagainst = bottom;
+//						tops = false;
+//					}
+//					if(runagainst != null){
+//						if(player.intercectsOffset(runagainst, 0, prefix*3)){
+//						}else if(player.intercectsOffset(runagainst, 0, screenYMovement)){
+//							if(!player.intercectsOffset(runagainst, 0, prefix*2)){
+//								GameProperties.playery += prefix;
+//							}
+//							//							int i = 0;
+//							//							while(!player.intercectsOffset(runagainst, 0, prefix*2)){
+//							//								GameProperties.playery += prefix;
+//							//								i++;
+//							//								player;
+//							//								if(i == 100 || i == 1){
+//							//									System.out.println(i);
+//							//									System.out.println(player.intercects(runagainst) + " " + player.intercects(bottom) + " " + player.intercects(current));
+//							//									System.out.println(onLadder + " " + tops + " " + prefix + " vertical " + screenYMovement + "  " + player.getYPos() + "|" + runagainst.getYPos());
+//							//								}
+//							//							}
+//						}else if(player.intercectsOffset(runagainst, 0, 2*screenYMovement)){
+//							screenYMovement = screenYMovement/2;
+//						}
+//					}
 					debug += " move " + prefix + " " + screenYMovement;
 					GameProperties.playery += screenYMovement;
 				}
 				//start left/right movement
-				//if-statement uses ^ as an XOR-comparison!
 				prefix = 0;
 				int screenXMovement = 0;
 				boolean horizontalMovement = false;
-				if((leftPressed || rightPressed) && !(leftPressed && rightPressed)){
+				//if-statement uses ^ as an XOR-comparison!
+				if(leftPressed ^ rightPressed){
 
 					horizontalMovement = true;
 					if(leftPressed){
 						//LEFT-key pressed
 						debug += " left ";
-						if(left != null && left.isMassive() && player.intercectsOffset(left, -2, 0)){
-							horizontalMovement = false;
-						}
+//						if(left != null && left.isMassive() && player.intercectsOffset(left, -2, 0)){
+//							horizontalMovement = false;
+//						}
 						prefix = -1;
 
 					}else{
 						//RIGHT-key pressed
 						debug += " right";
-						if(right != null && right.isMassive() && player.intercectsOffset(right, 2, 0)){
-							horizontalMovement = false;
-						}
+//						if(right != null && right.isMassive() && player.intercectsOffset(right, 2, 0)){
+//							horizontalMovement = false;
+//						}
 						prefix = 1;
 					}
 				}
@@ -264,26 +267,26 @@ KeyEventDispatcher {
 				}
 				//interpolate running against walls!
 				if(screenXMovement != 0){
-					Block runagainst = null;
-					if(screenXMovement < 0){
-						runagainst = left;
-					}else if(screenXMovement > 0){
-						runagainst = right;
-					}
-					if(runagainst != null){
-						if(player.intercectsOffset(runagainst, screenXMovement, 0)){
-							//							int i = 0;
-							//							while(!player.intercectsOffset(runagainst, prefix*2, 0)){
-							//								GameProperties.playerx += prefix;
-							//								i++;
-							//								if(i > 100){
-							//									System.out.println(prefix + " horizontal " + runagainst.getXPos() + "|" + runagainst.getYPos());
-							//								}
-							//							}
-						}else if(player.intercectsOffset(runagainst, 2*screenXMovement, 0)){
-							screenXMovement = screenXMovement/2;
-						}
-					}
+//					Block runagainst = null;
+//					if(screenXMovement < 0){
+//						runagainst = left;
+//					}else if(screenXMovement > 0){
+//						runagainst = right;
+//					}
+//					if(runagainst != null){
+//						if(player.intercectsOffset(runagainst, screenXMovement, 0)){
+//							//							int i = 0;
+//							//							while(!player.intercectsOffset(runagainst, prefix*2, 0)){
+//							//								GameProperties.playerx += prefix;
+//							//								i++;
+//							//								if(i > 100){
+//							//									System.out.println(prefix + " horizontal " + runagainst.getXPos() + "|" + runagainst.getYPos());
+//							//								}
+//							//							}
+//						}else if(player.intercectsOffset(runagainst, 2*screenXMovement, 0)){
+//							screenXMovement = screenXMovement/2;
+//						}
+//					}
 					debug += " vert " + prefix + " " + screenXMovement;
 					GameProperties.playerx += screenXMovement;
 				}

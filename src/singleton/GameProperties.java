@@ -132,6 +132,9 @@ public class GameProperties {
 	}
 
 	public int getPlayerBlockY() {
+		if(GameProperties.playery < 0){
+			return -1;
+		}
 		int y = (GameProperties.playery-31)	/GameProperties.GRAPHICS_SIZE_BLOCK;
 		return y;
 	}
