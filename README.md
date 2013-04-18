@@ -21,3 +21,6 @@ if you want to contribute:
 **feedback, pull requests and issues are appreciated!**
 
 **at the moment working on a complete overhaul of all code, please stand by!**
+
+for any extra discussion on the Project, there is an piratepad, that can be used, please only edit your relevant lines!
+http://piratepad.net/digsite
