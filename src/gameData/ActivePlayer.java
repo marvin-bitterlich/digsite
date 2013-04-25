@@ -19,7 +19,7 @@ public class ActivePlayer extends Player {
 			int speed) {
 		super(health, mana, strength, intelligence, agility, atk, def, magRes,
 				playerClass, speed, (GameWindow.getWindowWidth() / 2)-16, (GameWindow
-						.getWindowHeight() / 2)-132);
+						.getWindowHeight() / 2)-132, "You");
 	}
 	
 	public double calculateScreenXMovement(long duration){
@@ -59,7 +59,10 @@ public class ActivePlayer extends Player {
 
 	@Override
 	public void draw(Graphics g) {
+		g.setFont(SingletonWorker.gameProperties().smallgameFont());
 		g.drawImage(this.getImage(), (int) this.getXPos(), (int) this.getYPos(), null);
+		g.drawString(getName(), (int)this.getXPos(), (int) this.getYPos()-10);
+		g.setFont(SingletonWorker.gameProperties().gameFont());
 		g.drawString(GameProperties.playerx + " | " + GameProperties.playery, 100, 100);
 		g.drawString(SingletonWorker.gameProperties().getPlayerBlockX() + " | " + SingletonWorker.gameProperties().getPlayerBlockY(), 100, 200);
 	}

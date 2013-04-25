@@ -60,14 +60,15 @@ public class NetworkHandlerThread implements Runnable {
 
 					if(cmd == NetworkConstants.SERVER_MOVEMENT_PLAYER_ENTER){
 						cut = line.split(NetworkConstants.SEPERATOR);
-						if(cut.length >= 4){
+						if(cut.length >= 5){
 							int entity = NumberWorker.getNumber(cut[1]);
 							int x = NumberWorker.getNumber(cut[2]);
 							int y = NumberWorker.getNumber(cut[3]);
+							String name = cut[4];
 							if(entity != userID){
 								SingletonWorker.gameData().entityMap().put(entity,
 										new Player(20, 20, 20,20, 20, 20, 20,
-												10, Player.CLASS_BRUTE, 10, x, y)
+												10, Player.CLASS_BRUTE, 10, x, y, name)
 										);
 							}
 						}

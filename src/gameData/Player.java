@@ -30,10 +30,11 @@ public class Player extends Entity {
 	private int mouseX, mouseY; 
 	//	private int moveAnimationStep = 0;
 	//	private int movePartProgressMillis = Integer.MAX_VALUE;
+	private String name;
 
 	public Player(int health, int mana, int strength, int intelligence,
 			int agility, int atk, int def, int magRes, int playerClass,
-			int speed, int xPos, int yPos) {
+			int speed, int xPos, int yPos, String name) {
 		super(xPos, yPos);
 		this.health = health;
 		this.mana = mana;
@@ -43,9 +44,14 @@ public class Player extends Entity {
 		this.atk = atk;
 		this.def = def;
 		this.magRes = magRes;
+		this.name = name;
 		this.playerClass = playerClass;
 		this.updateImageDirection(0);
 		this.setSpeedPxlsPerSec(speed);
+	}
+	
+	public String getName(){
+		return name;
 	}
 
 	@Override
@@ -57,6 +63,7 @@ public class Player extends Entity {
 		double yp = (this.getYPos())
 				+(GameWindow.getWindowHeight() / 2)-GameProperties.GRAPHICS_SIZE_CHAR_HEIGHT*2-10-GameProperties.playery;
 		g.drawImage(this.getImage(),(int)xp,(int)yp, null);
+		g.drawString(getName(), (int)xp,(int)yp);
 
 	}
 

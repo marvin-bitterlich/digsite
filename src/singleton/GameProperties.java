@@ -154,4 +154,12 @@ public class GameProperties {
 	public String playerPath() {
 		return "player.png";
 	}
+
+	private Font smallgameFont;
+	public Font smallgameFont(){
+		if(smallgameFont == null){
+			smallgameFont = this.gameFont().deriveFont(30f);
+		}
+		return smallgameFont;
+	}
 }
