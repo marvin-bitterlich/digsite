@@ -9,17 +9,16 @@ import java.util.logging.Level;
 
 public class GameProperties {
 	public static final String SEPERATOR = System.lineSeparator();
-	public static final String START = "Starten";
+	public static final String START = "Start";
 	public static final String VIDEO = "Video";
-	public static final String REGISTER = "Registrieren";
-	public static final String EXIT = "Beenden";
+	public static final String REGISTER = "Register";
+	public static final String EXIT = "Exit";
 	public static final int MAP_SIZE_CHUNK = 8;
 	public static final int FILE_SIZE_BLOCK = 128;
 	public static final int GRAPHICS_SIZE_BLOCK = 128;
 	public static final int GRAPHICS_SIZE_CHAR_HEIGHT = 64;
 	public static final int GRAPHICS_SIZE_CHAR_WIDTH = 32;
 
-	public static final String savePath = (System.getenv("APPDATA") + SEPERATOR + "BlueBrickGames" + SEPERATOR + "Arr - Die Piratenbucht" + SEPERATOR);
 	public static final int MENU_ID_INVENTORY = 1;
 	public static final int MENU_ID_MAIN = 0;
 	public static final int MENU_ID_SKILL = 2;
@@ -74,12 +73,12 @@ public class GameProperties {
 			getRelativeValueToWidth(448), getRelativeValueToHeight(286),
 			getRelativeValueToWidth(543), getRelativeValueToHeight(382));
 	public static final String LOGIN = "Login";
-	public static final String CHECKUSERNAME = "Name testen";
+	public static final String CHECKUSERNAME = "test username";
 	public static final String EMAIL = "Email";
-	public static final String USERNAME = "Benutzername";
-	public static final String PASSWORT = "Passwort";
-	public static final String REGISTERSET = "Registrierung";
-	public static final String CHECKEMAIL = "Email testen";
+	public static final String USERNAME = "Username";
+	public static final String PASSWORT = "Password";
+	public static final String REGISTERSET = "Register";
+	public static final String CHECKEMAIL = "test Email";
 
 	public String gameTitle(){
 		return "Digsite";

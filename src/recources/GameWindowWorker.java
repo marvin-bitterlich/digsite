@@ -120,7 +120,7 @@ public class GameWindowWorker {
 		gw.start.addActionListener(gw.buttonListener);
 
 
-		gw.loginfield = new JTextField("Marvin");
+		gw.loginfield = new JTextField("");
 		gw.loginfield.setBounds(width/2-150,height /2-250, 300, 50);
 		gw.loginfield.setFont(f);
 		gw.loginfield.setForeground(Color.BLACK);

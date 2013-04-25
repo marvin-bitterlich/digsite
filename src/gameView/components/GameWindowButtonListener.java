@@ -71,7 +71,7 @@ public class GameWindowButtonListener implements ActionListener {
 				registering = true;
 			}
 			if(sc.register(gw.usernamefield.getText(), gw.passwortfield.getText(), gw.emailfield.getText())){
-				gw.register.setText("Erfolgreich!");
+				gw.register.setText("Done!");
 			}else{
 				System.out.println("Failed");
 			}
@@ -96,9 +96,9 @@ public class GameWindowButtonListener implements ActionListener {
 			}
 
 			if(sc.checkUsername(gw.usernamefield.getText())){
-				gw.usernamecheck.setText("Frei!");
+				gw.usernamecheck.setText("Free!");
 			}else{
-				gw.usernamecheck.setText("Belegt!");
+				gw.usernamecheck.setText("Used!");
 			}
 
 		}
@@ -121,9 +121,9 @@ public class GameWindowButtonListener implements ActionListener {
 			}
 
 			if(sc.checkEmail(gw.emailfield.getText())){
-				gw.emailcheck.setText("Frei!");
+				gw.emailcheck.setText("Free!");
 			}else{
-				gw.emailcheck.setText("Belegt!");
+				gw.emailcheck.setText("Used!");
 			}
 		}
 		
