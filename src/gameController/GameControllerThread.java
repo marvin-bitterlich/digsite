@@ -85,6 +85,7 @@ KeyEventDispatcher {
 				frames = framecount;
 				framecount = 0;
 				frametime += 1000;
+				gamedata.mine().checkChunks();
 			}
 
 			duration = System.currentTimeMillis() - cycleStartTime;
@@ -495,7 +496,7 @@ KeyEventDispatcher {
 			g.dispose();
 			gamedata.bufferstrategy().show();
 			time = System.currentTimeMillis()-cycleStartTime; 
-
+			
 			try {
 				timeout = (1000 / REFRESHS_PER_SECOND)-time;
 				Thread.sleep((timeout > 0) ? timeout : 5);

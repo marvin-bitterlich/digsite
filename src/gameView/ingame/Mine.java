@@ -180,4 +180,13 @@ public class Mine {
 		return b;
 	}
 
+	public void checkChunks() {
+		for(Chunk c : map.values()){
+			if(c.dummy){
+				SingletonWorker.logger().info("reload chunk:	" + c.xpos + " x-|-y " + c.ypos);
+				SingletonWorker.gameData().getNetworkHandlerThread().requestChunk(c.xpos,c.ypos);
+			}
+		}
+	}
+
 }
