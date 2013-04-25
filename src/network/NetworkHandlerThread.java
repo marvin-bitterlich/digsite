@@ -96,18 +96,24 @@ public class NetworkHandlerThread implements Runnable {
 					}
 
 					if(cmd == NetworkConstants.SERVER_COMMUNICATION_SENDINVENTORY){
-						System.out.println(cut[0] + " " + cut[1]);
 						Inventory i = (Inventory) XStreamWorker.fromXML(cut[1]);
 						//TODO bad fix!
 						while(SingletonWorker.gameData().activePlayer() == null){
 							try {
 								Thread.sleep(100);
 							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						}
 						SingletonWorker.gameData().activePlayer().setInventory(i);
+					}
+					if(cmd == NetworkConstants.SERVER_CHAT){
+						cut = cut[1].split(NetworkConstants.SEPERATOR,2);
+						@SuppressWarnings("unused")
+						int playerid = NumberWorker.getNumber(cut[0]);
+						@SuppressWarnings("unused")
+						String text = cut[1];
+						//TODO implement chatting!
 					}
 				}
 			}
@@ -151,6 +157,9 @@ public class NetworkHandlerThread implements Runnable {
 		connection.sendLine(NetworkConstants.SERVER_CRAFTING + NetworkConstants.SEPERATOR + i);
 	}
 
-
+	public void chat(String text){
+		connection.sendLine(NetworkConstants.SERVER_CHAT + NetworkConstants.SEPERATOR + NetworkConstants.SERVER_CHAT_PLAYER + NetworkConstants.SEPERATOR + 
+				text);
+	}
 
 }

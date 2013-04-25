@@ -34,6 +34,8 @@ public class NetworkConstants {
 	public static final int SERVER_INTERACTION_PLACE = 777;
 	public static final int SERVER_INTERACTION_PLACE_LADDER = 778;
 	
+	public static final int SERVER_CHAT = 88;
+	public static final int SERVER_CHAT_PLAYER = 888;
 	
 	public static final String SEPERATOR = " ";
 
