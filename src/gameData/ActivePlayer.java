@@ -59,8 +59,8 @@ public class ActivePlayer extends Player {
 
 	@Override
 	public void draw(Graphics g) {
-		g.setFont(SingletonWorker.gameProperties().smallgameFont());
 		g.drawImage(this.getImage(), (int) this.getXPos(), (int) this.getYPos(), null);
+		g.setFont(SingletonWorker.gameProperties().smallgameFont());
 		g.drawString(getName(), (int)this.getXPos(), (int) this.getYPos()-10);
 		g.setFont(SingletonWorker.gameProperties().gameFont());
 		g.drawString(GameProperties.playerx + " | " + GameProperties.playery, 100, 100);

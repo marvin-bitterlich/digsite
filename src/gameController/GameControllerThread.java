@@ -453,7 +453,7 @@ KeyEventDispatcher {
 			}
 			g.drawString("Frames: " + frames + " Miliseconds:" + time + "/" + timeout, 50, 50);
 			g.drawString("Debug: " + debug, 50, 900);
-			boolean debugcollision = true;
+			boolean debugcollision = false;
 			if(debugcollision){
 				g.setColor(Color.red);
 				g.drawRect((int) player.getXPos(), (int)player.getYPos(), GameProperties.GRAPHICS_SIZE_CHAR_WIDTH, GameProperties.GRAPHICS_SIZE_CHAR_HEIGHT);

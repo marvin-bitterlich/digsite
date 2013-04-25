@@ -7,6 +7,7 @@ import java.awt.Graphics;
 
 import recources.ImageCache;
 import singleton.GameProperties;
+import singleton.SingletonWorker;
 
 public class Player extends Entity {
 
@@ -63,7 +64,10 @@ public class Player extends Entity {
 		double yp = (this.getYPos())
 				+(GameWindow.getWindowHeight() / 2)-GameProperties.GRAPHICS_SIZE_CHAR_HEIGHT*2-10-GameProperties.playery;
 		g.drawImage(this.getImage(),(int)xp,(int)yp, null);
-		g.drawString(getName(), (int)xp,(int)yp);
+		g.setFont(SingletonWorker.gameProperties().smallgameFont());
+		g.drawString(getName(), (int)xp,(int)yp-10);
+		g.setFont(SingletonWorker.gameProperties().gameFont());
+		
 
 	}
 
