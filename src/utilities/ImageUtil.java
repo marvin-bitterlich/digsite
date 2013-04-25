@@ -23,7 +23,11 @@ public class ImageUtil {
 		BufferedImage imgs[] = new BufferedImage[rows * cols];
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < cols; x++) {
-				imgs[num] = new BufferedImage(w, h, img.getType());
+				int type = img.getType();
+				if(type == 0){
+					type = 5;
+				}
+				imgs[num] = new BufferedImage(w, h, type);
 				// Tell the graphics to draw only one block of the image
 				Graphics2D g = imgs[num].createGraphics();
 				g.drawImage(img, 0, 0, w, h, w * x, h * y, w * x + w,

@@ -95,6 +95,7 @@ public class NetworkHandlerThread implements Runnable {
 					}
 
 					if(cmd == NetworkConstants.SERVER_COMMUNICATION_SENDINVENTORY){
+						System.out.println(cut[0] + " " + cut[1]);
 						Inventory i = (Inventory) XStreamWorker.fromXML(cut[1]);
 						//TODO bad fix!
 						while(SingletonWorker.gameData().activePlayer() == null){

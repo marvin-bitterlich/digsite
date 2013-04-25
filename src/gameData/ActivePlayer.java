@@ -33,7 +33,7 @@ public class ActivePlayer extends Player {
 	}
 	
 	public double getCalculatedMovement(long duration){
-		return ((double) duration) / 4d;
+		return ((double) duration) / 4d; //was 4d, now lower for old code!
 	}
 
 	public Inventory getInventory() {

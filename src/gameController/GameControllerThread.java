@@ -7,6 +7,7 @@ import gameView.ingame.Block;
 import gameView.ingame.datatypes.Direction;
 import gameView.ingame.datatypes.Entity;
 import gameView.ingame.datatypes.RelativeBoxPosition;
+import gameView.ingame.datatypes.Texture;
 import gameView.ingame.menu.DrawableInventory;
 import gameView.ingame.menu.MainMenu;
 import gameView.ingame.menu.SkillMenu;
@@ -24,9 +25,10 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
+
 import javax.imageio.ImageIO;
 
-import recources.BlockWorker;
 import recources.ImageCache;
 import singleton.GameData;
 import singleton.GameProperties;
@@ -40,7 +42,7 @@ KeyEventDispatcher {
 	private static final int REFRESHS_PER_SECOND = 60;
 	private boolean forwardPressed, backwardPressed, leftPressed, rightPressed;
 	public static boolean rendering;
-	private static final int GRAVITY_Y = 5;
+	private static final int GRAVITY_Y = 2;
 
 	private File bg = new File(GameProperties.getGamePath()
 			+ "/rec/" + GameProperties.SPLASH_PIC_BACKGROUND);
@@ -135,6 +137,13 @@ KeyEventDispatcher {
 					bottomright == null){
 				loaded = false;
 			}
+			if(loaded){
+				debug += " loaded!";
+			}
+			/*Movement code:
+			 * at the moment deactivated because of to less progress
+			 * and needed critical updates!
+			
 			double movementspeed = player.getCalculatedMovement(duration);
 			//			debug += " movementspeed:" + movementspeed;
 			boolean onLadder = false;
@@ -294,14 +303,16 @@ KeyEventDispatcher {
 			//			SingletonWorker.gameProperties().playerx += screenXMovement;
 			//			SingletonWorker.gameProperties().playery += screenYMovement;
 
+			
+			
 			/*
-			 * End New Movement calculation Code!
+			 * End New Movement calculation Code!*/
+			 /* 
 			 * omiting old code:
-			 * 
+			 * */
 
-			int screenXMovement = (int) gamedata.activePlayer().calculateScreenXMovement(duration);
-			int screenYMovement = (int) gamedata.activePlayer().calculateScreenYMovement(duration)*GRAVITY_Y;
-
+			int screenXMovement = 0;
+			int screenYMovement = (int) player.getCalculatedMovement(duration)*GRAVITY_Y;
 
 			//			boolean onLadder = false;
 			boolean movementPossible = true;
@@ -316,14 +327,23 @@ KeyEventDispatcher {
 			for(Texture curTexture : textures){
 				if(curTexture instanceof Block){
 					if(gamedata.activePlayer().intercectsOffset(curTexture,0,+5)){
-						Block current = ((Block) curTexture);
-						if(current.getID() == 11 || current.getID() == 12){
-							screenYMovement = (int) gamedata.activePlayer().calculateScreenYMovement(duration);
+						Block block = ((Block) curTexture);
+						if(block.getID() == 11 || block.getID() == 12){
+							if(forwardPressed ^ backwardPressed){
+								if(forwardPressed){
+									screenYMovement = (int) player.getCalculatedMovement(duration)*-1;
+								}else{
+									screenYMovement = (int) player.getCalculatedMovement(duration);
+								}
+							}else{
+								screenYMovement = 0;
+							}
+							
 						}
 					}else if(gamedata.activePlayer().intercectsOffset(curTexture,0,+10)){
-						Block current = ((Block) curTexture);
-						Block ontop = gamedata.mine().getBlock(current.xPos, current.yPos-1);
-						if((current.getID() == 11 || current.getID() == 12) && !backwardPressed){
+						Block block = ((Block) curTexture);
+						Block ontop = gamedata.mine().getBlock(block.xPos, block.yPos-1);
+						if((block.getID() == 11 || block.getID() == 12) && !backwardPressed){
 							if(ontop != null){
 								if(ontop == null || (ontop.getID() != 11 && ontop.getID() != 12)){
 									screenYMovement = 0;
@@ -338,14 +358,14 @@ KeyEventDispatcher {
 
 					if (currentTexture instanceof Block && gamedata.activePlayer().intercectsOffset(currentTexture,0,screenYMovement*5)) {
 						outofbounds = false;
-						Block current = ((Block) currentTexture);
-						if (current.isMassive()){
+						Block block = ((Block) currentTexture);
+						if (block.isMassive()){
 							movementPossible = false;
 							if(!gamedata.activePlayer().intercectsOffset(currentTexture,0,5)){
 								GameProperties.playery += 1;
 							}
-							if((current.yPos > SingletonWorker.gameProperties().getPlayerBlockY() && backwardPressed) || (current.yPos < SingletonWorker.gameProperties().getPlayerBlockY() && forwardPressed)){
-								current.hit(gamedata.activePlayer());
+							if((block.yPos > SingletonWorker.gameProperties().getPlayerBlockY() && backwardPressed) || (block.yPos < SingletonWorker.gameProperties().getPlayerBlockY() && forwardPressed)){
+								block.hit(gamedata.activePlayer());
 								digging = true;
 							}
 						}
@@ -358,6 +378,13 @@ KeyEventDispatcher {
 				}
 
 			}
+			if(leftPressed ^ rightPressed){
+				if(leftPressed){
+					screenXMovement = (int) player.getCalculatedMovement(duration)*-1;
+				}else{
+					screenXMovement = (int) player.getCalculatedMovement(duration);
+				}
+			}
 			if (movementPossible && !outofbounds) {
 				GameProperties.playery += screenYMovement;
 			}
@@ -367,12 +394,12 @@ KeyEventDispatcher {
 				if(movementPossible){
 					if (currentTexture instanceof Block &&
 							gamedata.activePlayer().intercectsOffset(currentTexture,screenXMovement*3,0)) {
-						Block current = ((Block) currentTexture);
-						if (current.isMassive()){
+						Block block = ((Block) currentTexture);
+						if (block.isMassive()){
 							movementPossible = false;
 
-							if(((current.xPos < SingletonWorker.gameProperties().getPlayerBlockX() && leftPressed) || (current.xPos > SingletonWorker.gameProperties().getPlayerBlockX() && rightPressed)) && !digging){
-								current.hit(gamedata.activePlayer());
+							if(((block.xPos < SingletonWorker.gameProperties().getPlayerBlockX() && leftPressed) || (block.xPos > SingletonWorker.gameProperties().getPlayerBlockX() && rightPressed)) && !digging){
+								block.hit(gamedata.activePlayer());
 							}
 						}
 
@@ -384,7 +411,7 @@ KeyEventDispatcher {
 				}
 
 			}
-
+		
 			if (movementPossible) {
 				GameProperties.playerx += screenXMovement;
 			}
@@ -537,40 +564,6 @@ KeyEventDispatcher {
 		} else {
 			SingletonWorker.gameData().setActiveMenu(menu);
 		}
-	}
-
-	private void calculateMovements() {
-		GameData gamedata = SingletonWorker.gameData();
-		if (forwardPressed && backwardPressed) {
-			gamedata.activePlayer().setYPerSec(0);
-
-		} else if (forwardPressed) {
-			gamedata.activePlayer().setYPerSec(
-					-gamedata.activePlayer().getSpeedPxlsPerSec());
-
-		} else if (backwardPressed) {
-			gamedata.activePlayer().setYPerSec(
-					gamedata.activePlayer().getSpeedPxlsPerSec());
-
-		} else {
-			gamedata.activePlayer().setYPerSec(0);
-		}
-
-		if (leftPressed && rightPressed) {
-			gamedata.activePlayer().setXPerSec(0);
-
-		} else if (leftPressed) {
-			gamedata.activePlayer().setXPerSec(
-					-gamedata.activePlayer().getSpeedPxlsPerSec());
-
-		} else if (rightPressed) {
-			gamedata.activePlayer().setXPerSec(
-					gamedata.activePlayer().getSpeedPxlsPerSec());
-
-		} else {
-			gamedata.activePlayer().setXPerSec(0);
-		}
-
 	}
 
 	@Override
