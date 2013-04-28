@@ -12,6 +12,7 @@ public class NetworkConstants {
 	public static final int SERVER_SKILLS = 22;
 	
 	public static final int SERVER_INVENTORY = 33;
+	public static final int SERVER_INVENTORY_SELL = 333;
 	
 	public static final int SERVER_CRAFTING = 44;
 	
@@ -23,6 +24,7 @@ public class NetworkConstants {
 	public static final int SERVER_COMMUNICATION_SENDBLOCK = 559;
 	public static final int SERVER_COMMUNICATION_SENDINVENTORY = 560;
 	public static final int SERVER_COMMUNICATION_CHANGEITEMININVENTORY = 561;
+	public static final int SERVER_COMMUNICATION_SENDMONEY = 562;
 	
 	public static final int SERVER_MOVEMENT = 66;
 	public static final int SERVER_MOVEMENT_MOVE = 666;

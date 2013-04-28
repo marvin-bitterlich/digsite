@@ -89,7 +89,6 @@ public class NetworkHandlerThread implements Runnable {
 
 					if(cmd == NetworkConstants.SERVER_COMMUNICATION_SENDCHUNK){
 						Chunk c = (Chunk) XStreamWorker.fromXML(cut[1]);
-						SingletonWorker.logger().info(cut[1]);
 						SingletonWorker.gameData().mine().addChunk(c);
 					}
 
@@ -163,6 +162,11 @@ public class NetworkHandlerThread implements Runnable {
 	public void chat(String text){
 		connection.sendLine(NetworkConstants.SERVER_CHAT + NetworkConstants.SEPERATOR + NetworkConstants.SERVER_CHAT_PLAYER + NetworkConstants.SEPERATOR + 
 				text);
+	}
+
+	public void sellStuff(int selectedEntry) {
+		connection.sendLine(NetworkConstants.SERVER_INVENTORY + NetworkConstants.SEPERATOR + NetworkConstants.SERVER_INVENTORY_SELL + NetworkConstants.SEPERATOR + 
+				selectedEntry);
 	}
 
 }

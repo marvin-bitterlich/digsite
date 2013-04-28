@@ -18,6 +18,8 @@ import utilities.ImageUtil;
 
 public class DrawableInventory extends UIItem {
 
+	private static final int sellx = 200;
+	private static final int selly = 600;
 	private int rows, cells, itemWidth, itemHeight, currentPage = 0;
 	private double relativeDistanceX, relativeDistanceY;
 	private RelativeBoxPosition relativeFirstBox;
@@ -27,6 +29,8 @@ public class DrawableInventory extends UIItem {
 
 	private ClickPosition[] equipmentBoxes = new ClickPosition[9];
 	private int selectedEntry = -1;
+	private int sellwidth;
+	private int sellheight;
 
 	public DrawableInventory(int startX, int startY, int endX, int endY, String src,
 			int rows, int cells, RelativeBoxPosition relativeFirstBox,
@@ -103,6 +107,11 @@ public class DrawableInventory extends UIItem {
 		int page = selectedEntry / 30;
 		if(page == currentPage){
 			this.pageList.get(this.currentPage).draw(g,entry,mouseoverMarker);
+			if(selectedEntry > -1){
+				g.drawString("Sell", sellx , selly);
+				sellwidth = g.getFontMetrics().charsWidth("Sell".toCharArray(), 0, "Sell".length());
+				sellheight = g.getFontMetrics().getHeight()*4;
+			}
 		}else{
 			this.pageList.get(this.currentPage).draw(g,-1,mouseoverMarker);
 		}
@@ -255,6 +264,11 @@ public class DrawableInventory extends UIItem {
 
 	@Override
 	public void mouseKlicked(MouseEvent e) {
+		if(selectedEntry > -1 && e.getX() > (sellx) && e.getY() > (selly-sellheight/2) && e.getX() < (sellx + sellwidth) && e.getY() < (selly)){
+			SingletonWorker.logger().info("Selling stuff");
+			SingletonWorker.networkHandlerThread().sellStuff(selectedEntry);
+			selectedEntry = -1;
+		}
 		if (backBtn.isInRange(e.getX(), e.getY())) {
 			currentPage--;
 			return;

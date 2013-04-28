@@ -34,8 +34,6 @@ public class MainMenu extends UIItem {
 
 	@Override
 	public void mouseKlicked(MouseEvent e) {
-		SingletonWorker.logger().info("font: " + textwidth + " | " + textheight);
-		SingletonWorker.logger().info(e.getX() + " | " + e.getY());
 		if(e.getX() > (250) && e.getY() > (250-textheight/2) && e.getX() < (250 + textwidth) && e.getY() < (250)){
 			SingletonWorker.logger().info("Shutting down");
 			System.exit(0);
