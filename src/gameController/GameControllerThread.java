@@ -402,6 +402,9 @@ KeyEventDispatcher {
 							if(((block.xPos < SingletonWorker.gameProperties().getPlayerBlockX() && leftPressed) || (block.xPos > SingletonWorker.gameProperties().getPlayerBlockX() && rightPressed)) && !digging){
 								block.hit(gamedata.activePlayer());
 							}
+							if(block.intercects(player) && (leftPressed ^ rightPressed)){
+								block.hit(gamedata.activePlayer());
+							}
 						}
 
 					} else if (gamedata.activePlayer().hits(currentTexture)) {
