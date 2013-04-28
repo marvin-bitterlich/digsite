@@ -70,6 +70,9 @@ public class NetworkHandlerThread implements Runnable {
 										new Player(20, 20, 20,20, 20, 20, 20,
 												10, Player.CLASS_BRUTE, 10, x, y, name)
 										);
+							}else{
+								GameProperties.playerx = x;
+								GameProperties.playery = y;
 							}
 						}
 					}
