@@ -321,7 +321,7 @@ KeyEventDispatcher {
 			boolean digging = false;
 			//move y direction
 			boolean outofbounds = true;
-			if(GameProperties.playery < 15){
+			if(GameProperties.playery < 15 && loaded){
 				outofbounds = false;
 			}
 
