@@ -118,11 +118,12 @@ public class NetworkHandlerThread implements Runnable {
 						SingletonWorker.gameData().activePlayer().setInventory(i);
 					}
 					if(cmd == NetworkConstants.SERVER_CHAT){
-						cut = cut[1].split(NetworkConstants.SEPERATOR,2);
+						cut = cut[1].split(NetworkConstants.SEPERATOR,3);
 						@SuppressWarnings("unused")
-						int playerid = NumberWorker.getNumber(cut[0]);
-						@SuppressWarnings("unused")
-						String text = cut[1];
+						int playerid = NumberWorker.getNumber(cut[1]);
+						String text = cut[2];
+						SingletonWorker.gameData().chat(text);
+						SingletonWorker.logger().info(text);
 						//TODO implement chatting!
 					}
 				}

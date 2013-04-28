@@ -456,6 +456,14 @@ KeyEventDispatcher {
 			String moneystring = "Money: " + SingletonWorker.gameData().money();
 			int moneyfontsize = g.getFontMetrics().charsWidth(moneystring.toCharArray(), 0, moneystring.length());
 			g.drawString(moneystring, SingletonWorker.gameData().width()-moneyfontsize-50, 100);
+			int fontheight = g.getFontMetrics().getHeight();
+			int count = 0;
+			for(String s : SingletonWorker.gameData().chat()){
+				if(count < 5){
+					g.drawString(s, SingletonWorker.gameData().width()-g.getFontMetrics().charsWidth(s.toCharArray(), 0, s.length())-50, SingletonWorker.gameData().height()-50-(fontheight*count));
+					count++;
+				}
+			}
 			g.drawString("Debug: " + debug, 50, 900);
 			
 			boolean debugcollision = false;

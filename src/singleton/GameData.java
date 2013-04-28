@@ -2,6 +2,7 @@ package singleton;
 
 import java.awt.image.BufferStrategy;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import network.NetworkHandlerThread;
 import gameController.GameControllerThread;
@@ -124,12 +125,24 @@ public class GameData {
 		}
 		return mine;
 	}
+	
 	private int money = 0;
 	public void setMoney(int _money) {
 		money = _money;
 	}
 	public int money() {
 		return money;
+	}
+	
+	private LinkedList<String> chat;
+	public LinkedList<String> chat(){
+		if(chat == null){
+			chat = new LinkedList<String>();
+		}
+		return chat;
+	}
+	public void chat(String s){
+		chat().addFirst(s);
 	}
 
 
