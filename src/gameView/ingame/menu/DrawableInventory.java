@@ -274,10 +274,14 @@ public class DrawableInventory extends UIItem {
 			selectedEntry = -1;
 		}
 		if (backBtn.isInRange(e.getX(), e.getY())) {
-			currentPage--;
+			if(currentPage >= 1 ){
+				currentPage--;
+			}
 			return;
 		} else if (fwdBtn.isInRange(e.getX(), e.getY())) {
-			currentPage++;
+			if(currentPage < pageList.size()-1){
+				currentPage++;
+			}
 			return;
 		}
 
