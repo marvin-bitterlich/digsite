@@ -108,9 +108,9 @@ public class DrawableInventory extends UIItem {
 		if(page == currentPage){
 			this.pageList.get(this.currentPage).draw(g,entry,mouseoverMarker);
 			if(selectedEntry > -1){
-				String sellstring = "Sell this items for 1!";
+				String sellstring = "sell this item for money!";
 				if(SingletonWorker.gameProperties().getPlayerBlockY() > 2){
-					sellstring =    "Go to surface to sell!";
+					sellstring =    "Go to surface to sell it!";
 				}
 				g.drawString(sellstring, sellx , selly);
 				sellwidth = g.getFontMetrics().charsWidth(sellstring.toCharArray(), 0, sellstring.length());
