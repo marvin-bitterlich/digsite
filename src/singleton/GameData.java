@@ -124,5 +124,13 @@ public class GameData {
 		}
 		return mine;
 	}
+	private int money = 0;
+	public void setMoney(int _money) {
+		money = _money;
+	}
+	public int money() {
+		return money;
+	}
+
 
 }

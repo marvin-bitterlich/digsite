@@ -57,6 +57,14 @@ public class NetworkHandlerThread implements Runnable {
 							}
 						}
 					}
+					
+					if(cmd == NetworkConstants.SERVER_COMMUNICATION_SENDMONEY){
+						cut = line.split(NetworkConstants.SEPERATOR);
+						if(cut.length == 2){
+							int money = NumberWorker.getNumber(cut[1]);
+							SingletonWorker.gameData().setMoney(money);
+						}
+					}
 
 					if(cmd == NetworkConstants.SERVER_MOVEMENT_PLAYER_ENTER){
 						cut = line.split(NetworkConstants.SEPERATOR);

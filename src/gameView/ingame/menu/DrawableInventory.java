@@ -18,8 +18,8 @@ import utilities.ImageUtil;
 
 public class DrawableInventory extends UIItem {
 
-	private static final int sellx = 200;
-	private static final int selly = 600;
+	private static final int sellx = 100;
+	private static final int selly = 150;
 	private int rows, cells, itemWidth, itemHeight, currentPage = 0;
 	private double relativeDistanceX, relativeDistanceY;
 	private RelativeBoxPosition relativeFirstBox;
@@ -108,8 +108,12 @@ public class DrawableInventory extends UIItem {
 		if(page == currentPage){
 			this.pageList.get(this.currentPage).draw(g,entry,mouseoverMarker);
 			if(selectedEntry > -1){
-				g.drawString("Sell", sellx , selly);
-				sellwidth = g.getFontMetrics().charsWidth("Sell".toCharArray(), 0, "Sell".length());
+				String sellstring = "Sell this items for 1!";
+				if(SingletonWorker.gameProperties().getPlayerBlockY() > 2){
+					sellstring =    "Go to surface to sell!";
+				}
+				g.drawString(sellstring, sellx , selly);
+				sellwidth = g.getFontMetrics().charsWidth(sellstring.toCharArray(), 0, sellstring.length());
 				sellheight = g.getFontMetrics().getHeight()*4;
 			}
 		}else{

@@ -453,7 +453,11 @@ KeyEventDispatcher {
 				.get(gamedata.getActiveMenu()).draw(g);
 			}
 			g.drawString("Frames: " + frames + " Miliseconds:" + time + "/" + timeout, 50, 50);
+			String moneystring = "Money: " + SingletonWorker.gameData().money();
+			int moneyfontsize = g.getFontMetrics().charsWidth(moneystring.toCharArray(), 0, moneystring.length());
+			g.drawString(moneystring, SingletonWorker.gameData().width()-moneyfontsize-50, 100);
 			g.drawString("Debug: " + debug, 50, 900);
+			
 			boolean debugcollision = false;
 			if(debugcollision){
 				g.setColor(Color.red);
